@@ -21,18 +21,23 @@ RUN composer dump-autoload --optimize --no-scripts
 FROM php:8.4-fpm-alpine
 
 # Instala Nginx, Supervisor e extensões PHP
+# Instala pacotes de RUNTIME (permanentes) e cria um grupo virtual (.build-deps) para compilação
 RUN apk add --no-cache \
     nginx \
     supervisor \
     postgresql-libs \
+    icu-libs \
+    libzip \
+    libpng \
+    bash \
+    ca-certificates \
+    && apk add --no-cache --virtual .build-deps \
     postgresql-dev \
     icu-dev \
     libzip-dev \
     libpng-dev \
-    bash \
-    ca-certificates \
     && docker-php-ext-install pdo_pgsql intl zip gd \
-    && apk del postgresql-dev icu-dev libzip-dev libpng-dev
+    && apk del .build-deps # Remove apenas o pacote virtual temporário
 
 # Configurar PHP para produção
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" && \
