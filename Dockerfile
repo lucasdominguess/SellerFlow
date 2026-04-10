@@ -1,6 +1,13 @@
 # --- Estágio 1: Dependências (Composer) ---
-FROM composer:2.8-php8.4 AS vendor
+# Usamos o PHP 8.4 CLI, que é mais leve para o processo de build do que o FPM
+FROM php:8.4-cli-alpine AS vendor
 WORKDIR /app
+
+# Instala pacotes básicos que o Composer geralmente precisa para baixar dependências
+RUN apk add --no-cache git unzip
+
+# Copia apenas o binário do Composer da imagem oficial para o nosso container PHP 8.4
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copia apenas os arquivos do composer para aproveitar o cache do Docker
 COPY composer.json composer.lock ./
