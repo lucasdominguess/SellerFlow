@@ -32,11 +32,15 @@ RUN apk add --no-cache \
     bash \
     ca-certificates \
     && apk add --no-cache --virtual .build-deps \
+    $PHPIZE_DEPS \
+    linux-headers \
     postgresql-dev \
     icu-dev \
     libzip-dev \
     libpng-dev \
-    && docker-php-ext-install pdo_pgsql intl zip gd \
+    && pecl install redis \
+    && docker-php-ext-install pdo_pgsql intl zip gd opcache \
+    && docker-php-ext-enable redis opcache \
     && apk del .build-deps # Remove apenas o pacote virtual temporário
 
 # Configurar PHP para produção
@@ -45,10 +49,10 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" && \
 
 WORKDIR /var/www
 
-# Copia o código do projeto
-COPY . .
+# Copia o código do projeto já atribuindo as permissões (evita cache de permissions no RUN)
+COPY --chown=www-data:www-data . .
 # Copia a pasta vendor já montada do estágio 1
-COPY --from=vendor /app/vendor/ ./vendor/
+COPY --chown=www-data:www-data --from=vendor /app/vendor/ ./vendor/
 
 # CORREÇÃO: Garante que a pasta de cache exista, caso o git não tenha copiado
 RUN mkdir -p /var/www/bootstrap/cache
@@ -58,18 +62,19 @@ COPY ./docker/nginx.conf /etc/nginx/http.d/default.conf
 COPY ./docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY ./docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 
-# Ajusta permissões
+# Ajusta permissões essenciais de gravação
 RUN chmod +x /usr/local/bin/entrypoint.sh && \
-    chown -R 82:82 /var/www && \
-    chmod -R 755 /var/www && \
-    chmod -R 775 /var/www/storage /var/www/bootstrap/cache && \
-    chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+    chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
-# Criar usuário não-root para execução
+# Alternar temporariamente para o usuário do webserver limitando escopo na file creation do discovery
 USER www-data
 
-# CORREÇÃO: Executa a descoberta de pacotes agora no lugar e com usuário corretos
+# Executa a descoberta de pacotes agora com contexto da flag COPY
 RUN php artisan package:discover --ansi
+
+# RETORNO PARA O ROOT
+# Fundamental para que o bash do entrypoint inicie o Nginx abrindo a porta Privilegiada TCP (80)
+USER root
 
 EXPOSE 80
 
