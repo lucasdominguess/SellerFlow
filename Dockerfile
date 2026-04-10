@@ -64,6 +64,7 @@ COPY ./docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # Ajusta permissões essenciais de gravação
 RUN chmod +x /usr/local/bin/entrypoint.sh && \
+    chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache && \
     chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
 # Alternar temporariamente para o usuário do webserver limitando escopo na file creation do discovery
