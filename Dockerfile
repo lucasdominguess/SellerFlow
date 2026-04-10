@@ -1,5 +1,5 @@
 # --- Estágio 1: Dependências (Composer) ---
-FROM composer:2.7 AS vendor
+FROM composer:2.8-php8.4 AS vendor
 WORKDIR /app
 
 # Copia apenas os arquivos do composer para aproveitar o cache do Docker
