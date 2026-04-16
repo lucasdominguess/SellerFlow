@@ -4,7 +4,8 @@ WORKDIR /app
 
 # Copia apenas os arquivos do composer para aproveitar o cache do Docker
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --ignore-platform-reqs
+
 
 # Copia o resto do código e gera o autoloader otimizado
 COPY . .
