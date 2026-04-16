@@ -10,7 +10,8 @@ RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --ignor
 # Copia o resto do código e gera o autoloader otimizado
 COPY . .
 RUN mkdir -p bootstrap/cache storage/framework/sessions storage/framework/views storage/framework/cache storage/logs && \
-    composer dump-autoload --optimize
+    composer dump-autoload --optimize --no-scripts
+
 # --- Estágio 2: Runtime (Imagem final para a Render) ---
 FROM php:8.3-fpm-alpine
 
