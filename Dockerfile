@@ -33,6 +33,9 @@ RUN apk add --no-cache \
     bash \
     ca-certificates \
     postgresql-libs \
+    libpng \
+    libzip \
+    icu-libs \
     && apk add --no-cache --virtual .build-deps \
     $PHPIZE_DEPS \
     linux-headers \
