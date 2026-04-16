@@ -13,8 +13,8 @@ RUN mkdir -p bootstrap/cache storage/framework/sessions storage/framework/views 
 # --- Stage 2: Frontend Assets (Node/Vite) ---
 FROM node:20-alpine AS frontend
 WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm ci
+COPY package*.json ./
+RUN npm install
 
 COPY . .
 RUN npm run build
