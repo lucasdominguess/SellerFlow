@@ -96,7 +96,7 @@ return Application::configure(basePath: dirname(__DIR__))
             ];
 
             if (config('app.debug')) {
-                $response['error'] = mb_convert_encoding($exception->getMessage(), 'UTF-8', 'auto');
+                $response['error'] = mb_convert_encoding($exception->getMessage(), 'UTF-8', 'UTF-8, ISO-8859-1, Windows-1252');
                 $response['exception'] = class_basename($exception);
                 $response['trace'] = $exception->getTraceAsString();
             }
