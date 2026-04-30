@@ -25,7 +25,7 @@ return [
      * Example: CORS_ALLOWED_ORIGINS=https://app.example.com,https://dashboard.example.com
      */
     'allowed_origins' => env('CORS_ALLOWED_ORIGINS') === '*'
-        ? (app()->environment('production') ? [] : ['*'])
+        ? (env('APP_ENV') === 'production' ? [] : ['*'])
         : explode(',', env('CORS_ALLOWED_ORIGINS', '')),
 
     'allowed_origins_patterns' => env('CORS_ALLOWED_ORIGINS_PATTERNS')

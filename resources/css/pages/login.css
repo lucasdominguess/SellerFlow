@@ -1,0 +1,16 @@
+/* 
+  Arquivo intencionalmente deixado para estilos adicionais estritos à view.
+  A maior parte das utilites está absorvida pelo Tailwind V4 e as 
+  classes estáticas complexas (glass-panel, ethereal-bg) estão no global app.css
+  para potencial reuso. 
+*/
+
+/* Exemplo de escopo local (caso de classes não atendíveis por Tailwind utilites) */
+.login-custom-animation {
+    animation: fade-in 0.5s ease-in-out;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
