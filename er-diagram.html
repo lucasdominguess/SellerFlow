@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TradeFlow — Diagrama ER</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+
+    header span {
+      font-size: 0.85rem;
+      color: #64748b;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 999px;
+      padding: 3px 12px;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.78rem;
+      color: #94a3b8;
+    }
+
+    .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-auth    { background: #6366f1; }
+    .dot-catalog { background: #10b981; }
+    .dot-ops     { background: #f59e0b; }
+    .dot-stock   { background: #06b6d4; }
+    .dot-finance { background: #ec4899; }
+
+    .diagram-wrapper {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 32px 24px;
+      overflow-x: auto;
+    }
+
+    .mermaid {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Mermaid ER node colors via CSS vars override */
+    :root {
+      --mermaid-font-family: 'Segoe UI', sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>TradeFlow</h1>
+  <span>Diagrama de Entidades e Relacionamentos — MVP</span>
+</header>
+
+<div class="legend">
+  <div class="legend-item"><div class="dot dot-auth"></div> Contas e Perfis</div>
+  <div class="legend-item"><div class="dot dot-catalog"></div> Cadastros Auxiliares</div>
+  <div class="legend-item"><div class="dot dot-ops"></div> Compras / Vendas</div>
+  <div class="legend-item"><div class="dot dot-stock"></div> Estoque</div>
+  <div class="legend-item"><div class="dot dot-finance"></div> Financeiro</div>
+</div>
+
+<div class="diagram-wrapper">
+  <div class="mermaid">
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "primaryColor": "#1e293b",
+    "primaryTextColor": "#e2e8f0",
+    "primaryBorderColor": "#475569",
+    "lineColor": "#64748b",
+    "secondaryColor": "#0f172a",
+    "tertiaryColor": "#1e293b",
+    "edgeLabelBackground": "#1e293b",
+    "fontSize": "13px"
+  }
+}}%%
+erDiagram
+
+  %% ─── Contas e Perfis ─────────────────────────────────────
+  roles {
+    int id PK
+    string name
+    string slug "admin | operational | financial"
+  }
+
+  stores {
+    int id PK
+    string name
+  }
+
+  users {
+    int id PK
+    int store_id FK
+    int role_id FK
+    string name
+    string email
+    string password
+  }
+
+  marketplaces {
+    int id PK
+    int store_id FK
+    string name
+    decimal fee_percentage
+    int payout_days "prazo médio de repasse"
+  }
+
+  %% ─── Cadastros Auxiliares ────────────────────────────────
+  product_categories {
+    int id PK
+    string name
+  }
+
+  products {
+    int id PK
+    int store_id FK
+    int category_id FK
+    string sku
+    string name
+    string unit
+    int min_stock
+  }
+
+  suppliers {
+    int id PK
+    string name
+    string contact
+    string payment_info
+  }
+
+  financial_categories {
+    int id PK
+    string name
+    string type "expense | income"
+  }
+
+  payment_methods {
+    int id PK
+    string name
+    string type "pix | boleto | card | transfer"
+    int max_installments
+  }
+
+  %% ─── Compras ─────────────────────────────────────────────
+  purchases {
+    int id PK
+    int store_id FK
+    int supplier_id FK
+    int payment_method_id FK
+    date date
+    string invoice_number
+    int installments
+    decimal total_amount
+  }
+
+  purchase_items {
+    int id PK
+    int purchase_id FK
+    int product_id FK
+    int quantity
+    decimal unit_price
+  }
+
+  %% ─── Vendas ──────────────────────────────────────────────
+  sales {
+    int id PK
+    int store_id FK
+    int marketplace_id FK
+    string order_number
+    date date
+    decimal gross_amount
+    decimal marketplace_fee
+    decimal shipping_fee
+    decimal net_amount
+    date expected_payout_date
+  }
+
+  sale_items {
+    int id PK
+    int sale_id FK
+    int product_id FK
+    int quantity
+    decimal unit_price
+  }
+
+  %% ─── Estoque ─────────────────────────────────────────────
+  stock_movements {
+    int id PK
+    int product_id FK
+    string type "purchase | sale | adjustment"
+    int reference_id "id da compra/venda/ajuste"
+    string reference_type
+    int quantity "positivo=entrada; negativo=saída"
+    datetime created_at
+  }
+
+  %% ─── Financeiro ──────────────────────────────────────────
+  accounts_payable {
+    int id PK
+    int purchase_id FK "null = lançamento manual"
+    int financial_category_id FK
+    int payment_method_id FK
+    string description
+    decimal amount
+    date due_date
+    string status "pending | paid | overdue"
+    date paid_at
+  }
+
+  accounts_receivable {
+    int id PK
+    int sale_id FK
+    int marketplace_id FK
+    decimal gross_amount
+    decimal fee_amount
+    decimal net_amount
+    date expected_date
+    date received_date
+    string status "pending | received"
+  }
+
+  %% ─── Relacionamentos ─────────────────────────────────────
+  stores          ||--o{ users               : "tem"
+  roles           ||--o{ users               : "define"
+  stores          ||--o{ marketplaces        : "tem"
+  stores          ||--o{ products            : "tem"
+  stores          ||--o{ purchases           : "registra"
+  stores          ||--o{ sales               : "registra"
+
+  product_categories ||--o{ products        : "agrupa"
+  suppliers          ||--o{ purchases       : "fornece"
+  payment_methods    ||--o{ purchases       : "define pagamento"
+  purchases          ||--o{ purchase_items  : "contém"
+  purchase_items     }o--|| products        : "referencia"
+
+  marketplaces    ||--o{ sales              : "origina"
+  sales           ||--o{ sale_items         : "contém"
+  sale_items      }o--|| products           : "referencia"
+
+  products        ||--o{ stock_movements    : "rastreado em"
+
+  purchases       ||--o{ accounts_payable   : "gera"
+  financial_categories ||--o{ accounts_payable : "classifica"
+  payment_methods ||--o{ accounts_payable   : "liquida"
+
+  sales           ||--o{ accounts_receivable : "gera"
+  marketplaces    ||--o{ accounts_receivable : "origina repasse"
+  </div>
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    er: {
+      diagramPadding: 30,
+      layoutDirection: 'TB',
+      minEntityWidth: 100,
+      minEntityHeight: 75,
+      entityPadding: 15,
+      useMaxWidth: false
+    }
+  });
+</script>
+
+</body>
+</html>

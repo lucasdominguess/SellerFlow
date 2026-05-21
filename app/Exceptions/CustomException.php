@@ -4,7 +4,8 @@ namespace App\Exceptions;
 
 use Exception;
 
-class CustomExcepiton extends Exception
+
+class CustomException extends Exception
 {
     //
 }

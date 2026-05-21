@@ -2,17 +2,17 @@
 namespace App\Enums;
 
 
-enum Roles: int
+enum Roles: string
 {
-    case ADMIN = 1;
-    case USER = 2;
+    case ADMIN = 'admin';
+    case USER = 'user';
 
 
    public function label(): string
     {
         return match ($this) {
-            self::ADMIN => 'Administrador',
-            self::USER  => 'Usuario',
+            self::ADMIN => 'admin',
+            self::USER  => 'user',
         };
     }
 }

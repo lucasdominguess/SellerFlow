@@ -2,17 +2,16 @@
 
 namespace App\Enums;
 
-enum Status: int
+enum Status: string
 {
-    case ACTIVE = 1;
-    case INACTIVE = 2;
+    case ACTIVE = 'active';
+    case INACTIVE = 'inactive';
 
-    // Esta é uma função útil que não precisa de parâmetros
-    public function label(): int
+    public function label(): string
     {
         return match ($this) {
-            self::ACTIVE => 1,
-            self::INACTIVE => 2
+            self::ACTIVE => 'active',
+            self::INACTIVE => 'inactive'
         };
     }
 }

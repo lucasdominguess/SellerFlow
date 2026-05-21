@@ -1,6 +1,6 @@
 <?php
 
-use App\Exceptions\CustomExcepiton;
+use App\Exceptions\CustomException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\LazyLoadingViolationException;
 use Illuminate\Foundation\Application;
@@ -41,7 +41,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 'error' => $errors,
             ], 422);
         });
-        $exceptions->render(function (CustomExcepiton $exception): JsonResponse {
+        $exceptions->render(function (CustomException $exception): JsonResponse {
 
             Log::error($exception->getMessage());
 
