@@ -11,7 +11,8 @@ class MakeCrud extends Command
     protected $signature = 'make:crud
         {name : Nome da entidade, aceita subpastas (ex: User ou Accout/User)}
         {--m|model= : SubPath da Model em app/Models/ (default: mesmo subPath do name)}
-        {--no-bind : Não registra os binds Interface→Implementação no AppServiceProvider}';
+        {--no-bind : Não registra os binds Interface→Implementação no AppServiceProvider}
+        {--no-routes : Não registra o grupo de rotas em routes/api.php}';
 
     protected $description = 'Gera o stack CRUD completo (Controller, Service, Repository, Interfaces, DTOs e FormRequests) seguindo o padrão "fluxo canônico" do projeto.';
 
@@ -34,6 +35,16 @@ Exemplos:
   php artisan make:crud Accout/User
   php artisan make:crud Product --model=Inventory     # model em App\\Models\\Inventory\\Product
   php artisan make:crud Order --no-bind               # não registra binds
+  php artisan make:crud Order --no-routes             # não registra rotas
+
+Grupo de rotas gerado em routes/api.php:
+  Route::prefix('/user')->group(function () {
+      Route::get('/',          [UserController::class, 'index']);
+      Route::get('/{user}',    [UserController::class, 'show']);
+      Route::post('/',         [UserController::class, 'store']);
+      Route::put('/{user}',    [UserController::class, 'update']);
+      Route::delete('/{user}', [UserController::class, 'delete']);
+  });
 
 Aceita correções automáticas:
   user            -> User
@@ -71,6 +82,7 @@ HELP;
         $modelVar = lcfirst($baseName);
 
         $shouldBind = !$this->option('no-bind');
+        $shouldRegisterRoutes = !$this->option('no-routes');
 
         $specs = $this->buildFileSpecs(
             $baseName,
@@ -99,6 +111,13 @@ HELP;
             $registered = $this->registerBinds($baseName, $subPath);
             if ($registered) {
                 $this->line('  <info>updated</info>  ' . $this->toRelative(app_path('Providers/AppServiceProvider.php')));
+            }
+        }
+
+        if ($shouldRegisterRoutes) {
+            $routed = $this->registerRoutes($baseName, $subPath, $modelVar);
+            if ($routed) {
+                $this->line('  <info>updated</info>  ' . $this->toRelative(base_path('routes/api.php')));
             }
         }
 
@@ -327,6 +346,48 @@ HELP;
         }
 
         File::put($providerPath, $updated);
+        return true;
+    }
+
+    private function registerRoutes(string $baseName, string $subPath, string $modelVar): bool
+    {
+        $routesPath = base_path('routes' . DIRECTORY_SEPARATOR . 'api.php');
+
+        if (!File::exists($routesPath)) {
+            $this->warn('routes/api.php não encontrado, rotas não registradas.');
+            return false;
+        }
+
+        $controllerClass = $baseName . 'Controller';
+        $nsSeg = $subPath !== '' ? '\\' . str_replace('/', '\\', $subPath) : '';
+        $controllerFqcn = 'App\\Http\\Controllers' . $nsSeg . '\\' . $controllerClass;
+
+        $content = File::get($routesPath);
+
+        // Verifica pelo FQCN exato — evita colisão com controllers de mesmo nome em outros namespaces
+        if (Str::contains($content, 'use ' . $controllerFqcn . ';')) {
+            return false;
+        }
+
+        $content = $this->addUseStatement($content, $controllerFqcn);
+
+        // Prefix em kebab-case: User -> user, UserProfile -> user-profile
+        $prefix = Str::kebab($baseName);
+
+        $routeBlock = implode("\n", [
+            '',
+            "Route::prefix('/{$prefix}')->group(function () {",
+            "    Route::get('/', [{$controllerClass}::class, 'index']);",
+            "    Route::get('/{{$modelVar}}', [{$controllerClass}::class, 'show']);",
+            "    Route::post('/', [{$controllerClass}::class, 'store']);",
+            "    Route::put('/{{$modelVar}}', [{$controllerClass}::class, 'update']);",
+            "    Route::delete('/{{$modelVar}}', [{$controllerClass}::class, 'delete']);",
+            '});',
+            '',
+        ]);
+
+        File::put($routesPath, rtrim($content, "\n") . "\n" . $routeBlock);
+
         return true;
     }
 

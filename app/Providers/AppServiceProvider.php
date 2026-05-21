@@ -15,6 +15,18 @@ use App\Contracts\Services\Accout\UserServiceInterface;
 use App\Services\Accout\UserService;
 use App\Contracts\Repositories\Accout\UserRepositoryInterface;
 use App\Repositories\Accout\UserRepository;
+use App\Contracts\Services\Accout\StoreServiceInterface;
+use App\Services\Accout\StoreService;
+use App\Contracts\Repositories\Accout\StoreRepositoryInterface;
+use App\Repositories\Accout\StoreRepository;
+use App\Contracts\Services\Accout\UserStoreServiceInterface;
+use App\Services\Accout\UserStoreService;
+use App\Contracts\Repositories\Accout\UserStoreRepositoryInterface;
+use App\Repositories\Accout\UserStoreRepository;
+use App\Contracts\Services\Accout\CompanyServiceInterface;
+use App\Services\Accout\CompanyService;
+use App\Contracts\Repositories\Accout\CompanyRepositoryInterface;
+use App\Repositories\Accout\CompanyRepository;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -34,6 +46,30 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             UserRepositoryInterface::class,
             UserRepository::class
+        );
+        $this->app->bind(
+            StoreServiceInterface::class,
+            StoreService::class
+        );
+        $this->app->bind(
+            StoreRepositoryInterface::class,
+            StoreRepository::class
+        );
+        $this->app->bind(
+            UserStoreServiceInterface::class,
+            UserStoreService::class
+        );
+        $this->app->bind(
+            UserStoreRepositoryInterface::class,
+            UserStoreRepository::class
+        );
+        $this->app->bind(
+            CompanyServiceInterface::class,
+            CompanyService::class
+        );
+        $this->app->bind(
+            CompanyRepositoryInterface::class,
+            CompanyRepository::class
         );
     }
 

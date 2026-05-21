@@ -12,10 +12,12 @@ class DatabaseSeeder extends Seeder
             // StatusSeeder::class,       // status (sem FK)
             // RoleSeeder::class,         // roles (sem FK)
             // MarketPlaceSeeder::class,  // market_places → status
-            CompanySeeder::class,      // companies → status
-            StoreSeeder::class,        // stores → status, marketplace, company
-            UserSeeder::class,         // users → status
-            UserStoreSeeder::class,    // user_stores → users, stores, roles, status
+            // CompanySeeder::class,      // companies → status
+            // StoreSeeder::class,        // stores → status, marketplace, company
+            // UserSeeder::class,         // users → status
+            // UserStoreSeeder::class,    // user_stores → users, stores, roles, status
+            CategoriaFinanceiraSeeder::class,
+            FormaPagamentoSeeder::class
         ]);
     }
 }
