@@ -11,6 +11,10 @@ use Illuminate\Support\ServiceProvider;
 use App\Interfaces\PdfExporterInterface;
 
 
+use App\Contracts\Services\Accout\UserServiceInterface;
+use App\Services\Accout\UserService;
+use App\Contracts\Repositories\Accout\UserRepositoryInterface;
+use App\Repositories\Accout\UserRepository;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -23,6 +27,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PdfExporterInterface::class, DomPdfService::class);
         // $this->app->bind(SocialAuthInterface::class, GoogleAuthService::class);
         // $this->app->register(L5SwaggerServiceProvider::class);
+        $this->app->bind(
+            UserServiceInterface::class,
+            UserService::class
+        );
+        $this->app->bind(
+            UserRepositoryInterface::class,
+            UserRepository::class
+        );
     }
 
     /**

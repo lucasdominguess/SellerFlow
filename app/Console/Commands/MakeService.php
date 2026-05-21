@@ -8,35 +8,56 @@ use Illuminate\Support\Str;
 
 class MakeService extends Command
 {
-    /**
-     * Assinatura do comando no terminal.
-     * * Argumentos:
-     * {name}         -> Nome da classe (ex: User ou Admin/User)
-     * * Opções (Flags):
-     * {--r|repository} -> Gera Repository + Interface e injeta no Service
-     * {--b|bind}       -> Registra bind automaticamente no AppServiceProvider
-     * {--c|contract}   -> Gera interface do Service (ServiceInterface)
-     * {--d|dto}        -> Prepara o Service para uso com DTO
-        * {--m|methods}    -> Adiciona métodos CRUD no Service/Interface/Repository
-     * {--i=}           -> Injeta o Service em um Controller (ex: --i=AuthController)
-     * {--f=}           -> Define caminho customizado para o Service
-     */
-    protected $signature = 'make:service {name} {--r|repository} {--b|bind} {--c|contract} {--d|dto} {--m|methods} {--i=} {--f=}';
+    protected $signature = 'make:service
+        {name : Nome da classe, aceita subpastas (ex: User ou Admin/User)}
+        {--r|repository : Gera Repository e RepositoryInterface com injeção automática no Service}
+        {--b|bind : Registra os binds Interface→Implementação no AppServiceProvider}
+        {--c|contract : Gera ServiceInterface (contrato) para o Service}
+        {--d|dto : Importa DTO e ResponseDTO no Service e na Interface}
+        {--m|methods : Adiciona métodos CRUD (index/find/store/update/delete) em todas as classes geradas}
+        {--C|controller : Gera Controller com métodos CRUD e FilterRequest de index}
+        {--i= : Injeta o Service no __construct de um Controller existente (ex: --i=AuthController)}
+        {--f= : Caminho customizado para o Service, relativo a app/ (ex: --f=Domain/Auth)}
+        {--all : Ativa todas as flags booleanas: --repository, --contract, --bind, --dto, --methods, --controller}';
 
-    /**
-     * Descrição do comando.
-     */
     protected $description = 'Gera uma classe Service com suporte a contract, repository, DTO, métodos CRUD, bind e injeção em controller.';
+
+    protected $help = <<<HELP
+Exemplos de uso:
+
+  Criar apenas o Service:
+    php artisan make:service User
+
+  Service + Interface (contrato):
+    php artisan make:service User --contract
+
+  Service + Repository + Bind:
+    php artisan make:service User --repository --bind
+
+  Service + Controller com CRUD:
+    php artisan make:service User --controller --methods
+
+  Tudo de uma vez (todas as flags booleanas):
+    php artisan make:service User --all
+
+  Tudo + injetar no Controller existente:
+    php artisan make:service User --all --i=UserController
+
+  Service em caminho customizado:
+    php artisan make:service Admin/User --all --f=Domain/Admin
+HELP;
 
     public function handle()
     {
         $name = trim((string) $this->argument('name'), '/\\');
-        $shouldGenerateRepository = (bool) $this->option('repository');
-        $shouldBind = (bool) $this->option('bind');
-        $controllerName = trim((string) ($this->option('i') ?? ''), '/\\');
-        $shouldGenerateContract = (bool) $this->option('contract') || $shouldBind || $controllerName !== '';
-        $shouldUseDto = (bool) $this->option('dto');
-        $shouldGenerateMethods = (bool) $this->option('methods');
+        $isAll = (bool) $this->option('all');
+        $shouldGenerateRepository = $isAll || (bool) $this->option('repository');
+        $shouldBind = $isAll || (bool) $this->option('bind');
+        $injectControllerName = trim((string) ($this->option('i') ?? ''), '/\\');
+        $shouldGenerateContract = $isAll || (bool) $this->option('contract') || $shouldBind || $injectControllerName !== '';
+        $shouldUseDto = $isAll || (bool) $this->option('dto');
+        $shouldGenerateMethods = $isAll || (bool) $this->option('methods');
+        $shouldGenerateController = $isAll || (bool) $this->option('controller');
         $customServicePath = trim((string) ($this->option('f') ?? ''));
 
         if ($name === '') {
@@ -53,6 +74,8 @@ class MakeService extends Command
         [$serviceContractDirectory, $serviceContractBaseNamespace] = $this->resolvePathAndNamespace('Contracts/Services');
         [$repositoryDirectory, $repositoryBaseNamespace] = $this->resolvePathAndNamespace('Repositories');
         [$repositoryContractDirectory, $repositoryContractBaseNamespace] = $this->resolvePathAndNamespace('Contracts/Repositories');
+        [$httpControllerDirectory, $httpControllerBaseNamespace] = $this->resolvePathAndNamespace('Http/Controllers');
+        [$httpRequestDirectory, $httpRequestBaseNamespace] = $this->resolvePathAndNamespace('Http/Requests');
 
         $serviceRelativeClass = $relativeBaseName . 'Service';
         $serviceClassName = class_basename(str_replace('/', '\\', $serviceRelativeClass));
@@ -73,6 +96,16 @@ class MakeService extends Command
         $repositoryContractClassName = class_basename(str_replace('/', '\\', $repositoryContractRelativeClass));
         $repositoryContractNamespace = $this->appendNamespace($repositoryContractBaseNamespace, $subPath);
         $repositoryContractPath = $repositoryContractDirectory . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $repositoryContractRelativeClass) . '.php';
+
+        $generatedControllerRelativeClass = $relativeBaseName . 'Controller';
+        $generatedControllerClassName = class_basename(str_replace('/', '\\', $generatedControllerRelativeClass));
+        $generatedControllerNamespace = $this->appendNamespace($httpControllerBaseNamespace, $subPath);
+        $generatedControllerPath = $httpControllerDirectory . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $generatedControllerRelativeClass) . '.php';
+
+        $filterRequestClassName = 'Filter' . $baseName . 'IndexRequest';
+        $filterRequestNamespace = $this->appendNamespace($httpRequestBaseNamespace, $subPath);
+        $filterRequestSubDir = ($subPath !== '.' && $subPath !== '') ? str_replace('/', DIRECTORY_SEPARATOR, $subPath) . DIRECTORY_SEPARATOR : '';
+        $filterRequestPath = $httpRequestDirectory . DIRECTORY_SEPARATOR . $filterRequestSubDir . $filterRequestClassName . '.php';
 
         $filesToCreate = [
             $servicePath => [
@@ -104,6 +137,22 @@ class MakeService extends Command
             ];
         }
 
+        if ($shouldGenerateController) {
+            $filesToCreate[$generatedControllerPath] = [
+                'label' => 'controller',
+                'path' => $generatedControllerPath,
+                'directory' => dirname($generatedControllerPath),
+            ];
+
+            if ($shouldGenerateMethods) {
+                $filesToCreate[$filterRequestPath] = [
+                    'label' => 'filter request',
+                    'path' => $filterRequestPath,
+                    'directory' => dirname($filterRequestPath),
+                ];
+            }
+        }
+
         foreach ($filesToCreate as $file) {
             if (File::exists($file['path'])) {
                 $this->error('O arquivo [' . $file['path'] . '] já existe.');
@@ -111,28 +160,34 @@ class MakeService extends Command
             }
         }
 
-        $controllerPath = null;
+        $injectControllerPath = null;
         $controllerDependencyClassName = $shouldGenerateContract ? $serviceContractClassName : $serviceClassName;
         $controllerDependencyNamespace = $shouldGenerateContract ? $serviceContractNamespace : $serviceNamespace;
 
-        if ($controllerName !== '') {
-            $controllerPath = $this->resolveControllerPath($controllerName);
+        if ($injectControllerName !== '') {
+            $injectControllerPath = $this->resolveControllerPath($injectControllerName);
 
-            if ($controllerPath === null) {
-                $this->error("Foram encontrados múltiplos controllers com o nome [{$controllerName}]. Informe o caminho completo, por exemplo: Admin/{$controllerName}");
+            if ($injectControllerPath === null) {
+                $this->error("Foram encontrados múltiplos controllers com o nome [{$injectControllerName}]. Informe o caminho completo, por exemplo: Admin/{$injectControllerName}");
                 return Command::FAILURE;
             }
 
-            if ($controllerPath === '' || !File::exists($controllerPath)) {
-                $this->error("O controller [{$controllerName}] não foi encontrado em: {$controllerPath}");
+            if ($injectControllerPath === '' || !File::exists($injectControllerPath)) {
+                $this->error("O controller [{$injectControllerName}] não foi encontrado em: {$injectControllerPath}");
                 return Command::FAILURE;
             }
         }
+
+        $paginatorUse = 'Illuminate\Contracts\Pagination\LengthAwarePaginator';
 
         $serviceUses = [];
 
         if ($shouldGenerateContract) {
             $serviceUses[] = $serviceContractNamespace . '\\' . $serviceContractClassName;
+        }
+
+        if ($shouldGenerateMethods) {
+            $serviceUses[] = $paginatorUse;
         }
 
         $serviceConstructorDependencies = '        // dependências';
@@ -162,6 +217,10 @@ class MakeService extends Command
         if ($shouldGenerateContract) {
             $contractUses = [];
 
+            if ($shouldGenerateMethods) {
+                $contractUses[] = $paginatorUse;
+            }
+
             if ($shouldUseDto) {
                 $dtoNamespace = $this->appendNamespace('App\\DTOs', $subPath);
                 $contractUses[] = $dtoNamespace . '\\' . $baseName . 'DTO';
@@ -180,21 +239,70 @@ class MakeService extends Command
         $repositoryContractContent = null;
 
         if ($shouldGenerateRepository) {
+            $repositoryUses = [$repositoryContractNamespace . '\\' . $repositoryContractClassName];
+
+            if ($shouldGenerateMethods) {
+                $repositoryUses[] = $paginatorUse;
+            }
+
             $repositoryContent = $this->getRepositoryStub(
                 $repositoryNamespace,
                 $repositoryClassName,
-                [$repositoryContractNamespace . '\\' . $repositoryContractClassName],
+                $repositoryUses,
                 ' implements ' . $repositoryContractClassName,
                 '        // dependências',
                 $shouldGenerateMethods ? $this->getCrudMethods($baseName, false, false) : ''
             );
 
+            $repositoryContractUses = [];
+
+            if ($shouldGenerateMethods) {
+                $repositoryContractUses[] = $paginatorUse;
+            }
+
             $repositoryContractContent = $this->getInterfaceStub(
                 $repositoryContractNamespace,
                 $repositoryContractClassName,
-                [],
+                $repositoryContractUses,
                 $shouldGenerateMethods ? $this->getCrudMethods($baseName, false, true) : ''
             );
+        }
+
+        $generatedControllerContent = null;
+        $filterRequestContent = null;
+
+        if ($shouldGenerateController) {
+            $controllerServiceDep = $shouldGenerateContract ? $serviceContractClassName : $serviceClassName;
+            $controllerServiceDepNamespace = $shouldGenerateContract ? $serviceContractNamespace : $serviceNamespace;
+
+            $controllerUses = [
+                'Illuminate\Http\JsonResponse',
+                'Illuminate\Http\Request',
+                'Illuminate\Routing\Controller',
+                $controllerServiceDepNamespace . '\\' . $controllerServiceDep,
+            ];
+
+            $controllerMethods = '';
+
+            if ($shouldGenerateMethods) {
+                $controllerUses[] = $filterRequestNamespace . '\\' . $filterRequestClassName;
+                $controllerMethods = $this->getControllerCrudMethods($filterRequestClassName);
+            }
+
+            $generatedControllerContent = $this->getControllerStub(
+                $generatedControllerNamespace,
+                $generatedControllerClassName,
+                $controllerUses,
+                '        protected ' . $controllerServiceDep . ' $service,',
+                $controllerMethods
+            );
+
+            if ($shouldGenerateMethods) {
+                $filterRequestContent = $this->getFilterRequestStub(
+                    $filterRequestNamespace,
+                    $filterRequestClassName
+                );
+            }
         }
 
         foreach ($filesToCreate as $file) {
@@ -210,6 +318,14 @@ class MakeService extends Command
         if ($shouldGenerateRepository && $repositoryContent !== null && $repositoryContractContent !== null) {
             File::put($repositoryContractPath, $repositoryContractContent);
             File::put($repositoryPath, $repositoryContent);
+        }
+
+        if ($shouldGenerateController && $generatedControllerContent !== null) {
+            File::put($generatedControllerPath, $generatedControllerContent);
+
+            if ($shouldGenerateMethods && $filterRequestContent !== null) {
+                File::put($filterRequestPath, $filterRequestContent);
+            }
         }
 
         if ($shouldBind) {
@@ -228,9 +344,9 @@ class MakeService extends Command
             }
         }
 
-        if ($controllerPath !== null) {
+        if ($injectControllerPath !== null) {
             $this->injectDependencyIntoController(
-                $controllerPath,
+                $injectControllerPath,
                 $controllerDependencyNamespace . '\\' . $controllerDependencyClassName,
                 $controllerDependencyClassName,
                 '$service'
@@ -252,7 +368,15 @@ class MakeService extends Command
             $this->info('Bind registrado.');
         }
 
-        if ($controllerPath !== null) {
+        if ($shouldGenerateController) {
+            $this->info("Controller [{$generatedControllerClassName}] criado.");
+
+            if ($shouldGenerateMethods) {
+                $this->info("FilterRequest [{$filterRequestClassName}] criado.");
+            }
+        }
+
+        if ($injectControllerPath !== null) {
             $this->info('Service injetado no controller.');
         }
 
@@ -394,6 +518,32 @@ class {$className}{$implementsClause}
 PHP;
     }
 
+    private function getControllerStub(
+        string $namespace,
+        string $className,
+        array $uses,
+        string $constructorDependencies,
+        string $methods
+    ): string {
+        $useBlock = $this->buildUseBlock($uses);
+        $methodsBlock = $methods !== '' ? "\n\n{$methods}" : '';
+
+        return <<<PHP
+<?php
+
+namespace {$namespace};
+{$useBlock}
+class {$className} extends Controller
+{
+    public function __construct(
+{$constructorDependencies}
+    ) {}
+{$methodsBlock}
+}
+
+PHP;
+    }
+
     private function getInterfaceStub(string $namespace, string $className, array $uses, string $methods): string
     {
         $useBlock = $this->buildUseBlock($uses);
@@ -407,6 +557,31 @@ namespace {$namespace};
 interface {$className}
 {
 {$methodsBlock}
+}
+
+PHP;
+    }
+
+    private function getFilterRequestStub(string $namespace, string $className): string
+    {
+        return <<<PHP
+<?php
+
+namespace {$namespace};
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class {$className} extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [];
+    }
 }
 
 PHP;
@@ -428,58 +603,74 @@ PHP;
     private function getCrudMethods(string $baseName, bool $shouldUseDto, bool $forInterface): string
     {
         if ($shouldUseDto) {
-            $lines = [
-                '    public function create(' . $baseName . 'DTO $dto): ' . $baseName . 'ResponseDTO' . ($forInterface ? ';' : ''),
-                '    {' . ($forInterface ? '' : ''),
-            ];
-
-            if (!$forInterface) {
-                $lines[] = '        // lógica';
-                $lines[] = '    }';
-                $lines[] = '';
-                $lines[] = '    public function update(int $id, ' . $baseName . 'DTO $dto): ' . $baseName . 'ResponseDTO';
-                $lines[] = '    {';
-                $lines[] = '        // lógica';
-                $lines[] = '    }';
-                $lines[] = '';
-                $lines[] = '    public function delete(int $id)';
-                $lines[] = '    {';
-                $lines[] = '        // lógica';
-                $lines[] = '    }';
-                $lines[] = '';
-                $lines[] = '    public function find(int $id)';
-                $lines[] = '    {';
-                $lines[] = '        // lógica';
-                $lines[] = '    }';
-
-                return implode("\n", $lines);
+            if ($forInterface) {
+                return implode("\n", [
+                    '    public function index(int $perPage = 15, int $page = 1, ?array $filters = []): LengthAwarePaginator;',
+                    '',
+                    '    public function find(int $id): ' . $baseName . 'ResponseDTO;',
+                    '',
+                    '    public function store(' . $baseName . 'DTO $dto): ' . $baseName . 'ResponseDTO;',
+                    '',
+                    '    public function update(int $id, ' . $baseName . 'DTO $dto): ' . $baseName . 'ResponseDTO;',
+                    '',
+                    '    public function delete(int $id);',
+                ]);
             }
 
             return implode("\n", [
-                '    public function create(' . $baseName . 'DTO $dto): ' . $baseName . 'ResponseDTO;',
+                '    public function index(int $perPage = 15, int $page = 1, ?array $filters = []): LengthAwarePaginator',
+                '    {',
+                '        // lógica',
+                '    }',
                 '',
-                '    public function update(int $id, ' . $baseName . 'DTO $dto): ' . $baseName . 'ResponseDTO;',
+                '    public function find(int $id): ' . $baseName . 'ResponseDTO',
+                '    {',
+                '        // lógica',
+                '    }',
                 '',
-                '    public function delete(int $id);',
+                '    public function store(' . $baseName . 'DTO $dto): ' . $baseName . 'ResponseDTO',
+                '    {',
+                '        // lógica',
+                '    }',
                 '',
-                '    public function find(int $id);',
+                '    public function update(int $id, ' . $baseName . 'DTO $dto): ' . $baseName . 'ResponseDTO',
+                '    {',
+                '        // lógica',
+                '    }',
+                '',
+                '    public function delete(int $id)',
+                '    {',
+                '        // lógica',
+                '    }',
             ]);
         }
 
         if ($forInterface) {
             return implode("\n", [
-                '    public function create(array $data);',
+                '    public function index(int $perPage = 15, int $page = 1, ?array $filters = []): LengthAwarePaginator;',
+                '',
+                '    public function find(int $id);',
+                '',
+                '    public function store(array $data);',
                 '',
                 '    public function update(int $id, array $data);',
                 '',
                 '    public function delete(int $id);',
-                '',
-                '    public function find(int $id);',
             ]);
         }
 
         return implode("\n", [
-            '    public function create(array $data)',
+            '    public function index(int $perPage = 15, int $page = 1, ?array $filters = []): LengthAwarePaginator',
+            '    {',
+            '        // lógica',
+            '    }',
+            '',
+            '    public function find(int $id)',
+            '    {',
+            '        // lógica',
+            '    }',
+            '',
+            '    public function store(array $data)',
             '    {',
             '        // lógica',
             '    }',
@@ -493,8 +684,33 @@ PHP;
             '    {',
             '        // lógica',
             '    }',
+        ]);
+    }
+
+    private function getControllerCrudMethods(string $filterRequestClassName): string
+    {
+        return implode("\n", [
+            "    public function index({$filterRequestClassName} \$request): JsonResponse",
+            '    {',
+            '        // lógica',
+            '    }',
             '',
-            '    public function find(int $id)',
+            '    public function find(int $id): JsonResponse',
+            '    {',
+            '        // lógica',
+            '    }',
+            '',
+            '    public function store(Request $request): JsonResponse',
+            '    {',
+            '        // lógica',
+            '    }',
+            '',
+            '    public function update(int $id, Request $request): JsonResponse',
+            '    {',
+            '        // lógica',
+            '    }',
+            '',
+            '    public function delete(int $id): JsonResponse',
             '    {',
             '        // lógica',
             '    }',

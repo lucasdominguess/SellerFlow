@@ -8,52 +8,90 @@ use Illuminate\Support\Str;
 
 class MakeDto extends Command
 {
-    /**
-     * Assinatura do comando no terminal.
-     * * Argumentos:
-     * {name}         -> Nome da classe (ex: User ou Users/User)
-     * * Opções (Flags):
-     * {--r|response} -> Gera o template com fromModel e sufixo ResponseDTO
-     * {--N|no-suffix}-> Ignora a regra de adicionar "DTO" ou "ResponseDTO" automaticamente
-     */
-    protected $signature = 'make:dto {name} {--r|response} {--N|no-suffix}';
+    protected $signature = 'make:dto
+        {name : Nome da classe, aceita subpastas (ex: User ou Users/User)}
+        {--r|response : Gera ResponseDTO com fromModel() — para dados de saída/resposta}
+        {--A|array : Gera DTO com fromArray() — para dados de entrada em array puro (alternativa ao padrão fromRequest)}
+        {--N|no-suffix : Ignora o sufixo automático DTO/ResponseDTO e usa o nome exato informado}
+        {--all : Gera o par completo: UserDTO (fromRequest) + UserResponseDTO (fromModel)}';
 
-    // Exemplos de uso:
-    // php artisan make:dto User          → App\DTOs\UserDTO          (fromRequest + array_filter)
-    // php artisan make:dto User -r       → App\DTOs\UserResponseDTO  (fromModel, toArray sem filtro)
-    // php artisan make:dto User/Profile  → App\DTOs\User\ProfileDTO  (subdiretório)
+    protected $description = 'Gera uma classe DTO. Use -r para ResponseDTO, -A para fromArray, -N para ignorar sufixos ou --all para gerar o par completo.';
 
-    /**
-     * Descrição do comando.
-     */
-    protected $description = 'Gera uma classe DTO. Use -r para ResponseDTO (fromModel). Padrão: CommandDTO (fromRequest). Use -N para ignorar sufixos.';
+    protected $help = <<<HELP
+Exemplos de uso:
+
+  DTO de entrada padrão (fromRequest):
+    php artisan make:dto User
+
+  ResponseDTO de saída (fromModel):
+    php artisan make:dto User --response
+
+  DTO com fromArray (dados brutos, sem validação de request):
+    php artisan make:dto User --array
+
+  Par completo: UserDTO + UserResponseDTO de uma só vez:
+    php artisan make:dto User --all
+
+  Em subpasta:
+    php artisan make:dto Auth/Login --all
+
+  Sem sufixo automático (nome exato):
+    php artisan make:dto UserData --no-suffix
+HELP;
 
     public function handle()
     {
-        $name = $this->argument('name');
-        $isResponse = $this->option('response');
-        $noSuffix = $this->option('no-suffix');
+        $rawName = $this->argument('name');
+        $isAll = (bool) $this->option('all');
+        $isResponse = (bool) $this->option('response');
+        $isArray = (bool) $this->option('array');
+        $noSuffix = (bool) $this->option('no-suffix');
 
+        if ($isAll) {
+            $base = $this->stripDtoSuffixes(trim($rawName, '/\\'));
+            $resultDto      = $this->createDto($base . 'DTO',         false, false, true);
+            $resultResponse = $this->createDto($base . 'ResponseDTO', false, false, true);
+
+            return ($resultDto === Command::FAILURE || $resultResponse === Command::FAILURE)
+                ? Command::FAILURE
+                : Command::SUCCESS;
+        }
+
+        if ($isResponse && $isArray) {
+            $this->error('A flag -A (--array) serve apenas para dados de entrada e não pode ser usada junto com -r (--response).');
+            return Command::FAILURE;
+        }
+
+        return $this->createDto($rawName, $isResponse, $isArray, $noSuffix);
+    }
+
+    private function stripDtoSuffixes(string $name): string
+    {
+        $lower = strtolower($name);
+
+        foreach (['responsedto', 'dto', 'response'] as $suffix) {
+            if (Str::endsWith($lower, $suffix)) {
+                return substr($name, 0, -strlen($suffix));
+            }
+        }
+
+        return $name;
+    }
+
+    private function createDto(string $name, bool $isResponse, bool $isArray, bool $noSuffix): int
+    {
         $name = trim($name, '/\\');
 
-        // Inteligência de Sufixo: DTO vs ResponseDTO
         if (!$noSuffix) {
             if ($isResponse) {
-                // Remove "DTO" do final se o dev digitou por hábito (ex: UserDTO -> User)
                 if (Str::endsWith(strtolower($name), 'dto')) {
                     $name = substr($name, 0, -3);
                 }
-                
-                // Remove "Response" do final se o dev já digitou (ex: UserResponse -> User)
-                // Isso evita gerar anomalias como UserResponseResponseDTO
                 if (Str::endsWith(strtolower($name), 'response')) {
                     $name = substr($name, 0, -8);
                 }
-                
-                // Aplica o sufixo completo e padronizado
                 $name .= 'ResponseDTO';
             } else {
-                // Adiciona ou padroniza "DTO" simples
                 if (!Str::endsWith(strtolower($name), 'dto')) {
                     $name .= 'DTO';
                 } else {
@@ -64,12 +102,10 @@ class MakeDto extends Command
 
         $directory = app_path('DTOs');
         $namespace = 'App\DTOs';
-
         $cleanName = str_replace('\\', '/', $name);
-        
         $path = $directory . '/' . $cleanName . '.php';
         $className = class_basename($name);
-        
+
         $subNamespace = str_replace('/', '\\', dirname($cleanName));
         if ($subNamespace !== '.') {
             $namespace .= '\\' . $subNamespace;
@@ -84,14 +120,15 @@ class MakeDto extends Command
 
         if ($isResponse) {
             $content = $this->getResponseStub($namespace, $className);
+        } elseif ($isArray) {
+            $content = $this->getArrayStub($namespace, $className);
         } else {
             $content = $this->getRequestStub($namespace, $className);
         }
 
         File::put($path, $content);
-
         $this->info("Classe [{$className}] gerada com sucesso em: {$path}");
-        
+
         return Command::SUCCESS;
     }
 
@@ -108,18 +145,18 @@ class {$className}
         // public readonly string \$exemplo,
     ) {}
 
-    public static function fromRequest(array \$validated): self
+    public static function fromRequest(array \$data): self
     {
         return new self(
-            // exemplo: \$validated['exemplo'] ?? null,
+            // exemplo: \$data['exemplo'] ?? null,
         );
     }
 
     public function toArray(): array
     {
-        return array_filter([
+        return [
             // 'exemplo' => \$this->exemplo,
-        ], fn(\$v) => \$v !== null);
+        ];
     }
 }
 
@@ -159,4 +196,34 @@ class {$className}
 PHP;
     }
 
+    private function getArrayStub(string $namespace, string $className): string
+    {
+        return <<<PHP
+<?php
+
+namespace {$namespace};
+
+class {$className}
+{
+    public function __construct(
+        // public readonly string \$exemplo,
+    ) {}
+
+    public static function fromArray(array \$data): self
+    {
+        return new self(
+            // exemplo: \$data['exemplo'] ?? null,
+        );
+    }
+
+    public function toArray(): array
+    {
+        return [
+            // 'exemplo' => \$this->exemplo,
+        ];
+    }
+}
+
+PHP;
+    }
 }
