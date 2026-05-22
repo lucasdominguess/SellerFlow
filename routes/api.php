@@ -14,14 +14,14 @@ Route::prefix('/v1')->group(function () {
 
     Route::prefix('/user')->group(function () {
         Route::get('/', [UserController::class, 'index']);
-        Route::get('/{id}', [UserController::class, 'show']);
+        Route::get('/{user}', [UserController::class, 'show']);
         Route::post('/', [UserController::class, 'store']);
         Route::put('/{user}', [UserController::class, 'update']);
         Route::delete('/{user}', [UserController::class, 'delete']);
     });
     Route::prefix('/store')->group(function () {
         Route::get('/', [StoreController::class, 'index']);
-        Route::get('/{id}', [StoreController::class, 'show']);
+        Route::get('/{store}', [StoreController::class, 'show']);
         Route::post('/', [StoreController::class, 'store']);
         Route::put('/{store}', [StoreController::class, 'update']);
         Route::delete('/{store}', [StoreController::class, 'delete']);
@@ -43,8 +43,6 @@ Route::prefix('/v1')->group(function () {
 
 Route::prefix('/list')->group(function(){
             route::get('/', [ListSuspendedController::class, 'list']);
-
-
 });
 
 

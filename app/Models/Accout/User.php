@@ -5,6 +5,7 @@ namespace App\Models\Accout;
 use App\Models\ListSuspended\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Model
 {
@@ -13,7 +14,11 @@ class User extends Model
 
     public $table ='users';
     public $fillable = ['name','email','password','status_id'];
-    public $hidden = ['created_at','update_at'];
+    public $hidden = ['created_at', 'updated_at'];
+
+    public $casts = [
+        'password'=> 'hashed',
+    ];
 
     public function stores()
     {

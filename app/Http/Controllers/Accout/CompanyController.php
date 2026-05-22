@@ -8,7 +8,7 @@ use App\DTOs\Accout\CompanyDTO;
 use App\Http\Requests\Accout\CompanyCreateRequest;
 use App\Http\Requests\Accout\CompanyUpdateRequest;
 use App\Http\Requests\Accout\FilterCompanyIndexRequest;
-use App\Models\Accout\Company;
+use App\Models\ListSuspended\Company;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 

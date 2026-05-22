@@ -5,20 +5,33 @@ namespace App\DTOs\Accout;
 class CompanyDTO
 {
     public function __construct(
-        // public readonly string $exemplo,
-    ) {}
+        public ?string $name = null,
+        public ?string $cnpj = null,
+        public ?string $description = null,
+        public ?int $status_id = null,
+    ) {
+    }
 
     public static function fromRequest(array $data): self
     {
         return new self(
-            // exemplo: $data['exemplo'] ?? null,
+            name: $data['name'] ?? null,
+            cnpj: $data['cnpj'] ?? null,
+            description: $data['description'] ?? null,
+            status_id: $data['status_id'] ?? null,
         );
     }
 
     public function toArray(): array
     {
-        return [
-            // 'exemplo' => $this->exemplo,
-        ];
+        return array_filter([
+            'name' => $this->name,
+            'cnpj' => $this->cnpj,
+            'description' => $this->description,
+            'status_id' => $this->status_id,
+        ], function ($value) {
+            return !is_null($value);
+        });
     }
+
 }

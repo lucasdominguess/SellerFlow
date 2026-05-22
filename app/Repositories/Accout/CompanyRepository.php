@@ -3,7 +3,7 @@
 namespace App\Repositories\Accout;
 
 use App\Contracts\Repositories\Accout\CompanyRepositoryInterface;
-use App\Models\Accout\Company;
+use App\Models\ListSuspended\Company;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class CompanyRepository implements CompanyRepositoryInterface

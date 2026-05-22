@@ -6,7 +6,7 @@ use App\Contracts\Repositories\Accout\CompanyRepositoryInterface;
 use App\Contracts\Services\Accout\CompanyServiceInterface;
 use App\DTOs\Accout\CompanyDTO;
 use App\DTOs\Accout\CompanyResponseDTO;
-use App\Models\Accout\Company;
+use App\Models\ListSuspended\Company;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class CompanyService implements CompanyServiceInterface

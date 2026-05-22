@@ -2,7 +2,8 @@
 
 namespace App\Contracts\Repositories\Accout;
 
-use App\Models\Accout\Company;
+
+use App\Models\ListSuspended\Company;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface CompanyRepositoryInterface

@@ -27,9 +27,7 @@ class ListSuspendedRepository implements ListSuspendedRepositoryInterface
         if(!empty($filters['name'])){
             $query->where('name','ilike', '%' . $filters['name'] . '%');
         }
-        if(!empty($filters['status'])){
-            $query->where('status', $filters['status']);
-        }
+
         return $query->orderByDesc('id')->get();
 
     }
@@ -42,8 +40,8 @@ class ListSuspendedRepository implements ListSuspendedRepositoryInterface
         if(!empty($filters['name'])){
             $query->where('name','ilike', '%' . $filters['name'] . '%');
         }
-        if(!empty($filters['status'])){
-            $query->where('status', $filters['status']);
+        if(!empty($filters['status_id'])){
+            $query->where('status_id', $filters['status_id']);
         }
         return $query->orderByDesc('id')->get();
     }
@@ -56,9 +54,7 @@ class ListSuspendedRepository implements ListSuspendedRepositoryInterface
         if(!empty($filters['name'])){
             $query->where('name','ilike', '%' . $filters['name'] . '%');
         }
-        if(!empty($filters['status'])){
-            $query->where('status', $filters['status']);
-        }
+
         return $query->orderByDesc('id')->get();
 
     }
@@ -71,8 +67,8 @@ class ListSuspendedRepository implements ListSuspendedRepositoryInterface
         if(!empty($filters['name'])){
             $query->where('name','ilike', '%' . $filters['name'] . '%');
         }
-        if(!empty($filters['status'])){
-            $query->where('status', $filters['status']);
+        if(!empty($filters['status_id'])){
+            $query->where('status_id', $filters['status_id']);
         }
         return $query->orderByDesc('id')->get();
     }
@@ -85,8 +81,8 @@ class ListSuspendedRepository implements ListSuspendedRepositoryInterface
         if(!empty($filters['name'])){
             $query->where('name','ilike', '%' . $filters['name'] . '%');
         }
-        if(!empty($filters['status'])){
-            $query->where('status', $filters['status']);
+        if(!empty($filters['status_id'])){
+            $query->where('status_id', $filters['status_id']);
         }
         return $query->orderByDesc('id')->get();
     }
@@ -99,8 +95,8 @@ class ListSuspendedRepository implements ListSuspendedRepositoryInterface
         if(!empty($filters['name'])){
             $query->where('name','ilike', '%' . $filters['name'] . '%');
         }
-        if(!empty($filters['status'])){
-            $query->where('status', $filters['status']);
+        if(!empty($filters['status_id'])){
+            $query->where('status_id', $filters['status_id']);
         }
         return $query->orderByDesc('id')->get();
     }

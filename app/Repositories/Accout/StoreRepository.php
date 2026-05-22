@@ -12,9 +12,14 @@ class StoreRepository implements StoreRepositoryInterface
         private Store $storeModel,
     ) {}
 
+    private function withRelations(): array
+    {
+        return ['marketplace', 'company'];
+    }
+
     public function index(int $perPage = 15, int $page = 1, ?array $filters = []): LengthAwarePaginator
     {
-        $query = $this->storeModel->query();
+        $query = $this->storeModel->with($this->withRelations());
 
         if (empty($filters)) return $query->orderByDesc('id')->paginate($perPage);
 
@@ -28,8 +33,7 @@ class StoreRepository implements StoreRepositoryInterface
 
     public function show(Store $store): Store
     {
-        // Route model binding já buscou o registro — adicione $->load('relacao') se precisar
-        return $store;
+        return $store->load($this->withRelations());
     }
 
     public function store(array $data): Store

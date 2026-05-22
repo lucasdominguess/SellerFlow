@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ListSuspended;
 use App\Classes\ApiResponse;
 use App\Contracts\Services\ListSuspended\ListSuspendedServiceInterface;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ListSuspended\FilterListSuspendedRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -17,10 +18,11 @@ class ListSuspendedController extends Controller
 
 
 
-    public function list(Request $request): JsonResponse
+    public function list(FilterListSuspendedRequest $request): JsonResponse
     {
         $params = $request->input('params') ?? null;
         $filters = $request->input('filters', []) ?? null;
+
 
         $data = match ($params) {
             'categoria-financeira' => $this->service->listCategoriaFinanceira($filters),
