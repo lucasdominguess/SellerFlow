@@ -27,6 +27,11 @@ class UserRepository implements UserRepositoryInterface
 
      return $query->orderByDesc('id')->paginate($perPage);
     }
+    public function findByEmail(string $email): ?User
+    {
+        return $this->userModel->where('email', $email)->first();
+    }
+
     public function show(User $user): User
     {
         // Route model binding já buscou o user por ID — apenas carregamos as relações

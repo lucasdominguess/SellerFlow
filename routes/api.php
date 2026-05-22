@@ -4,18 +4,26 @@ use App\Http\Controllers\Accout\CompanyController;
 use App\Http\Controllers\Accout\StoreController;
 use App\Http\Controllers\Accout\UserController;
 use App\Http\Controllers\Accout\UserStoreController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Business\FornecedorController;
+use App\Http\Controllers\Business\ProductController;
 use App\Http\Controllers\ListSuspended\ListSuspendedController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\Business\ProductController;
-use App\Http\Controllers\Business\FornecedorController;
 Route::prefix('/v1')->group(function () {
 
     //List Suspended
     Route::prefix('/list')->group(function () {
         route::get('/', [ListSuspendedController::class, 'list']);
+    });
+
+    //Auth
+    Route::prefix('/auth')->group(function () {
+        Route::post('/login', [AuthController::class, 'login']);
+        Route::post('/register', [AuthController::class, 'register']);
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::post('/refresh', [AuthController::class, 'refreshToken']);
     });
     //Account
     Route::prefix('/user')->group(function () {

@@ -1,5 +1,8 @@
 <?php
 
+use App\Exceptions\Auth\EmailAlreadyInUseException;
+use App\Exceptions\Auth\InvalidCredentialsException;
+use App\Exceptions\Auth\UserInactiveException;
 use App\Exceptions\CustomException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\LazyLoadingViolationException;
@@ -30,6 +33,28 @@ return Application::configure(basePath: dirname(__DIR__))
         // $middleware->append(JwtMiddleware::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
+
+        $exceptions->render(function (InvalidCredentialsException $exception): JsonResponse {
+            Log::warning('Login falhou: ' . $exception->getMessage());
+
+            return response()->json([
+                'message' => $exception->getMessage(),
+            ], 401);
+        });
+
+        $exceptions->render(function (UserInactiveException $exception): JsonResponse {
+            Log::warning('Login bloqueado para usuário inativo: ' . $exception->getMessage());
+
+            return response()->json([
+                'message' => $exception->getMessage(),
+            ], 403);
+        });
+
+        $exceptions->render(function (EmailAlreadyInUseException $exception): JsonResponse {
+            return response()->json([
+                'message' => $exception->getMessage(),
+            ], 422);
+        });
 
         $exceptions->render(function (ValidationException $exception): JsonResponse {
             $errors = $exception->validator->errors()->all();

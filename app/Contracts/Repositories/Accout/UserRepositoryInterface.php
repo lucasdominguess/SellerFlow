@@ -10,6 +10,8 @@ interface UserRepositoryInterface
 
     public function index(int $perPage = 15, int $page = 1, ?array $filters = []): LengthAwarePaginator;
 
+    public function findByEmail(string $email): ?User;
+
     public function show(User $user);
 
     public function store(array $data);

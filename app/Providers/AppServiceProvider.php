@@ -2,43 +2,42 @@
 
 namespace App\Providers;
 
+use App\Contracts\Repositories\Accout\CompanyRepositoryInterface;
+use App\Contracts\Repositories\Accout\StoreRepositoryInterface;
+use App\Contracts\Repositories\Accout\UserRepositoryInterface;
+use App\Contracts\Repositories\Accout\UserStoreRepositoryInterface;
+use App\Contracts\Repositories\Business\FornecedorRepositoryInterface;
+use App\Contracts\Repositories\Business\ProductRepositoryInterface;
+use App\Contracts\Repositories\ListSuspended\ListSuspendedRepositoryInterface;
+use App\Contracts\Services\Accout\CompanyServiceInterface;
+use App\Contracts\Services\Accout\StoreServiceInterface;
+use App\Contracts\Services\Accout\UserServiceInterface;
+use App\Contracts\Services\Accout\UserStoreServiceInterface;
+use App\Contracts\Services\Auth\AuthServiceInterface;
+use App\Contracts\Services\Business\FornecedorServiceInterface;
+use App\Contracts\Services\Business\ProductServiceInterface;
+use App\Contracts\Services\ListSuspended\ListSuspendedServiceInterface;
+use App\Interfaces\PdfExporterInterface;
+use App\Repositories\Accout\CompanyRepository;
+use App\Repositories\Accout\StoreRepository;
+use App\Repositories\Accout\UserRepository;
+use App\Repositories\Accout\UserStoreRepository;
+use App\Repositories\Business\FornecedorRepository;
+use App\Repositories\Business\ProductRepository;
+use App\Repositories\ListSuspended\ListSuspendedRepository;
+use App\Services\Accout\CompanyService;
+use App\Services\Accout\StoreService;
+use App\Services\Accout\UserService;
+use App\Services\Accout\UserStoreService;
+use App\Services\Auth\AuthService;
+use App\Services\Business\FornecedorService;
+use App\Services\Business\ProductService;
 use App\Services\DomPdfService;
-
+use App\Services\ListSuspended\ListSuspendedService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
-
 use Illuminate\Support\ServiceProvider;
-use App\Interfaces\PdfExporterInterface;
 
-
-use App\Contracts\Services\Accout\UserServiceInterface;
-use App\Services\Accout\UserService;
-use App\Contracts\Repositories\Accout\UserRepositoryInterface;
-use App\Repositories\Accout\UserRepository;
-use App\Contracts\Services\Accout\StoreServiceInterface;
-use App\Services\Accout\StoreService;
-use App\Contracts\Repositories\Accout\StoreRepositoryInterface;
-use App\Repositories\Accout\StoreRepository;
-use App\Contracts\Services\Accout\UserStoreServiceInterface;
-use App\Services\Accout\UserStoreService;
-use App\Contracts\Repositories\Accout\UserStoreRepositoryInterface;
-use App\Repositories\Accout\UserStoreRepository;
-use App\Contracts\Services\Accout\CompanyServiceInterface;
-use App\Services\Accout\CompanyService;
-use App\Contracts\Repositories\Accout\CompanyRepositoryInterface;
-use App\Repositories\Accout\CompanyRepository;
-use App\Contracts\Services\ListSuspended\ListSuspendedServiceInterface;
-use App\Services\ListSuspended\ListSuspendedService;
-use App\Contracts\Repositories\ListSuspended\ListSuspendedRepositoryInterface;
-use App\Repositories\ListSuspended\ListSuspendedRepository;
-use App\Contracts\Services\Business\ProductServiceInterface;
-use App\Services\Business\ProductService;
-use App\Contracts\Repositories\Business\ProductRepositoryInterface;
-use App\Repositories\Business\ProductRepository;
-use App\Contracts\Services\Business\FornecedorServiceInterface;
-use App\Services\Business\FornecedorService;
-use App\Contracts\Repositories\Business\FornecedorRepositoryInterface;
-use App\Repositories\Business\FornecedorRepository;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -107,6 +106,7 @@ class AppServiceProvider extends ServiceProvider
             FornecedorRepositoryInterface::class,
             FornecedorRepository::class
         );
+        $this->app->bind( AuthServiceInterface::class, AuthService::class);
     }
 
     /**

@@ -7,7 +7,6 @@ use App\Contracts\Services\ListSuspended\ListSuspendedServiceInterface;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ListSuspended\FilterListSuspendedRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class ListSuspendedController extends Controller
 {
@@ -15,8 +14,6 @@ class ListSuspendedController extends Controller
         private ListSuspendedServiceInterface $service,
     ) {
     }
-
-
 
     public function list(FilterListSuspendedRequest $request): JsonResponse
     {
