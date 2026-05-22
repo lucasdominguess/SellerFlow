@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Controllers\Accout\CompanyController;
 use App\Http\Controllers\Accout\StoreController;
 use App\Http\Controllers\Accout\UserController;
+use App\Http\Controllers\Accout\UserStoreController;
+use App\Http\Controllers\ListSuspended\ListSuspendedController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Accout\UserStoreController;
-use App\Http\Controllers\Accout\CompanyController;
 
 Route::prefix('/v1')->group(function () {
 
@@ -38,6 +39,12 @@ Route::prefix('/v1')->group(function () {
         Route::post('/', [CompanyController::class, 'store']);
         Route::put('/{company}', [CompanyController::class, 'update']);
         Route::delete('/{company}', [CompanyController::class, 'delete']);
+});
+
+Route::prefix('/list')->group(function(){
+            route::get('/', [ListSuspendedController::class, 'list']);
+
+
 });
 
 

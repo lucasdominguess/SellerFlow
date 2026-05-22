@@ -27,6 +27,10 @@ use App\Contracts\Services\Accout\CompanyServiceInterface;
 use App\Services\Accout\CompanyService;
 use App\Contracts\Repositories\Accout\CompanyRepositoryInterface;
 use App\Repositories\Accout\CompanyRepository;
+use App\Contracts\Services\ListSuspended\ListSuspendedServiceInterface;
+use App\Services\ListSuspended\ListSuspendedService;
+use App\Contracts\Repositories\ListSuspended\ListSuspendedRepositoryInterface;
+use App\Repositories\ListSuspended\ListSuspendedRepository;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -70,6 +74,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             CompanyRepositoryInterface::class,
             CompanyRepository::class
+        );
+        $this->app->bind(
+            ListSuspendedServiceInterface::class,
+            ListSuspendedService::class
+        );
+        $this->app->bind(
+            ListSuspendedRepositoryInterface::class,
+            ListSuspendedRepository::class
         );
     }
 
