@@ -9,9 +9,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Business\ProductController;
+use App\Http\Controllers\Business\FornecedorController;
 Route::prefix('/v1')->group(function () {
 
-
+    //List Suspended
+    Route::prefix('/list')->group(function () {
+        route::get('/', [ListSuspendedController::class, 'list']);
+    });
+    //Account
     Route::prefix('/user')->group(function () {
         Route::get('/', [UserController::class, 'index']);
         Route::get('/{user}', [UserController::class, 'show']);
@@ -39,28 +45,23 @@ Route::prefix('/v1')->group(function () {
         Route::post('/', [CompanyController::class, 'store']);
         Route::put('/{company}', [CompanyController::class, 'update']);
         Route::delete('/{company}', [CompanyController::class, 'delete']);
-});
+    });
 
-Route::prefix('/list')->group(function(){
-            route::get('/', [ListSuspendedController::class, 'list']);
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    //Business
+    Route::prefix('/product')->group(function () {
+        Route::get('/', [ProductController::class, 'index']);
+        Route::get('/{product}', [ProductController::class, 'show']);
+        Route::post('/', [ProductController::class, 'store']);
+        Route::put('/{product}', [ProductController::class, 'update']);
+        Route::delete('/{product}', [ProductController::class, 'delete']);
+    });
+    Route::prefix('/fornecedor')->group(function () {
+        Route::get('/', [FornecedorController::class, 'index']);
+        Route::get('/{fornecedor}', [FornecedorController::class, 'show']);
+        Route::post('/', [FornecedorController::class, 'store']);
+        Route::put('/{fornecedor}', [FornecedorController::class, 'update']);
+        Route::delete('/{fornecedor}', [FornecedorController::class, 'delete']);
+    });
 
 
 
@@ -73,4 +74,5 @@ Route::prefix('/list')->group(function(){
 
 
 Route::fallback(fn() => response(["message" => 'Página não encontrada'], 404));
+
 

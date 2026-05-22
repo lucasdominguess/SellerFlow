@@ -31,6 +31,14 @@ use App\Contracts\Services\ListSuspended\ListSuspendedServiceInterface;
 use App\Services\ListSuspended\ListSuspendedService;
 use App\Contracts\Repositories\ListSuspended\ListSuspendedRepositoryInterface;
 use App\Repositories\ListSuspended\ListSuspendedRepository;
+use App\Contracts\Services\Business\ProductServiceInterface;
+use App\Services\Business\ProductService;
+use App\Contracts\Repositories\Business\ProductRepositoryInterface;
+use App\Repositories\Business\ProductRepository;
+use App\Contracts\Services\Business\FornecedorServiceInterface;
+use App\Services\Business\FornecedorService;
+use App\Contracts\Repositories\Business\FornecedorRepositoryInterface;
+use App\Repositories\Business\FornecedorRepository;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -82,6 +90,22 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             ListSuspendedRepositoryInterface::class,
             ListSuspendedRepository::class
+        );
+        $this->app->bind(
+            ProductServiceInterface::class,
+            ProductService::class
+        );
+        $this->app->bind(
+            ProductRepositoryInterface::class,
+            ProductRepository::class
+        );
+        $this->app->bind(
+            FornecedorServiceInterface::class,
+            FornecedorService::class
+        );
+        $this->app->bind(
+            FornecedorRepositoryInterface::class,
+            FornecedorRepository::class
         );
     }
 

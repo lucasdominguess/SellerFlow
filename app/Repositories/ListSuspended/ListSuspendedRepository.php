@@ -3,6 +3,8 @@
 namespace App\Repositories\ListSuspended;
 
 use App\Contracts\Repositories\ListSuspended\ListSuspendedRepositoryInterface;
+use App\Models\Business\Fornecedor;
+use App\Models\Business\Product;
 use App\Models\ListSuspended\CategoriaFinanceira;
 use App\Models\ListSuspended\Company;
 use App\Models\ListSuspended\FormaPagamento;
@@ -15,8 +17,8 @@ class ListSuspendedRepository implements ListSuspendedRepositoryInterface
         private FormaPagamento $formaPagamentoModel,
         private MarketPlace $marketplaceModel,
         private Company $companyModel,
-        // private Fornecedor $fornecedorModel,
-        // private Produto $produtoModel,
+        private Fornecedor $fornecedorModel,
+        private Product $produtoModel,
     ) {}
     public function listCategoriaFinanceira(array $filters = [])
     {
