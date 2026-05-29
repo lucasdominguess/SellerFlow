@@ -2,6 +2,7 @@
 
 namespace App\Models\Sales;
 
+use App\Classes\AuthContext;
 use App\Models\Accout\Store;
 use App\Models\Accout\User;
 use App\Models\Financial\ContaReceber;
@@ -45,6 +46,15 @@ class Venda extends Model
         'valor_frete'            => 'decimal:2',
         'valor_liquido'          => 'decimal:2',
     ];
+
+    // tenant scoping no route model binding: só resolve vendas da empresa do
+    // usuário logado. Se o id pertencer a outra empresa, devolve 404 (fail-closed).
+    // public function resolveRouteBinding($value, $field = null)
+    // {
+    //     return $this->where($field ?? $this->getRouteKeyName(), $value)
+    //         ->where('company_id', AuthContext::companyId())
+    //         ->firstOrFail();
+    // }
 
     public function company()
     {

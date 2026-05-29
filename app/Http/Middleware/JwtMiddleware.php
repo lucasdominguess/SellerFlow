@@ -23,6 +23,9 @@ class JwtMiddleware
         try {
 
             $request->header('Authorization');
+
+            $token = JWTAuth::getToken();
+            Log::info('Token recebido: ' . $token ? $token : 'Nenhum token encontrado');
             JWTAuth::parseToken()->authenticate();
             // Log::info('Token atual: ' . $token);
 

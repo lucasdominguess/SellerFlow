@@ -30,13 +30,30 @@ class User extends Authenticatable implements JWTSubject
 
     public function getJWTCustomClaims(): array
     {
-        $companyUser = $this->companyUsers()->with('company', 'role')->first();
+        $companyUser = $this->companyUsers()->with('company', 'role')->get()->map(fn ($companyUser) => [
+            'company_id'   => $companyUser->company_id,
+            'company_name' => $companyUser->company?->name,
+            'status_id'   => $companyUser->status_id,
+            'role_id'      => $companyUser->role_id,
+            'role_name'    => $companyUser->role?->name,
+        ]);
+
+        $stores = $this->stores()->get()->map(fn ($store) => [
+            'store_id'   => $store->id,
+            'store_name' => $store->name,
+            'role_id'    => $store->pivot->role_id,
+            'status_id'  => $store->pivot->status_id,
+        ]);
 
         return [
-            'company_id'   => $companyUser?->company_id,
-            'company_name' => $companyUser?->company?->name,
-            'role_id'      => $companyUser?->role_id,
-            'role_name'    => $companyUser?->role?->name,
+            'user' => [
+                'id'    => $this->id,
+                'name'  => $this->name,
+                'email' => $this->email,
+                'status_id' => $this->status_id,
+            ],
+            'company' => $companyUser,
+            'stores' => $stores,
         ];
     }
 

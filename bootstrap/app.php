@@ -75,6 +75,18 @@ return Application::configure(basePath: dirname(__DIR__))
                 'error' => $exception->getMessage(),
             ], 404);
         });
+        // Model não encontrado via route model binding (ex: /vendas/{venda}).
+        // O binding lança ModelNotFoundException puro, antes do Laravel convertê-lo em 404,
+        // então precisa ser tratado diretamente — senão cai no catch-all como erro 500.
+        $exceptions->render(function (ModelNotFoundException $exception): JsonResponse {
+            Log::warning($exception->getMessage());
+
+            return response()->json([
+                'message' => 'Registro para o id especificado não foi encontrado',
+                'error' => $exception->getMessage(),
+            ], 404);
+        });
+
         // Verifica se o erro 404 foi causado por um Model não encontrado e lança a execeção
         $exceptions->render(function (NotFoundHttpException $exception, Request $request) {
             // Verifica se o erro 404 foi causado por um Model não encontrado

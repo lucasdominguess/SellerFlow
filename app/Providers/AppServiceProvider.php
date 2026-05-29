@@ -38,6 +38,22 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
+use App\Contracts\Services\Sales\VendasServiceInterface;
+use App\Services\Sales\VendasService;
+use App\Contracts\Repositories\Sales\VendasRepositoryInterface;
+use App\Repositories\Sales\VendasRepository;
+use App\Contracts\Services\Sales\VendaItemServiceInterface;
+use App\Services\Sales\VendaItemService;
+use App\Contracts\Repositories\Sales\VendaItemRepositoryInterface;
+use App\Repositories\Sales\VendaItemRepository;
+use App\Contracts\Services\Purchases\ComprasServiceInterface;
+use App\Services\Purchases\ComprasService;
+use App\Contracts\Repositories\Purchases\ComprasRepositoryInterface;
+use App\Repositories\Purchases\ComprasRepository;
+use App\Contracts\Services\Purchases\CompraServiceInterface;
+use App\Services\Purchases\CompraService;
+use App\Contracts\Repositories\Purchases\CompraRepositoryInterface;
+use App\Repositories\Purchases\CompraRepository;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -107,6 +123,38 @@ class AppServiceProvider extends ServiceProvider
             FornecedorRepository::class
         );
         $this->app->bind( AuthServiceInterface::class, AuthService::class);
+        $this->app->bind(
+            VendasServiceInterface::class,
+            VendasService::class
+        );
+        $this->app->bind(
+            VendasRepositoryInterface::class,
+            VendasRepository::class
+        );
+        $this->app->bind(
+            VendaItemServiceInterface::class,
+            VendaItemService::class
+        );
+        $this->app->bind(
+            VendaItemRepositoryInterface::class,
+            VendaItemRepository::class
+        );
+        $this->app->bind(
+            ComprasServiceInterface::class,
+            ComprasService::class
+        );
+        $this->app->bind(
+            ComprasRepositoryInterface::class,
+            ComprasRepository::class
+        );
+        $this->app->bind(
+            CompraServiceInterface::class,
+            CompraService::class
+        );
+        $this->app->bind(
+            CompraRepositoryInterface::class,
+            CompraRepository::class
+        );
     }
 
     /**
