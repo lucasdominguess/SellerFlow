@@ -18,7 +18,7 @@ class MakeCrud extends Command
 
     protected $help = <<<HELP
 Cria 10 arquivos + registra binds:
-  - Controller (index/show/store/update/delete com route model binding e ApiResponse)
+  - Controller (index/show/store/update/destroy com route model binding e ApiResponse)
   - Service (orquestra lógica, retorna ResponseDTO; index transforma o paginator)
   - Repository (paginate + show via route model binding)
   - ServiceInterface + RepositoryInterface
@@ -37,14 +37,8 @@ Exemplos:
   php artisan make:crud Order --no-bind               # não registra binds
   php artisan make:crud Order --no-routes             # não registra rotas
 
-Grupo de rotas gerado em routes/api.php:
-  Route::prefix('/user')->group(function () {
-      Route::get('/',          [UserController::class, 'index']);
-      Route::get('/{user}',    [UserController::class, 'show']);
-      Route::post('/',         [UserController::class, 'store']);
-      Route::put('/{user}',    [UserController::class, 'update']);
-      Route::delete('/{user}', [UserController::class, 'delete']);
-  });
+Rota gerada em routes/api.php:
+  Route::apiResource('user', UserController::class);
 
 Aceita correções automáticas:
   user            -> User
@@ -376,13 +370,7 @@ HELP;
 
         $routeBlock = implode("\n", [
             '',
-            "Route::prefix('/{$prefix}')->group(function () {",
-            "    Route::get('/', [{$controllerClass}::class, 'index']);",
-            "    Route::get('/{{$modelVar}}', [{$controllerClass}::class, 'show']);",
-            "    Route::post('/', [{$controllerClass}::class, 'store']);",
-            "    Route::put('/{{$modelVar}}', [{$controllerClass}::class, 'update']);",
-            "    Route::delete('/{{$modelVar}}', [{$controllerClass}::class, 'delete']);",
-            '});',
+            "Route::apiResource('{$prefix}', {$controllerClass}::class);",
             '',
         ]);
 
@@ -423,7 +411,7 @@ HELP;
         $modelFqcn = $c['modelFqcn'];
 
         $uses = $this->buildUseBlock([
-            'App\\Classes\\ApiResponse',
+            'App\\Helpers\\ApiResponse',
             $c['serviceContractNs'] . '\\' . $name . 'ServiceInterface',
             $c['dtoNs'] . '\\' . $name . 'DTO',
             $c['requestNs'] . '\\Filter' . $name . 'IndexRequest',
@@ -452,7 +440,7 @@ class {$name}Controller extends Controller
         \$data = \$request->validated();
         \$paginator = \$this->service->index(\$data['perPage'], \$data['page'], \$data['filters']);
 
-        return ApiResponse::paginated(\$paginator, null, '{$name}s recuperados com sucesso');
+        return ApiResponse::paginated(\$paginator, '{$name}s recuperados com sucesso');
     }
 
     public function show({$model} \${$modelVar}): JsonResponse
@@ -478,7 +466,7 @@ class {$name}Controller extends Controller
         return ApiResponse::success(\${$modelVar}Response, '{$name} atualizado com sucesso');
     }
 
-    public function delete({$model} \${$modelVar}): JsonResponse
+    public function destroy({$model} \${$modelVar}): JsonResponse
     {
         \$this->service->delete(\${$modelVar});
 
@@ -741,7 +729,7 @@ PHP;
 
 namespace {$ns};
 {$uses}
-class {$name}ResponseDTO
+class {$name}ResponseDTO implements \JsonSerializable
 {
     public function __construct(
         // public readonly int \$id,
@@ -754,6 +742,11 @@ class {$name}ResponseDTO
             // id: \$model->id,
             // name: \$model->name,
         );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return \$this->toArray();
     }
 
     public function toArray(): array

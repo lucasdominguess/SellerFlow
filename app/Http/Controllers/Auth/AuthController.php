@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\Classes\ApiResponse;
 use App\Contracts\Services\Auth\AuthServiceInterface;
 use App\DTOs\Auth\LoginDTO;
+use App\DTOs\AUth\RegisterDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -34,9 +36,11 @@ class AuthController extends Controller
             ->cookie($cookie);
         ;
     }
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        // Lógica de registro aqui
+        $response = $this->authService->register(RegisterDTO::fromRequest($request->validated()));
+
+        return ApiResponse::success($response->toArray(), 'Usuário registrado com sucesso');
     }
     public function logout()
     {

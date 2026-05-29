@@ -2,6 +2,8 @@
 
 namespace App\DTOs\Accout;
 
+use App\Enums\Status;
+
 class UserDTO
 {
     public function __construct(
@@ -17,7 +19,7 @@ class UserDTO
             name: $data['name'] ?? null,
             email: $data['email'] ?? null,
             password: $data['password'] ?? null,
-            status_id: $data['status_id'] ?? null,
+            status_id: $data['status_id'] ?? Status::PENDING->value,
         );
     }
 

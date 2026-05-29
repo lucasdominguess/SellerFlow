@@ -2,6 +2,7 @@
 
 namespace App\Models\Accout;
 
+use App\Models\Accout\CompanyUser;
 use App\Models\ListSuspended\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -29,12 +30,22 @@ class User extends Authenticatable implements JWTSubject
 
     public function getJWTCustomClaims(): array
     {
+        $companyUser = $this->companyUsers()->with('company', 'role')->first();
+
         return [
-            
+            'company_id'   => $companyUser?->company_id,
+            'company_name' => $companyUser?->company?->name,
+            'role_id'      => $companyUser?->role_id,
+            'role_name'    => $companyUser?->role?->name,
         ];
     }
 
     // --- Relações ---
+
+    public function companyUsers()
+    {
+        return $this->hasMany(CompanyUser::class, 'user_id');
+    }
 
     public function stores()
     {

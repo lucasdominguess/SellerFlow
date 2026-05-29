@@ -2,6 +2,8 @@
 
 namespace App\DTOs\Accout;
 
+use App\Enums\Status;
+
 class CompanyDTO
 {
     public function __construct(
@@ -18,7 +20,7 @@ class CompanyDTO
             name: $data['name'] ?? null,
             cnpj: $data['cnpj'] ?? null,
             description: $data['description'] ?? null,
-            status_id: $data['status_id'] ?? null,
+            status_id: $data['status_id'] ?? Status::PENDING->value,
         );
     }
 

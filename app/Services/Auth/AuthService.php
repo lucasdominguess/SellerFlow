@@ -6,52 +6,46 @@ use App\Contracts\Repositories\Accout\UserRepositoryInterface;
 use App\Contracts\Services\Auth\AuthServiceInterface;
 use App\DTOs\Auth\LoginDTO;
 use App\DTOs\Auth\LoginResponseDTO;
+use App\DTOs\Auth\RegisterResponseDTO;
 use App\DTOs\AUth\RegisterDTO;
 use App\Enums\Status;
-use App\Exceptions\Auth\EmailAlreadyInUseException;
 use App\Exceptions\Auth\InvalidCredentialsException;
 use App\Exceptions\Auth\UserInactiveException;
 
 class AuthService implements AuthServiceInterface
 {
     public function __construct(private readonly UserRepositoryInterface $userRepository)
-    {}
+    {
+    }
 
     public function login(LoginDTO $loginDTO): LoginResponseDTO
     {
         $token = auth('api')->attempt([
-            'email'    => $loginDTO->email,
+            'email' => $loginDTO->email,
             'password' => $loginDTO->password,
+
         ]);
 
-                   if (!$token) {
+        if (!$token) {
             throw new InvalidCredentialsException();
         }
 
         $user = auth('api')->user();
 
-        if ($user->status_id !== Status::ACTIVE->value) {
 
+        if ($user->status_id !== Status::ACTIVE->value) {
             throw new UserInactiveException();
         }
+
 
         return LoginResponseDTO::fromToken($token, $user);
     }
 
-    public function register(RegisterDTO $registerDTO): LoginResponseDTO
+    public function register(RegisterDTO $registerDTO): RegisterResponseDTO
     {
-        if ($this->userRepository->findByEmail($registerDTO->email)) {
-            throw new EmailAlreadyInUseException();
-        }
+        $user = $this->userRepository->store($registerDTO->user->toArray(), $registerDTO->company->toArray());
 
-        $user = $this->userRepository->store([
-          $registerDTO->toArray(),
-            'status_id' => Status::PENDING->value,
-        ]);
-
-        $token = auth('api')->login($user);
-
-        return LoginResponseDTO::fromToken($token, $user);
+        return RegisterResponseDTO::fromModel($user);
     }
 
     public function logout(): void

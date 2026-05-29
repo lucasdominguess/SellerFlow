@@ -49,7 +49,7 @@ class UserStoreController extends Controller
         return ApiResponse::success($userStoreResponse, 'UserStore atualizado com sucesso');
     }
 
-    public function delete(UserStore $userStore): JsonResponse
+    public function destroy(UserStore $userStore): JsonResponse
     {
         $this->service->delete($userStore);
 

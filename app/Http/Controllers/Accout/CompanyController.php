@@ -49,7 +49,7 @@ class CompanyController extends Controller
         return ApiResponse::success($companyResponse, 'Company atualizado com sucesso');
     }
 
-    public function delete(Company $company): JsonResponse
+    public function destroy(Company $company): JsonResponse
     {
         $this->service->delete($company);
 

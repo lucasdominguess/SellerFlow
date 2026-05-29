@@ -48,7 +48,7 @@ class UserController extends Controller
         return ApiResponse::success($userResponse, 'Usuario atualizado com sucesso');
     }
 
-    public function delete(User $user): JsonResponse
+    public function destroy(User $user): JsonResponse
     {
         $this->service->delete($user);
         return ApiResponse::success(null,'Usuario deletado com sucesso');

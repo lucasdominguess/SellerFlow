@@ -49,7 +49,7 @@ class ProductController extends Controller
         return ApiResponse::success($productResponse, 'Product atualizado com sucesso');
     }
 
-    public function delete(Product $product): JsonResponse
+    public function destroy(Product $product): JsonResponse
     {
         $this->service->delete($product);
 

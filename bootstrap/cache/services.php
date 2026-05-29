@@ -35,8 +35,9 @@
     31 => 'Carbon\\Laravel\\ServiceProvider',
     32 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     33 => 'Termwind\\Laravel\\TermwindServiceProvider',
-    34 => 'Tymon\\JWTAuth\\Providers\\LaravelServiceProvider',
-    35 => 'App\\Providers\\AppServiceProvider',
+    34 => 'Pest\\Laravel\\PestServiceProvider',
+    35 => 'Tymon\\JWTAuth\\Providers\\LaravelServiceProvider',
+    36 => 'App\\Providers\\AppServiceProvider',
   ),
   'eager' => 
   array (
@@ -58,8 +59,9 @@
     15 => 'Carbon\\Laravel\\ServiceProvider',
     16 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     17 => 'Termwind\\Laravel\\TermwindServiceProvider',
-    18 => 'Tymon\\JWTAuth\\Providers\\LaravelServiceProvider',
-    19 => 'App\\Providers\\AppServiceProvider',
+    18 => 'Pest\\Laravel\\PestServiceProvider',
+    19 => 'Tymon\\JWTAuth\\Providers\\LaravelServiceProvider',
+    20 => 'App\\Providers\\AppServiceProvider',
   ),
   'deferred' => 
   array (

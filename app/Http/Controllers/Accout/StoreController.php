@@ -49,7 +49,7 @@ class StoreController extends Controller
         return ApiResponse::success($storeResponse, 'Store atualizado com sucesso');
     }
 
-    public function delete(Store $store): JsonResponse
+    public function destroy(Store $store): JsonResponse
     {
         $this->service->delete($store);
 

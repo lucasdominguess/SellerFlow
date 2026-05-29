@@ -49,7 +49,7 @@ class FornecedorController extends Controller
         return ApiResponse::success($fornecedorResponse, 'Fornecedor atualizado com sucesso');
     }
 
-    public function delete(Fornecedor $fornecedor): JsonResponse
+    public function destroy(Fornecedor $fornecedor): JsonResponse
     {
         $this->service->delete($fornecedor);
 

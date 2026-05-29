@@ -14,10 +14,12 @@ interface UserRepositoryInterface
 
     public function show(User $user);
 
-    public function store(array $data);
+    public function store(array $dataUser, ?array $dataCompany = null): User;
 
     public function update(User $user, array $data);
 
     public function delete(User $user);
+
+    public function getDataUser(User $user): User;
 
 }
