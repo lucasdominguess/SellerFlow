@@ -18,4 +18,6 @@ interface CompraServiceInterface
     public function update(Compra $compra, CompraDTO $dto): CompraResponseDTO;
 
     public function delete(Compra $compra);
+
+
 }

@@ -23,7 +23,7 @@ class ProductController extends Controller
         $data = $request->validated();
         $paginator = $this->service->index($data['perPage'], $data['page'], $data['filters']);
 
-        return ApiResponse::paginated($paginator, null, 'Products recuperados com sucesso');
+        return ApiResponse::paginated($paginator, message: 'Products recuperados com sucesso');
     }
 
     public function show(Product $product): JsonResponse

@@ -23,7 +23,7 @@ class CompraController extends Controller
         $data = $request->validated();
         $paginator = $this->service->index($data['perPage'], $data['page'], $data['filters']);
 
-        return ApiResponse::paginated($paginator, 'Compras recuperados com sucesso');
+        return ApiResponse::paginated($paginator, message: 'Compras recuperados com sucesso');
     }
 
     public function show(Compra $compra): JsonResponse

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Sales;
 
+use App\Classes\AuthContext;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -16,6 +17,10 @@ class VendasCreateRequest extends FormRequest
     {
         // store_id, user_id e company_id NÃO entram aqui: vêm do JWT (AuthContext) no DTO.
         return [
+            'company_id' => ['required', 'integer', 'exists:companies,id'],
+            'store_id' => ['required', 'integer', 'exists:stores,id'],
+            'user_id' => ['required', 'integer', 'exists:users,id'],
+
             'market_place_id' => ['required', 'integer', 'exists:market_places,id'],
             'numero_pedido' => [
                 'required',
@@ -35,6 +40,8 @@ class VendasCreateRequest extends FormRequest
             'venda_itens.*.product_id' => ['required', 'integer', 'exists:products,id'],
             'venda_itens.*.quantidade' => ['required', 'integer', 'min:1'],
             'venda_itens.*.valor_unitario' => ['required', 'numeric', 'min:0', 'decimal:0,2'],
+
+
 
         ];
     }
@@ -90,5 +97,13 @@ class VendasCreateRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         //
+    }
+        public function validationData(): array
+    {
+        return array_merge(parent::validationData(), [
+            'user_id' => AuthContext::userId(),
+            'company_id' => AuthContext::companyIds()->first(),
+            'store_id' => AuthContext::storeIds()->first(),
+        ]);
     }
 }

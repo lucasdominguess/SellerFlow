@@ -4,8 +4,10 @@ namespace App\Services\Purchases;
 
 use App\Contracts\Repositories\Purchases\CompraRepositoryInterface;
 use App\Contracts\Services\Purchases\CompraServiceInterface;
+use App\Contracts\Services\Stock\StockServiceInterface;
 use App\DTOs\Purchases\CompraDTO;
 use App\DTOs\Purchases\CompraResponseDTO;
+use App\Enums\OriginType;
 use App\Models\Purchases\Compra;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +16,9 @@ class CompraService implements CompraServiceInterface
 {
     public function __construct(
         private CompraRepositoryInterface $repository,
-    ) {}
+        private StockServiceInterface $stockService,
+    ) {
+    }
 
     public function index(int $perPage = 15, int $page = 1, ?array $filters = []): LengthAwarePaginator
     {
@@ -38,14 +42,17 @@ class CompraService implements CompraServiceInterface
     {
         $compra = DB::transaction(function () use ($dto) {
             $data = $dto->toArray();
-            // valor_total é recalculado dos itens para garantir consistência com o que foi salvo
+
             $data['valor_total'] = $this->calcularValorTotal($dto->itens);
 
             $compra = $this->repository->store($data);
 
-            // storeItens cria os itens, calcula valor_total por item e retorna compra com relação carregada
-            return $this->repository->storeItens($compra, $dto->itens);
+            $this->repository->storeItens($compra, $dto->itens);
+
+            $this->stockService->proccessItensPurchase($dto, $dto->itens);
+            return $compra;
         });
+
 
         return CompraResponseDTO::fromModel($compra);
     }

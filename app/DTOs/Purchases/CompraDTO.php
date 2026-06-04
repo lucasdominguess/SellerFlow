@@ -26,9 +26,9 @@ class CompraDTO
     public static function fromCreateRequest(array $data): self
     {
         return new self(
-            company_id:        AuthContext::companyIds()->first(),
-            store_id:          AuthContext::storeIds()->first(),
-            user_id:           AuthContext::userId(),
+            company_id:       $data['company_id'],
+            store_id:          $data['store_id'],
+            user_id:           $data['user_id'],
             fornecedor_id:     (int) $data['fornecedor_id'],
             forma_pagamento_id: (int) $data['forma_pagamento_id'],
             status_id:         (int) $data['status_id'],

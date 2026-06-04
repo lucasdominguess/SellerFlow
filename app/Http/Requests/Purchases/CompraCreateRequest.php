@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Purchases;
 
+use App\Classes\AuthContext;
+use App\Enums\OriginType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CompraCreateRequest extends FormRequest
@@ -14,10 +16,10 @@ class CompraCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // 'company_id' => 'required|integer|exists:companies,id',
-            // 'store_id' => 'required|integer|exists:stores,id',
+            'company_id' => 'required|integer|exists:companies,id',
+            'store_id' => 'required|integer|exists:stores,id',
             'fornecedor_id' => 'required|integer|exists:fornecedores,id',
-            // 'user_id' => 'required|integer|exists:users,id',
+            'user_id' => 'required|integer|exists:users,id',
             'forma_pagamento_id' => 'required|integer|exists:forma_pagamentos,id',
             'status_id' => 'required|integer|exists:status,id',
             'numero_nota' => 'nullable|string|max:255',
@@ -79,4 +81,13 @@ class CompraCreateRequest extends FormRequest
             'itens.*.valor_unitario' => 'valor unitário',
         ];
     }
+    public function validationData(): array
+    {
+        return array_merge(parent::validationData(), [
+            'user_id' => AuthContext::userId(),
+            'company_id' => AuthContext::companyIds()->first(),
+            'store_id' => AuthContext::storeIds()->first(),
+        ]);
+    }
+
 }

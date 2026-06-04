@@ -54,6 +54,10 @@ use App\Contracts\Services\Purchases\CompraServiceInterface;
 use App\Services\Purchases\CompraService;
 use App\Contracts\Repositories\Purchases\CompraRepositoryInterface;
 use App\Repositories\Purchases\CompraRepository;
+use App\Contracts\Services\Stock\StockServiceInterface;
+use App\Services\Stock\StockService;
+use App\Contracts\Repositories\Stock\StockRepositoryInterface;
+use App\Repositories\Stock\StockRepository;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -154,6 +158,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             CompraRepositoryInterface::class,
             CompraRepository::class
+        );
+        $this->app->bind(
+            StockServiceInterface::class,
+            StockService::class
+        );
+        $this->app->bind(
+            StockRepositoryInterface::class,
+            StockRepository::class
         );
     }
 

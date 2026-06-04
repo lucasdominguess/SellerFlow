@@ -23,7 +23,7 @@ class CompanyController extends Controller
         $data = $request->validated();
         $paginator = $this->service->index($data['perPage'], $data['page'], $data['filters']);
 
-        return ApiResponse::paginated($paginator, null, 'Companys recuperados com sucesso');
+        return ApiResponse::paginated($paginator, message: 'Companys recuperados com sucesso');
     }
 
     public function show(Company $company): JsonResponse

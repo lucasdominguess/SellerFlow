@@ -23,7 +23,7 @@ class StoreController extends Controller
         $data = $request->validated();
         $paginator = $this->service->index($data['perPage'], $data['page'], $data['filters']);
 
-        return ApiResponse::paginated($paginator, null, 'Stores recuperados com sucesso');
+        return ApiResponse::paginated($paginator, message: 'Stores recuperados com sucesso');
     }
 
     public function show(Store $store): JsonResponse

@@ -4,6 +4,7 @@ namespace App\Services\Sales;
 
 use App\Contracts\Repositories\Sales\VendasRepositoryInterface;
 use App\Contracts\Services\Sales\VendasServiceInterface;
+use App\Contracts\Services\Stock\StockServiceInterface;
 use App\DTOs\Sales\VendasDTO;
 use App\DTOs\Sales\VendasResponseDTO;
 use App\Models\Sales\Venda;
@@ -14,6 +15,7 @@ class VendasService implements VendasServiceInterface
 {
     public function __construct(
         private VendasRepositoryInterface $repository,
+        private StockServiceInterface $stockService,
     ) {
     }
 
@@ -48,8 +50,11 @@ class VendasService implements VendasServiceInterface
 
             $venda = $this->repository->store($data);
 
-            // storeItens cria os itens, calcula valor_total e retorna a venda com relação carregada
-            return $this->repository->storeItens($venda, $dto->venda_itens);
+
+          $this->repository->storeItens($venda, $dto->venda_itens);
+          $this->stockService->proccessItensSale($dto, $dto->venda_itens);
+
+            return $venda;
         });
 
         return VendasResponseDTO::fromModel($venda);

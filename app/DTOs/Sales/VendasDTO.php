@@ -30,9 +30,9 @@ class VendasDTO
     public static function fromCreateRequest(array $data): self
     {
         return new self(
-            company_id:      AuthContext::companyIds()->first(),
-            store_id:        AuthContext::storeIds()->first(),
-            user_id:         AuthContext::userId(),
+            company_id:      $data['company_id'],
+            store_id:        $data['store_id'],
+            user_id:         $data['user_id'],
             market_place_id: $data['market_place_id'] ?? null,
             numero_pedido:   $data['numero_pedido'] ?? null,
             data_venda:      $data['data_venda'] ?? null,

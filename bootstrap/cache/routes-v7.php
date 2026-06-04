@@ -93,7 +93,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::SqUO3ar0GSEsf6GT',
+            '_route' => 'generated::6j0Qg3FJCUrqlEbo',
           ),
           1 => NULL,
           2 => 
@@ -113,7 +113,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::N8LoYIaupnOuZ3XX',
+            '_route' => 'generated::791GL9kXq4CHOeWE',
           ),
           1 => NULL,
           2 => 
@@ -132,7 +132,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::uTgg9ihu4oxQdv0c',
+            '_route' => 'generated::cys0YQOssXnFFhbl',
           ),
           1 => NULL,
           2 => 
@@ -151,7 +151,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::kuNXjOTGDFTjp5ar',
+            '_route' => 'generated::yuKOPKDcpg4RQsEa',
           ),
           1 => NULL,
           2 => 
@@ -170,7 +170,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::K2r2qqF8fg3K4MOb',
+            '_route' => 'generated::FO2iQkRvy9a96rAq',
           ),
           1 => NULL,
           2 => 
@@ -399,62 +399,6 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      '/api/v1/vendas' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'vendas.index',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'GET' => 0,
-            'HEAD' => 1,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-        1 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'vendas.store',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'POST' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      '/api/v1/test' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'generated::a8m3WQbtrZAuRNXC',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'GET' => 0,
-            'HEAD' => 1,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
       '/api/v1/compra' => 
       array (
         0 => 
@@ -491,13 +435,105 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
+      '/api/v1/vendas' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'vendas.index',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+        1 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'vendas.store',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/v1/stock' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'stock.index',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+        1 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'stock.store',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/v1/test' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'generated::3yiOHT9VyrxddOCX',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
       '/up' => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'generated::oZ0gJHQjKwZ8RWDo',
+            '_route' => 'generated::xV2I8vFWFAqP9Z6r',
           ),
           1 => NULL,
           2 => 
@@ -517,7 +553,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::BUVJx0rLMl5YBAZT',
+            '_route' => 'generated::X9YLew4zWwz3hIzf',
           ),
           1 => NULL,
           2 => 
@@ -554,7 +590,7 @@ app('router')->setCompiledRoutes(
     ),
     2 => 
     array (
-      0 => '{^(?|/docs/asset/([^/]++)(*:27)|/api/(?|v1/(?|user(?|/([^/]++)(?|(*:67))|\\-store/([^/]++)(?|(*:94)))|store/([^/]++)(?|(*:120))|comp(?|any/([^/]++)(?|(*:151))|ra/([^/]++)(?|(*:174)))|product/([^/]++)(?|(*:203))|fornecedor/([^/]++)(?|(*:234))|vendas/([^/]++)(?|(*:261)))|(.*)(*:275))|/storage/(.*)(?|(*:300)))/?$}sDu',
+      0 => '{^(?|/docs/asset/([^/]++)(*:27)|/api/(?|v1/(?|user(?|/([^/]++)(?|(*:67))|\\-store/([^/]++)(?|(*:94)))|sto(?|re/([^/]++)(?|(*:123))|ck/([^/]++)(?|(*:146)))|comp(?|any/([^/]++)(?|(*:178))|ra/([^/]++)(?|(*:201)))|product/([^/]++)(?|(*:230))|fornecedor/([^/]++)(?|(*:261))|vendas/([^/]++)(?|(*:288)))|(.*)(*:302))|/storage/(.*)(?|(*:327)))/?$}sDu',
     ),
     3 => 
     array (
@@ -705,7 +741,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      120 => 
+      123 => 
       array (
         0 => 
         array (
@@ -767,7 +803,69 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      151 => 
+      146 => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'stock.show',
+          ),
+          1 => 
+          array (
+            0 => 'stock',
+          ),
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => true,
+          6 => NULL,
+        ),
+        1 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'stock.update',
+          ),
+          1 => 
+          array (
+            0 => 'stock',
+          ),
+          2 => 
+          array (
+            'PUT' => 0,
+            'PATCH' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => true,
+          6 => NULL,
+        ),
+        2 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'stock.destroy',
+          ),
+          1 => 
+          array (
+            0 => 'stock',
+          ),
+          2 => 
+          array (
+            'DELETE' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => true,
+          6 => NULL,
+        ),
+      ),
+      178 => 
       array (
         0 => 
         array (
@@ -829,7 +927,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      174 => 
+      201 => 
       array (
         0 => 
         array (
@@ -891,7 +989,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      203 => 
+      230 => 
       array (
         0 => 
         array (
@@ -953,7 +1051,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      234 => 
+      261 => 
       array (
         0 => 
         array (
@@ -1015,7 +1113,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      261 => 
+      288 => 
       array (
         0 => 
         array (
@@ -1077,13 +1175,13 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      275 => 
+      302 => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'generated::9A0Eb6MO1cCfdxUd',
+            '_route' => 'generated::okKuuviSlCLC4sOq',
           ),
           1 => 
           array (
@@ -1100,7 +1198,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      300 => 
+      327 => 
       array (
         0 => 
         array (
@@ -1346,7 +1444,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::SqUO3ar0GSEsf6GT' => 
+    'generated::6j0Qg3FJCUrqlEbo' => 
     array (
       'methods' => 
       array (
@@ -1367,7 +1465,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::SqUO3ar0GSEsf6GT',
+        'as' => 'generated::6j0Qg3FJCUrqlEbo',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1384,7 +1482,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::N8LoYIaupnOuZ3XX' => 
+    'generated::791GL9kXq4CHOeWE' => 
     array (
       'methods' => 
       array (
@@ -1404,7 +1502,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::N8LoYIaupnOuZ3XX',
+        'as' => 'generated::791GL9kXq4CHOeWE',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1421,7 +1519,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::uTgg9ihu4oxQdv0c' => 
+    'generated::cys0YQOssXnFFhbl' => 
     array (
       'methods' => 
       array (
@@ -1441,7 +1539,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::uTgg9ihu4oxQdv0c',
+        'as' => 'generated::cys0YQOssXnFFhbl',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1458,7 +1556,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::kuNXjOTGDFTjp5ar' => 
+    'generated::yuKOPKDcpg4RQsEa' => 
     array (
       'methods' => 
       array (
@@ -1478,7 +1576,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::kuNXjOTGDFTjp5ar',
+        'as' => 'generated::yuKOPKDcpg4RQsEa',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1495,7 +1593,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::K2r2qqF8fg3K4MOb' => 
+    'generated::FO2iQkRvy9a96rAq' => 
     array (
       'methods' => 
       array (
@@ -1515,7 +1613,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::K2r2qqF8fg3K4MOb',
+        'as' => 'generated::FO2iQkRvy9a96rAq',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2690,6 +2788,199 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
+    'compra.index' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/v1/compra',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'App\\Http\\Middleware\\JwtMiddleware',
+        ),
+        'as' => 'compra.index',
+        'uses' => 'App\\Http\\Controllers\\Purchases\\CompraController@index',
+        'controller' => 'App\\Http\\Controllers\\Purchases\\CompraController@index',
+        'namespace' => NULL,
+        'prefix' => 'api/v1/',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+        'id' => '[0-9]+',
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'compra.store' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/v1/compra',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'App\\Http\\Middleware\\JwtMiddleware',
+        ),
+        'as' => 'compra.store',
+        'uses' => 'App\\Http\\Controllers\\Purchases\\CompraController@store',
+        'controller' => 'App\\Http\\Controllers\\Purchases\\CompraController@store',
+        'namespace' => NULL,
+        'prefix' => 'api/v1/',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+        'id' => '[0-9]+',
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'compra.show' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/v1/compra/{compra}',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'App\\Http\\Middleware\\JwtMiddleware',
+        ),
+        'as' => 'compra.show',
+        'uses' => 'App\\Http\\Controllers\\Purchases\\CompraController@show',
+        'controller' => 'App\\Http\\Controllers\\Purchases\\CompraController@show',
+        'namespace' => NULL,
+        'prefix' => 'api/v1/',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+        'id' => '[0-9]+',
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'compra.update' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'PUT',
+        1 => 'PATCH',
+      ),
+      'uri' => 'api/v1/compra/{compra}',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'App\\Http\\Middleware\\JwtMiddleware',
+        ),
+        'as' => 'compra.update',
+        'uses' => 'App\\Http\\Controllers\\Purchases\\CompraController@update',
+        'controller' => 'App\\Http\\Controllers\\Purchases\\CompraController@update',
+        'namespace' => NULL,
+        'prefix' => 'api/v1/',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+        'id' => '[0-9]+',
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'compra.destroy' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'DELETE',
+      ),
+      'uri' => 'api/v1/compra/{compra}',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'App\\Http\\Middleware\\JwtMiddleware',
+        ),
+        'as' => 'compra.destroy',
+        'uses' => 'App\\Http\\Controllers\\Purchases\\CompraController@destroy',
+        'controller' => 'App\\Http\\Controllers\\Purchases\\CompraController@destroy',
+        'namespace' => NULL,
+        'prefix' => 'api/v1/',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+        'id' => '[0-9]+',
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
     'vendas.index' => 
     array (
       'methods' => 
@@ -2709,7 +3000,7 @@ app('router')->setCompiledRoutes(
         'uses' => 'App\\Http\\Controllers\\Sales\\VendasController@index',
         'controller' => 'App\\Http\\Controllers\\Sales\\VendasController@index',
         'namespace' => NULL,
-        'prefix' => 'api/v1',
+        'prefix' => 'api/v1/',
         'where' => 
         array (
         ),
@@ -2747,7 +3038,7 @@ app('router')->setCompiledRoutes(
         'uses' => 'App\\Http\\Controllers\\Sales\\VendasController@store',
         'controller' => 'App\\Http\\Controllers\\Sales\\VendasController@store',
         'namespace' => NULL,
-        'prefix' => 'api/v1',
+        'prefix' => 'api/v1/',
         'where' => 
         array (
         ),
@@ -2786,7 +3077,7 @@ app('router')->setCompiledRoutes(
         'uses' => 'App\\Http\\Controllers\\Sales\\VendasController@show',
         'controller' => 'App\\Http\\Controllers\\Sales\\VendasController@show',
         'namespace' => NULL,
-        'prefix' => 'api/v1',
+        'prefix' => 'api/v1/',
         'where' => 
         array (
         ),
@@ -2825,7 +3116,7 @@ app('router')->setCompiledRoutes(
         'uses' => 'App\\Http\\Controllers\\Sales\\VendasController@update',
         'controller' => 'App\\Http\\Controllers\\Sales\\VendasController@update',
         'namespace' => NULL,
-        'prefix' => 'api/v1',
+        'prefix' => 'api/v1/',
         'where' => 
         array (
         ),
@@ -2863,7 +3154,7 @@ app('router')->setCompiledRoutes(
         'uses' => 'App\\Http\\Controllers\\Sales\\VendasController@destroy',
         'controller' => 'App\\Http\\Controllers\\Sales\\VendasController@destroy',
         'namespace' => NULL,
-        'prefix' => 'api/v1',
+        'prefix' => 'api/v1/',
         'where' => 
         array (
         ),
@@ -2883,7 +3174,200 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::a8m3WQbtrZAuRNXC' => 
+    'stock.index' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/v1/stock',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'App\\Http\\Middleware\\JwtMiddleware',
+        ),
+        'as' => 'stock.index',
+        'uses' => 'App\\Http\\Controllers\\Stock\\StockController@index',
+        'controller' => 'App\\Http\\Controllers\\Stock\\StockController@index',
+        'namespace' => NULL,
+        'prefix' => 'api/v1/',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+        'id' => '[0-9]+',
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'stock.store' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/v1/stock',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'App\\Http\\Middleware\\JwtMiddleware',
+        ),
+        'as' => 'stock.store',
+        'uses' => 'App\\Http\\Controllers\\Stock\\StockController@store',
+        'controller' => 'App\\Http\\Controllers\\Stock\\StockController@store',
+        'namespace' => NULL,
+        'prefix' => 'api/v1/',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+        'id' => '[0-9]+',
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'stock.show' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/v1/stock/{stock}',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'App\\Http\\Middleware\\JwtMiddleware',
+        ),
+        'as' => 'stock.show',
+        'uses' => 'App\\Http\\Controllers\\Stock\\StockController@show',
+        'controller' => 'App\\Http\\Controllers\\Stock\\StockController@show',
+        'namespace' => NULL,
+        'prefix' => 'api/v1/',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+        'id' => '[0-9]+',
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'stock.update' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'PUT',
+        1 => 'PATCH',
+      ),
+      'uri' => 'api/v1/stock/{stock}',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'App\\Http\\Middleware\\JwtMiddleware',
+        ),
+        'as' => 'stock.update',
+        'uses' => 'App\\Http\\Controllers\\Stock\\StockController@update',
+        'controller' => 'App\\Http\\Controllers\\Stock\\StockController@update',
+        'namespace' => NULL,
+        'prefix' => 'api/v1/',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+        'id' => '[0-9]+',
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'stock.destroy' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'DELETE',
+      ),
+      'uri' => 'api/v1/stock/{stock}',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'App\\Http\\Middleware\\JwtMiddleware',
+        ),
+        'as' => 'stock.destroy',
+        'uses' => 'App\\Http\\Controllers\\Stock\\StockController@destroy',
+        'controller' => 'App\\Http\\Controllers\\Stock\\StockController@destroy',
+        'namespace' => NULL,
+        'prefix' => 'api/v1/',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+        'id' => '[0-9]+',
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'generated::3yiOHT9VyrxddOCX' => 
     array (
       'methods' => 
       array (
@@ -2905,7 +3389,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::a8m3WQbtrZAuRNXC',
+        'as' => 'generated::3yiOHT9VyrxddOCX',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2922,195 +3406,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'compra.index' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'GET',
-        1 => 'HEAD',
-      ),
-      'uri' => 'api/v1/compra',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-        ),
-        'as' => 'compra.index',
-        'uses' => 'App\\Http\\Controllers\\Purchases\\CompraController@index',
-        'controller' => 'App\\Http\\Controllers\\Purchases\\CompraController@index',
-        'namespace' => NULL,
-        'prefix' => 'api/v1',
-        'where' => 
-        array (
-        ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-        'id' => '[0-9]+',
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'compra.store' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'api/v1/compra',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-        ),
-        'as' => 'compra.store',
-        'uses' => 'App\\Http\\Controllers\\Purchases\\CompraController@store',
-        'controller' => 'App\\Http\\Controllers\\Purchases\\CompraController@store',
-        'namespace' => NULL,
-        'prefix' => 'api/v1',
-        'where' => 
-        array (
-        ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-        'id' => '[0-9]+',
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'compra.show' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'GET',
-        1 => 'HEAD',
-      ),
-      'uri' => 'api/v1/compra/{compra}',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-        ),
-        'as' => 'compra.show',
-        'uses' => 'App\\Http\\Controllers\\Purchases\\CompraController@show',
-        'controller' => 'App\\Http\\Controllers\\Purchases\\CompraController@show',
-        'namespace' => NULL,
-        'prefix' => 'api/v1',
-        'where' => 
-        array (
-        ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-        'id' => '[0-9]+',
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'compra.update' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'PUT',
-        1 => 'PATCH',
-      ),
-      'uri' => 'api/v1/compra/{compra}',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-        ),
-        'as' => 'compra.update',
-        'uses' => 'App\\Http\\Controllers\\Purchases\\CompraController@update',
-        'controller' => 'App\\Http\\Controllers\\Purchases\\CompraController@update',
-        'namespace' => NULL,
-        'prefix' => 'api/v1',
-        'where' => 
-        array (
-        ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-        'id' => '[0-9]+',
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'compra.destroy' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'DELETE',
-      ),
-      'uri' => 'api/v1/compra/{compra}',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'api',
-        ),
-        'as' => 'compra.destroy',
-        'uses' => 'App\\Http\\Controllers\\Purchases\\CompraController@destroy',
-        'controller' => 'App\\Http\\Controllers\\Purchases\\CompraController@destroy',
-        'namespace' => NULL,
-        'prefix' => 'api/v1',
-        'where' => 
-        array (
-        ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-        'id' => '[0-9]+',
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'generated::9A0Eb6MO1cCfdxUd' => 
+    'generated::okKuuviSlCLC4sOq' => 
     array (
       'methods' => 
       array (
@@ -3124,13 +3420,13 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
         ),
-        'uses' => 'O:55:"Laravel\\SerializableClosure\\UnsignedSerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:64:"fn() => \\response(["message" => \'Página não encontrada\'], 404)";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000000009eb0000000000000000";}}',
+        'uses' => 'O:55:"Laravel\\SerializableClosure\\UnsignedSerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:64:"fn() => \\response(["message" => \'Página não encontrada\'], 404)";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000000009f60000000000000000";}}',
         'namespace' => NULL,
         'prefix' => 'api',
         'where' => 
         array (
         ),
-        'as' => 'generated::9A0Eb6MO1cCfdxUd',
+        'as' => 'generated::okKuuviSlCLC4sOq',
       ),
       'fallback' => true,
       'defaults' => 
@@ -3148,7 +3444,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::oZ0gJHQjKwZ8RWDo' => 
+    'generated::xV2I8vFWFAqP9Z6r' => 
     array (
       'methods' => 
       array (
@@ -3176,8 +3472,8 @@ app('router')->setCompiledRoutes(
                     return response(\\Illuminate\\Support\\Facades\\View::file(\'C:\\\\Users\\\\lukas\\\\git_projetos\\\\Php\\\\Laravel\\\\SellerFlow\\\\vendor\\\\laravel\\\\framework\\\\src\\\\Illuminate\\\\Foundation\\\\Configuration\'.\'/../resources/health-up.blade.php\', [
                         \'exception\' => $exception,
                     ]), status: $exception ? 500 : 200);
-                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"00000000000009ef0000000000000000";}}',
-        'as' => 'generated::oZ0gJHQjKwZ8RWDo',
+                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"00000000000009fa0000000000000000";}}',
+        'as' => 'generated::xV2I8vFWFAqP9Z6r',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3194,7 +3490,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::BUVJx0rLMl5YBAZT' => 
+    'generated::X9YLew4zWwz3hIzf' => 
     array (
       'methods' => 
       array (
@@ -3210,13 +3506,13 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'O:55:"Laravel\\SerializableClosure\\UnsignedSerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:44:"function () {
     return \\view(\'welcome\');
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"0000000000000a1c0000000000000000";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000000009fe0000000000000000";}}',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'generated::BUVJx0rLMl5YBAZT',
+        'as' => 'generated::X9YLew4zWwz3hIzf',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3249,7 +3545,7 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'O:55:"Laravel\\SerializableClosure\\UnsignedSerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:47:"function () {
     return \\view(\'auth.login\');
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"0000000000000a1e0000000000000000";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"0000000000000a1f0000000000000000";}}',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
@@ -3288,7 +3584,7 @@ app('router')->setCompiledRoutes(
                         $config,
                         $isProduction
                     ))($request, $path);
-                }";s:5:"scope";s:47:"Illuminate\\Filesystem\\FilesystemServiceProvider";s:4:"this";N;s:4:"self";s:32:"0000000000000a200000000000000000";}}',
+                }";s:5:"scope";s:47:"Illuminate\\Filesystem\\FilesystemServiceProvider";s:4:"this";N;s:4:"self";s:32:"0000000000000a300000000000000000";}}',
         'as' => 'storage.local',
       ),
       'fallback' => false,
@@ -3322,7 +3618,7 @@ app('router')->setCompiledRoutes(
                         $config,
                         $isProduction
                     ))($request, $path);
-                }";s:5:"scope";s:47:"Illuminate\\Filesystem\\FilesystemServiceProvider";s:4:"this";N;s:4:"self";s:32:"0000000000000a220000000000000000";}}',
+                }";s:5:"scope";s:47:"Illuminate\\Filesystem\\FilesystemServiceProvider";s:4:"this";N;s:4:"self";s:32:"0000000000000a320000000000000000";}}',
         'as' => 'storage.local.upload',
       ),
       'fallback' => false,

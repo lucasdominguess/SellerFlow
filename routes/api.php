@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Sales\VendaItemController;
 use App\Http\Controllers\Purchases\ComprasController;
 use App\Http\Controllers\Purchases\CompraController;
+use App\Http\Controllers\Stock\StockController;
 Route::prefix('/v1')->group(function () {
 
     //List Suspended
@@ -41,19 +42,23 @@ Route::prefix('/v1')->group(function () {
     Route::apiResource('product', ProductController::class);
     Route::apiResource('fornecedor', FornecedorController::class);
 
+    //Purchases
+    Route::apiResource('/compra', CompraController::class);
     //Sales
-    Route::apiResource('vendas', VendasController::class);
+    Route::apiResource('/vendas', VendasController::class);
+    //Stock
+    Route::apiResource('/stock', StockController::class);
+
 
     Route::get('/test', [TestController::class, 'test']);
     });// end middleware jwt
 
 
     // Route::get('/test', function (Request $request) {
-    //     // Log::channel('telegram')->critical('log telegram Base api test');
-    //     // return Log::info('teste de log');
+        //     // Log::channel('telegram')->critical('log telegram Base api test');
+        //     // return Log::info('teste de log');
+        // });
 
-    // });
-    Route::apiResource('/compra', CompraController::class);
 
 }); // end v1
 

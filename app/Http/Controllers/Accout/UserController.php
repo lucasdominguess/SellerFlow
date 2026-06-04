@@ -24,7 +24,7 @@ class UserController extends Controller
         $data = $request->validated();
         $users = $this->service->index($data['perPage'], $data['page'], $data['filters']);
 
-        return ApiResponse::paginated($users, null, 'Usuarios recuperados com sucesso');
+        return ApiResponse::paginated($users, message: 'Usuarios recuperados com sucesso');
     }
 
     public function show(User $user): JsonResponse
