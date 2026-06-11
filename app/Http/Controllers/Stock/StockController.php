@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Stock;
 use App\Classes\ApiResponse;
 use App\Contracts\Services\Stock\StockServiceInterface;
 use App\DTOs\Stock\StockDTO;
+use App\Http\Requests\Stock\CheckStockQuantityRequest;
 use App\Http\Requests\Stock\FilterStockIndexRequest;
 use App\Http\Requests\Stock\StockCreateRequest;
 use App\Http\Requests\Stock\StockUpdateRequest;
@@ -54,5 +55,18 @@ class StockController extends Controller
         $this->service->delete($stock);
 
         return ApiResponse::success(null, 'Stock deletado com sucesso');
+    }
+    public function checkQuantityProductsInStock(CheckStockQuantityRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+
+        $result = $this->service->checkQuantityProductsInStock(
+            companyId: $data['company_id'],
+            productId: $data['product_id'] ?? null,
+            productName: $data['product_name'] ?? null,
+            sku: $data['sku'] ?? null,
+        );
+
+        return ApiResponse::success($result, 'Quantidade de produtos em estoque recuperada com sucesso');
     }
 }

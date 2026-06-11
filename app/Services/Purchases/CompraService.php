@@ -49,7 +49,7 @@ class CompraService implements CompraServiceInterface
 
             $this->repository->storeItens($compra, $dto->itens);
 
-            $this->stockService->proccessItensPurchase($dto, $dto->itens);
+            $this->stockService->proccessItensPurchase($compra, $dto->itens);
             return $compra;
         });
 

@@ -93,7 +93,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::6j0Qg3FJCUrqlEbo',
+            '_route' => 'generated::QqvlrLYpdWdaGCn8',
           ),
           1 => NULL,
           2 => 
@@ -113,7 +113,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::791GL9kXq4CHOeWE',
+            '_route' => 'generated::hHMhM1Lb1PcWA1Pf',
           ),
           1 => NULL,
           2 => 
@@ -132,7 +132,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::cys0YQOssXnFFhbl',
+            '_route' => 'generated::sCyNxckftwZ3qh3G',
           ),
           1 => NULL,
           2 => 
@@ -151,7 +151,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::yuKOPKDcpg4RQsEa',
+            '_route' => 'generated::5pHrMhui8PAISuKx',
           ),
           1 => NULL,
           2 => 
@@ -170,7 +170,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::FO2iQkRvy9a96rAq',
+            '_route' => 'generated::ZsPhpod3PT5mmHuG',
           ),
           1 => NULL,
           2 => 
@@ -471,6 +471,62 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
+      '/api/v1/stock-adjustment' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'stock-adjustment.index',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+        1 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'stock-adjustment.store',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/v1/stock-check-quantity' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'generated::eBzv1nXhBfbf4Jqa',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
       '/api/v1/stock' => 
       array (
         0 => 
@@ -513,7 +569,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::3yiOHT9VyrxddOCX',
+            '_route' => 'generated::Nt6o9dahquoRO4jD',
           ),
           1 => NULL,
           2 => 
@@ -533,7 +589,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::xV2I8vFWFAqP9Z6r',
+            '_route' => 'generated::Cec1Dkd28Cyrp15q',
           ),
           1 => NULL,
           2 => 
@@ -553,7 +609,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::X9YLew4zWwz3hIzf',
+            '_route' => 'generated::GX5din1ghahXZ0ig',
           ),
           1 => NULL,
           2 => 
@@ -590,7 +646,7 @@ app('router')->setCompiledRoutes(
     ),
     2 => 
     array (
-      0 => '{^(?|/docs/asset/([^/]++)(*:27)|/api/(?|v1/(?|user(?|/([^/]++)(?|(*:67))|\\-store/([^/]++)(?|(*:94)))|sto(?|re/([^/]++)(?|(*:123))|ck/([^/]++)(?|(*:146)))|comp(?|any/([^/]++)(?|(*:178))|ra/([^/]++)(?|(*:201)))|product/([^/]++)(?|(*:230))|fornecedor/([^/]++)(?|(*:261))|vendas/([^/]++)(?|(*:288)))|(.*)(*:302))|/storage/(.*)(?|(*:327)))/?$}sDu',
+      0 => '{^(?|/docs/asset/([^/]++)(*:27)|/api/(?|v1/(?|user(?|/([^/]++)(?|(*:67))|\\-store/([^/]++)(?|(*:94)))|sto(?|re/([^/]++)(?|(*:123))|ck(?|\\-adjustment/([^/]++)(*:158)|/([^/]++)(?|(*:178))))|comp(?|any/([^/]++)(?|(*:211))|ra/([^/]++)(?|(*:234)))|product/([^/]++)(?|(*:263))|fornecedor/([^/]++)(?|(*:294))|vendas/([^/]++)(?|(*:321)))|(.*)(*:335))|/storage/(.*)(?|(*:360)))/?$}sDu',
     ),
     3 => 
     array (
@@ -803,7 +859,30 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      146 => 
+      158 => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'stock-adjustment.show',
+          ),
+          1 => 
+          array (
+            0 => 'stock_adjustment',
+          ),
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => true,
+          6 => NULL,
+        ),
+      ),
+      178 => 
       array (
         0 => 
         array (
@@ -865,7 +944,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      178 => 
+      211 => 
       array (
         0 => 
         array (
@@ -927,7 +1006,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      201 => 
+      234 => 
       array (
         0 => 
         array (
@@ -989,7 +1068,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      230 => 
+      263 => 
       array (
         0 => 
         array (
@@ -1051,7 +1130,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      261 => 
+      294 => 
       array (
         0 => 
         array (
@@ -1113,7 +1192,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      288 => 
+      321 => 
       array (
         0 => 
         array (
@@ -1175,13 +1254,13 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      302 => 
+      335 => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'generated::okKuuviSlCLC4sOq',
+            '_route' => 'generated::hmTSN8oEYMYbuwLU',
           ),
           1 => 
           array (
@@ -1198,7 +1277,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      327 => 
+      360 => 
       array (
         0 => 
         array (
@@ -1444,7 +1523,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::6j0Qg3FJCUrqlEbo' => 
+    'generated::QqvlrLYpdWdaGCn8' => 
     array (
       'methods' => 
       array (
@@ -1465,7 +1544,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::6j0Qg3FJCUrqlEbo',
+        'as' => 'generated::QqvlrLYpdWdaGCn8',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1482,7 +1561,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::791GL9kXq4CHOeWE' => 
+    'generated::hHMhM1Lb1PcWA1Pf' => 
     array (
       'methods' => 
       array (
@@ -1502,7 +1581,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::791GL9kXq4CHOeWE',
+        'as' => 'generated::hHMhM1Lb1PcWA1Pf',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1519,7 +1598,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::cys0YQOssXnFFhbl' => 
+    'generated::sCyNxckftwZ3qh3G' => 
     array (
       'methods' => 
       array (
@@ -1539,7 +1618,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::cys0YQOssXnFFhbl',
+        'as' => 'generated::sCyNxckftwZ3qh3G',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1556,7 +1635,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::yuKOPKDcpg4RQsEa' => 
+    'generated::5pHrMhui8PAISuKx' => 
     array (
       'methods' => 
       array (
@@ -1576,7 +1655,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::yuKOPKDcpg4RQsEa',
+        'as' => 'generated::5pHrMhui8PAISuKx',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1593,7 +1672,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::FO2iQkRvy9a96rAq' => 
+    'generated::ZsPhpod3PT5mmHuG' => 
     array (
       'methods' => 
       array (
@@ -1613,7 +1692,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::FO2iQkRvy9a96rAq',
+        'as' => 'generated::ZsPhpod3PT5mmHuG',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3174,6 +3253,161 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
+    'stock-adjustment.index' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/v1/stock-adjustment',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'App\\Http\\Middleware\\JwtMiddleware',
+        ),
+        'as' => 'stock-adjustment.index',
+        'uses' => 'App\\Http\\Controllers\\Adjustment\\StockAdjustmentController@index',
+        'controller' => 'App\\Http\\Controllers\\Adjustment\\StockAdjustmentController@index',
+        'namespace' => NULL,
+        'prefix' => 'api/v1/',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+        'id' => '[0-9]+',
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'stock-adjustment.store' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/v1/stock-adjustment',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'App\\Http\\Middleware\\JwtMiddleware',
+        ),
+        'as' => 'stock-adjustment.store',
+        'uses' => 'App\\Http\\Controllers\\Adjustment\\StockAdjustmentController@store',
+        'controller' => 'App\\Http\\Controllers\\Adjustment\\StockAdjustmentController@store',
+        'namespace' => NULL,
+        'prefix' => 'api/v1/',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+        'id' => '[0-9]+',
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'stock-adjustment.show' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/v1/stock-adjustment/{stock_adjustment}',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'App\\Http\\Middleware\\JwtMiddleware',
+        ),
+        'as' => 'stock-adjustment.show',
+        'uses' => 'App\\Http\\Controllers\\Adjustment\\StockAdjustmentController@show',
+        'controller' => 'App\\Http\\Controllers\\Adjustment\\StockAdjustmentController@show',
+        'namespace' => NULL,
+        'prefix' => 'api/v1/',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+        'id' => '[0-9]+',
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'generated::eBzv1nXhBfbf4Jqa' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/v1/stock-check-quantity',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'App\\Http\\Middleware\\JwtMiddleware',
+        ),
+        'uses' => 'App\\Http\\Controllers\\Stock\\StockController@checkQuantityProductsInStock',
+        'controller' => 'App\\Http\\Controllers\\Stock\\StockController@checkQuantityProductsInStock',
+        'namespace' => NULL,
+        'prefix' => 'api/v1',
+        'where' => 
+        array (
+        ),
+        'as' => 'generated::eBzv1nXhBfbf4Jqa',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+        'id' => '[0-9]+',
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
     'stock.index' => 
     array (
       'methods' => 
@@ -3367,7 +3601,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::3yiOHT9VyrxddOCX' => 
+    'generated::Nt6o9dahquoRO4jD' => 
     array (
       'methods' => 
       array (
@@ -3389,7 +3623,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::3yiOHT9VyrxddOCX',
+        'as' => 'generated::Nt6o9dahquoRO4jD',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3406,7 +3640,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::okKuuviSlCLC4sOq' => 
+    'generated::hmTSN8oEYMYbuwLU' => 
     array (
       'methods' => 
       array (
@@ -3420,13 +3654,13 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'api',
         ),
-        'uses' => 'O:55:"Laravel\\SerializableClosure\\UnsignedSerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:64:"fn() => \\response(["message" => \'Página não encontrada\'], 404)";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000000009f60000000000000000";}}',
+        'uses' => 'O:55:"Laravel\\SerializableClosure\\UnsignedSerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:64:"fn() => \\response(["message" => \'Página não encontrada\'], 404)";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000000009f40000000000000000";}}',
         'namespace' => NULL,
         'prefix' => 'api',
         'where' => 
         array (
         ),
-        'as' => 'generated::okKuuviSlCLC4sOq',
+        'as' => 'generated::hmTSN8oEYMYbuwLU',
       ),
       'fallback' => true,
       'defaults' => 
@@ -3444,7 +3678,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::xV2I8vFWFAqP9Z6r' => 
+    'generated::Cec1Dkd28Cyrp15q' => 
     array (
       'methods' => 
       array (
@@ -3472,8 +3706,8 @@ app('router')->setCompiledRoutes(
                     return response(\\Illuminate\\Support\\Facades\\View::file(\'C:\\\\Users\\\\lukas\\\\git_projetos\\\\Php\\\\Laravel\\\\SellerFlow\\\\vendor\\\\laravel\\\\framework\\\\src\\\\Illuminate\\\\Foundation\\\\Configuration\'.\'/../resources/health-up.blade.php\', [
                         \'exception\' => $exception,
                     ]), status: $exception ? 500 : 200);
-                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"00000000000009fa0000000000000000";}}',
-        'as' => 'generated::xV2I8vFWFAqP9Z6r',
+                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"00000000000009f80000000000000000";}}',
+        'as' => 'generated::Cec1Dkd28Cyrp15q',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3490,7 +3724,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::X9YLew4zWwz3hIzf' => 
+    'generated::GX5din1ghahXZ0ig' => 
     array (
       'methods' => 
       array (
@@ -3506,13 +3740,13 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'O:55:"Laravel\\SerializableClosure\\UnsignedSerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:44:"function () {
     return \\view(\'welcome\');
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000000009fe0000000000000000";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"0000000000000a1c0000000000000000";}}',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'generated::X9YLew4zWwz3hIzf',
+        'as' => 'generated::GX5din1ghahXZ0ig',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3545,7 +3779,7 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'O:55:"Laravel\\SerializableClosure\\UnsignedSerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:47:"function () {
     return \\view(\'auth.login\');
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"0000000000000a1f0000000000000000";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"0000000000000a1e0000000000000000";}}',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
@@ -3584,7 +3818,7 @@ app('router')->setCompiledRoutes(
                         $config,
                         $isProduction
                     ))($request, $path);
-                }";s:5:"scope";s:47:"Illuminate\\Filesystem\\FilesystemServiceProvider";s:4:"this";N;s:4:"self";s:32:"0000000000000a300000000000000000";}}',
+                }";s:5:"scope";s:47:"Illuminate\\Filesystem\\FilesystemServiceProvider";s:4:"this";N;s:4:"self";s:32:"0000000000000a320000000000000000";}}',
         'as' => 'storage.local',
       ),
       'fallback' => false,
@@ -3618,7 +3852,7 @@ app('router')->setCompiledRoutes(
                         $config,
                         $isProduction
                     ))($request, $path);
-                }";s:5:"scope";s:47:"Illuminate\\Filesystem\\FilesystemServiceProvider";s:4:"this";N;s:4:"self";s:32:"0000000000000a320000000000000000";}}',
+                }";s:5:"scope";s:47:"Illuminate\\Filesystem\\FilesystemServiceProvider";s:4:"this";N;s:4:"self";s:32:"0000000000000a340000000000000000";}}',
         'as' => 'storage.local.upload',
       ),
       'fallback' => false,

@@ -58,6 +58,10 @@ use App\Contracts\Services\Stock\StockServiceInterface;
 use App\Services\Stock\StockService;
 use App\Contracts\Repositories\Stock\StockRepositoryInterface;
 use App\Repositories\Stock\StockRepository;
+use App\Contracts\Services\Adjustment\StockAdjustmentServiceInterface;
+use App\Services\Adjustment\StockAdjustmentService;
+use App\Contracts\Repositories\Adjustment\StockAdjustmentRepositoryInterface;
+use App\Repositories\Adjustment\StockAdjustmentRepository;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -136,22 +140,6 @@ class AppServiceProvider extends ServiceProvider
             VendasRepository::class
         );
         $this->app->bind(
-            VendaItemServiceInterface::class,
-            VendaItemService::class
-        );
-        $this->app->bind(
-            VendaItemRepositoryInterface::class,
-            VendaItemRepository::class
-        );
-        $this->app->bind(
-            ComprasServiceInterface::class,
-            ComprasService::class
-        );
-        $this->app->bind(
-            ComprasRepositoryInterface::class,
-            ComprasRepository::class
-        );
-        $this->app->bind(
             CompraServiceInterface::class,
             CompraService::class
         );
@@ -166,6 +154,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             StockRepositoryInterface::class,
             StockRepository::class
+        );
+        $this->app->bind(
+            StockAdjustmentServiceInterface::class,
+            StockAdjustmentService::class
+        );
+        $this->app->bind(
+            StockAdjustmentRepositoryInterface::class,
+            StockAdjustmentRepository::class
         );
     }
 

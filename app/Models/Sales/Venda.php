@@ -9,7 +9,7 @@ use App\Models\Financial\ContaReceber;
 use App\Models\ListSuspended\Company;
 use App\Models\ListSuspended\MarketPlace;
 use App\Models\ListSuspended\Status;
-use App\Models\Stock\MovimentacaoEstoque;
+use App\Models\Stock\Stock;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -93,7 +93,7 @@ class Venda extends Model
 
     public function movimentacoes()
     {
-        return $this->hasMany(MovimentacaoEstoque::class, 'origem_id')
+        return $this->hasMany(Stock::class, 'origem_id')
             ->where('origem_tipo', 'venda');
     }
 }

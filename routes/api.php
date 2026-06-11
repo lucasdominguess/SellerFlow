@@ -17,6 +17,7 @@ use App\Http\Controllers\Sales\VendaItemController;
 use App\Http\Controllers\Purchases\ComprasController;
 use App\Http\Controllers\Purchases\CompraController;
 use App\Http\Controllers\Stock\StockController;
+use App\Http\Controllers\Adjustment\StockAdjustmentController;
 Route::prefix('/v1')->group(function () {
 
     //List Suspended
@@ -46,7 +47,12 @@ Route::prefix('/v1')->group(function () {
     Route::apiResource('/compra', CompraController::class);
     //Sales
     Route::apiResource('/vendas', VendasController::class);
+
     //Stock
+    // Ajuste de estoque é imutável: sem update/destroy via API (ver StockAdjustmentService)
+    Route::apiResource('/stock-adjustment', StockAdjustmentController::class)->only(['index', 'show', 'store']);
+    // precisa vir antes do apiResource('/stock', ...) para não ser capturada por GET /stock/{stock}
+    Route::get('/stock-check-quantity', [StockController::class, 'checkQuantityProductsInStock']);
     Route::apiResource('/stock', StockController::class);
 
 

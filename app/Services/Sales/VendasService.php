@@ -52,7 +52,7 @@ class VendasService implements VendasServiceInterface
 
 
           $this->repository->storeItens($venda, $dto->venda_itens);
-          $this->stockService->proccessItensSale($dto, $dto->venda_itens);
+          $this->stockService->proccessItensSale($venda, $dto->venda_itens);
 
             return $venda;
         });

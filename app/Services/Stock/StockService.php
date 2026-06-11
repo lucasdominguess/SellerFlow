@@ -2,16 +2,17 @@
 
 namespace App\Services\Stock;
 
-use App\Classes\AuthContext;
 use App\Contracts\Repositories\Stock\StockRepositoryInterface;
 use App\Contracts\Services\Stock\StockServiceInterface;
-use App\DTOs\Purchases\CompraDTO;
-use App\DTOs\Sales\VendasDTO;
+use App\DTOs\Stock\StockBalanceDTO;
 use App\DTOs\Stock\StockDTO;
 use App\DTOs\Stock\StockResponseDTO;
 use App\Enums\OriginType;
+use App\Enums\TipoStock;
+use App\Models\Purchases\Compra;
 use App\Models\Sales\Venda;
 use App\Models\Stock\Stock;
+use App\Models\Stock\StockAdjustment;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class StockService implements StockServiceInterface
@@ -58,36 +59,60 @@ class StockService implements StockServiceInterface
     }
 
 
-    public function proccessItensPurchase(CompraDTO $compraDTO,array $itens)
+    public function proccessItensPurchase(Compra $compra,array $itens)
     {
-        array_map(function ($item) use ($compraDTO) {
+        array_map(function ($item) use ($compra) {
             $dto = new StockDTO(
                 product_id: $item->product_id,
-                user_id: $compraDTO->user_id,
-                tipo: 'entrada',
+                user_id: $compra->user_id,
+                tipo:TipoStock::ENTRADA->value,
                 quantidade: $item->quantidade,
                 origem_tipo: OriginType::COMPRA->value,
-                origem_id: 1,
-                observacao: $compraDTO->observacao,
-                company_id:   $compraDTO->company_id
+                origem_id:  $compra->id,
+                observacao: $compra->observacao,
+                company_id:   $compra->company_id
             );
             $this->repository->store($dto->toArray());
         }, $itens);
     }
-    public function proccessItensSale(VendasDTO $vendaDTO,array $itens)
+
+    public function proccessItensSale(Venda $venda,array $itens)
     {
-        array_map(function ($item) use ($vendaDTO) {
+        array_map(function ($item) use ($venda) {
             $dto = new StockDTO(
                 product_id: $item->product_id,
-                user_id: $vendaDTO->user_id,
-                tipo: 'saida',
+                user_id: $venda->user_id,
+                tipo: TipoStock::SAIDA->value,
                 quantidade: $item->quantidade,
                 origem_tipo: OriginType::VENDA->value,
-                origem_id: 1,
-                observacao: $vendaDTO->observacao,
-                company_id:   $vendaDTO->company_id
+                origem_id:  $venda->id,
+                observacao: $venda->observacao,
+                company_id:   $venda->company_id
             );
             $this->repository->store($dto->toArray());
         }, $itens);
+    }
+    public function proccessItensAdjustment(StockAdjustment $stockAdjustment)
+    {
+        $dto = new StockDTO(
+            product_id: $stockAdjustment->product_id,
+            user_id: $stockAdjustment->user_id,
+            tipo: TipoStock::AJUSTE->value,
+            // movimentacoes_estoque.quantidade é sempre positivo; o sinal de
+            // ajustes_estoque.quantidade indica entrada (+) ou saída (-)
+            quantidade: abs($stockAdjustment->quantidade),
+            origem_tipo: OriginType::AJUSTE_MANUAL->value,
+            origem_id: $stockAdjustment->id,
+            observacao: $stockAdjustment->observacao,
+            company_id: $stockAdjustment->company_id
+        );
+        $this->repository->store($dto->toArray());
+    }
+    public function checkQuantityProductsInStock(int $companyId, ?int $productId = null, ?string $productName = null, ?string $sku = null): array
+    {
+        return $this->repository
+            ->checkQuantityProductsInStock($companyId, $productId, $productName, $sku)
+            ->map(fn ($row) => StockBalanceDTO::fromQueryResult($row)->toArray())
+            ->all();
     }
 }

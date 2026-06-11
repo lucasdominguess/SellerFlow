@@ -8,7 +8,7 @@ use App\Models\ListSuspended\Company;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AjusteEstoque extends Model
+class StockAdjustment extends Model
 {
     /** @use HasFactory<\Database\Factories\Stock\AjusteEstoqueFactory> */
     use HasFactory;
@@ -43,7 +43,7 @@ class AjusteEstoque extends Model
 
     public function movimentacao()
     {
-        return $this->hasOne(MovimentacaoEstoque::class, 'origem_id')
+        return $this->hasOne(Stock::class, 'origem_id')
             ->where('origem_tipo', 'ajuste_manual');
     }
 }

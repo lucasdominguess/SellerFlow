@@ -1,6 +1,6 @@
 # Projeto: SellerFlow
 
-**Stack:** Laravel 11, PHP 8.2+, MariaDB, Redis, Docker (multi-stage), Vanilla JS + Blade, Vite.
+**Stack:** Laravel 11, PHP 8.2+, Postgres, Redis, Docker (multi-stage), Vanilla JS + Blade, Vite.
 **Tipo:** API REST + frontend Blade. Ferramenta interna de gestão para seller de marketplaces (foco Shopee).
 **Status:** MVP em desenvolvimento — escopo em `Plans/plan-sellerflow-sistema.md` (no Obsidian Brain).
 
@@ -16,15 +16,15 @@ Este projeto consulta o Brain global para padrões arquiteturais reutilizáveis.
 
 ### Quando consultar o Brain (regra mecânica)
 
-| Tarefa                                                  | Skill primária                  |
-|---------------------------------------------------------|----------------------------------|
-| Criar/refatorar fluxo backend (Controller→Service→Repo) | `Skills/dev/skill-layers.md`         |
-| Revisão de segurança / discordância ativa               | `Skills/dev/skill-secur.md`      |
-| Escrever testes (Pest)                                  | `Skills/dev/skill-qa.md`         |
-| Tela/UI nova (Blade + CSS + JS isolados)                | `Skills/dev/skill-front.md`      |
-| Setup Docker, deploy, CI/CD                             | `Skills/dev/skill-infra.md`      |
-| Documentar API (Swagger/OpenAPI)                        | `Skills/dev/skill-swagger-docs.md` |
-| Tarefa complexa (>3 arquivos, planejar antes de codar)  | `Skills/ops/skill-planner.md`    |
+| Tarefa                                                    | Skill primária                            |
+| --------------------------------------------------------- | ------------------------------------------ |
+| Criar/refatorar fluxo backend (Controller→Service→Repo) | `Skills/dev/skill-layers.md`             |
+| Revisão de segurança / discordância ativa              | `Skills/dev/skill-secur.md`              |
+| Escrever testes (Pest)                                    | `Skills/dev/skill-qa.md`                 |
+| Tela/UI nova (Blade + CSS + JS isolados)                  | `Skills/dev/skill-front.md`              |
+| Setup Docker, deploy, CI/CD                               | `Skills/dev/skill-infra.md`              |
+| Documentar API (Swagger/OpenAPI)                          | `Skills/dev/skill-swagger-docs.md`       |
+| Tarefa complexa (>3 arquivos, planejar antes de codar)    | `Skills/ops/skill-planner.md`            |
 | Decisão arquitetural durável                            | `Skills/ops/skill-memory.md` (criar ADR) |
 
 ### Quando NÃO consultar o Brain
