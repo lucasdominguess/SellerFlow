@@ -58,6 +58,10 @@ use App\Contracts\Services\Stock\StockServiceInterface;
 use App\Services\Stock\StockService;
 use App\Contracts\Repositories\Stock\StockRepositoryInterface;
 use App\Repositories\Stock\StockRepository;
+use App\Contracts\Repositories\Stock\StockBalanceRepositoryInterface;
+use App\Repositories\Stock\StockBalanceRepository;
+use App\Models\Stock\Stock;
+use App\Observers\StockObserver;
 use App\Contracts\Services\Adjustment\StockAdjustmentServiceInterface;
 use App\Services\Adjustment\StockAdjustmentService;
 use App\Contracts\Repositories\Adjustment\StockAdjustmentRepositoryInterface;
@@ -156,6 +160,10 @@ class AppServiceProvider extends ServiceProvider
             StockRepository::class
         );
         $this->app->bind(
+            StockBalanceRepositoryInterface::class,
+            StockBalanceRepository::class
+        );
+        $this->app->bind(
             StockAdjustmentServiceInterface::class,
             StockAdjustmentService::class
         );
@@ -171,6 +179,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Route::pattern('id', '[0-9]+');
+
+        // Mantém o saldo materializado (stock_balances) sincronizado a cada movimentação.
+        Stock::observe(StockObserver::class);
+
         // Gate para verificar se o usuário é um Administrador
         Gate::define('Gate-Admin', function ($user) {
             // return $user->hasRole(Roles::ADMIN->label());

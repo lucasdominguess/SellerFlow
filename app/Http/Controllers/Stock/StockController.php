@@ -60,13 +60,15 @@ class StockController extends Controller
     {
         $data = $request->validated();
 
-        $result = $this->service->checkQuantityProductsInStock(
+        $paginator = $this->service->checkQuantityProductsInStock(
             companyId: $data['company_id'],
             productId: $data['product_id'] ?? null,
             productName: $data['product_name'] ?? null,
             sku: $data['sku'] ?? null,
+            perPage: $data['perPage'],
+            page: $data['page'],
         );
 
-        return ApiResponse::success($result, 'Quantidade de produtos em estoque recuperada com sucesso');
+        return ApiResponse::paginated($paginator, null, 'Quantidade de produtos em estoque recuperada com sucesso');
     }
 }

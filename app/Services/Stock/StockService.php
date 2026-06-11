@@ -2,6 +2,7 @@
 
 namespace App\Services\Stock;
 
+use App\Contracts\Repositories\Stock\StockBalanceRepositoryInterface;
 use App\Contracts\Repositories\Stock\StockRepositoryInterface;
 use App\Contracts\Services\Stock\StockServiceInterface;
 use App\DTOs\Stock\StockBalanceDTO;
@@ -19,6 +20,7 @@ class StockService implements StockServiceInterface
 {
     public function __construct(
         private StockRepositoryInterface $repository,
+        private StockBalanceRepositoryInterface $balanceRepository,
     ) {}
 
     public function index(int $perPage = 15, int $page = 1, ?array $filters = []): LengthAwarePaginator
@@ -108,11 +110,14 @@ class StockService implements StockServiceInterface
         );
         $this->repository->store($dto->toArray());
     }
-    public function checkQuantityProductsInStock(int $companyId, ?int $productId = null, ?string $productName = null, ?string $sku = null): array
+    public function checkQuantityProductsInStock(int $companyId, ?int $productId = null, ?string $productName = null, ?string $sku = null, int $perPage = 15, int $page = 1): LengthAwarePaginator
     {
-        return $this->repository
-            ->checkQuantityProductsInStock($companyId, $productId, $productName, $sku)
-            ->map(fn ($row) => StockBalanceDTO::fromQueryResult($row)->toArray())
-            ->all();
+        $paginator = $this->balanceRepository->paginate($companyId, $productId, $productName, $sku, $perPage, $page);
+
+        $paginator->getCollection()->transform(
+            fn ($row) => StockBalanceDTO::fromQueryResult($row)->toArray()
+        );
+
+        return $paginator;
     }
 }

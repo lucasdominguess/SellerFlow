@@ -7,7 +7,6 @@ use App\Models\Sales\Venda;
 use App\Models\Stock\Stock;
 use App\Models\Stock\StockAdjustment;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 
 interface StockRepositoryInterface
 {
@@ -20,6 +19,4 @@ interface StockRepositoryInterface
     public function update(Stock $stock, array $data): Stock;
 
     public function delete(Stock $stock);
-
-    public function checkQuantityProductsInStock(int $companyId, ?int $productId = null, ?string $productName = null, ?string $sku = null): Collection;
 }

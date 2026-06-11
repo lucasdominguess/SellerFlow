@@ -28,5 +28,5 @@ interface StockServiceInterface
 
     public function proccessItensAdjustment(StockAdjustment $stockAdjustment);
 
-    public function checkQuantityProductsInStock(int $companyId, ?int $productId = null, ?string $productName = null, ?string $sku = null): array;
+    public function checkQuantityProductsInStock(int $companyId, ?int $productId = null, ?string $productName = null, ?string $sku = null, int $perPage = 15, int $page = 1): LengthAwarePaginator;
 }
