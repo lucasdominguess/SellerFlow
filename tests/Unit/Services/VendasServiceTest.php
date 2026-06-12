@@ -3,10 +3,10 @@
 namespace Tests\Unit\Services;
 
 use App\Contracts\Repositories\Sales\VendasRepositoryInterface;
+use App\Contracts\Services\Finance\AccountReceivableServiceInterface;
 use App\Contracts\Services\Stock\StockServiceInterface;
 use App\DTOs\Sales\VendasDTO;
 use App\DTOs\Sales\VendasResponseDTO;
-use App\Enums\Status;
 use App\Models\Sales\Venda;
 use App\Services\Sales\VendasService;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -15,9 +15,14 @@ use Illuminate\Support\Collection;
 describe('VendasService', function () {
 
     beforeEach(function () {
-        $this->repositoryMock   = $this->createMock(VendasRepositoryInterface::class);
-        $this->stockServiceMock = $this->createMock(StockServiceInterface::class);
-        $this->service          = new VendasService($this->repositoryMock, $this->stockServiceMock);
+        $this->repositoryMock               = $this->createMock(VendasRepositoryInterface::class);
+        $this->stockServiceMock             = $this->createMock(StockServiceInterface::class);
+        $this->accountReceivableServiceMock = $this->createMock(AccountReceivableServiceInterface::class);
+        $this->service                      = new VendasService(
+            $this->repositoryMock,
+            $this->stockServiceMock,
+            $this->accountReceivableServiceMock,
+        );
     });
 
     // verifica que store calcula valor_liquido (bruto - taxa - frete), persiste a venda,

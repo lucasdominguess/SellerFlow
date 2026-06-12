@@ -3,12 +3,12 @@
 namespace App\Models\Sales;
 
 use App\Classes\AuthContext;
+use App\Enums\TransactionStatus;
 use App\Models\Accout\Store;
 use App\Models\Accout\User;
-use App\Models\Financial\ContaReceber;
+use App\Models\Finance\AccountReceivable;
 use App\Models\ListSuspended\Company;
 use App\Models\ListSuspended\MarketPlace;
-use App\Models\ListSuspended\Status;
 use App\Models\Stock\Stock;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -32,7 +32,7 @@ class Venda extends Model
         'valor_frete',
         'valor_liquido',
         'data_previsao_repasse',
-        'status_id',
+        'status',
         'observacao',
     ];
 
@@ -45,6 +45,7 @@ class Venda extends Model
         'taxa_marketplace'       => 'decimal:2',
         'valor_frete'            => 'decimal:2',
         'valor_liquido'          => 'decimal:2',
+        'status'                 => TransactionStatus::class,
     ];
 
     // tenant scoping no route model binding: só resolve vendas da empresa do
@@ -76,11 +77,6 @@ class Venda extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function status()
-    {
-        return $this->belongsTo(Status::class, 'status_id');
-    }
-
     public function itens()
     {
         return $this->hasMany(VendaItem::class);
@@ -88,7 +84,8 @@ class Venda extends Model
 
     public function contaReceber()
     {
-        return $this->hasOne(ContaReceber::class);
+        return $this->hasOne(AccountReceivable::class, 'origem_id')
+            ->where('origem_tipo', 'venda');
     }
 
     public function movimentacoes()

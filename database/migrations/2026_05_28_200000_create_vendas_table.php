@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->decimal('valor_frete', 10, 2)->default(0);
             $table->decimal('valor_liquido', 10, 2);
             $table->date('data_previsao_repasse')->nullable();
-            $table->foreignId('status_id')->constrained('status')->default(1);
+            $table->enum('status', ['pendente', 'concluido', 'atrasado', 'cancelado'])->default('pendente');
             $table->text('observacao')->nullable();
             $table->timestamps();
 

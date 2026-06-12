@@ -3,19 +3,23 @@
 namespace App\Services\Sales;
 
 use App\Contracts\Repositories\Sales\VendasRepositoryInterface;
+use App\Contracts\Services\Finance\AccountReceivableServiceInterface;
 use App\Contracts\Services\Sales\VendasServiceInterface;
 use App\Contracts\Services\Stock\StockServiceInterface;
 use App\DTOs\Sales\VendasDTO;
 use App\DTOs\Sales\VendasResponseDTO;
+use App\Enums\TransactionStatus;
 use App\Models\Sales\Venda;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class VendasService implements VendasServiceInterface
 {
+
     public function __construct(
         private VendasRepositoryInterface $repository,
         private StockServiceInterface $stockService,
+        private AccountReceivableServiceInterface $accountReceivableService
     ) {
     }
 
@@ -53,6 +57,7 @@ class VendasService implements VendasServiceInterface
 
           $this->repository->storeItens($venda, $dto->venda_itens);
           $this->stockService->proccessItensSale($venda, $dto->venda_itens);
+          $this->accountReceivableService->proccessSale($venda);
 
             return $venda;
         });
@@ -72,9 +77,33 @@ class VendasService implements VendasServiceInterface
             );
         }
 
-        $venda = $this->repository->update($venda, $data);
+        // Sem mudança de status: update simples, sem transação nem propagação.
+        if (! $this->isStatusChanging($venda, $dto)) {
+            $venda = $this->repository->update($venda, $data);
+
+            return VendasResponseDTO::fromModel($venda);
+        }
+
+        // Mudança de status sincroniza estoque e conta a receber — escrita múltipla, exige transação.
+        $venda = DB::transaction(function () use ($venda, $data) {
+            $venda = $this->repository->update($venda, $data);
+
+            // cancelar a venda devolve a saída de estoque
+            if ($venda->status === TransactionStatus::CANCELED) {
+                $this->stockService->reverseItensSale($venda);
+            }
+
+            $this->accountReceivableService->syncStatusFromSale($venda);
+
+            return $venda;
+        });
 
         return VendasResponseDTO::fromModel($venda);
+    }
+
+    private function isStatusChanging(Venda $venda, VendasDTO $dto): bool
+    {
+        return $dto->status !== null && $venda->status?->value !== $dto->status;
     }
 
     private function calcularValorLiquido(float $bruto, float $taxa, float $frete): float

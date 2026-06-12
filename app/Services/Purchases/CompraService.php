@@ -3,11 +3,12 @@
 namespace App\Services\Purchases;
 
 use App\Contracts\Repositories\Purchases\CompraRepositoryInterface;
+use App\Contracts\Services\Finance\AccountPayableServiceInterface;
 use App\Contracts\Services\Purchases\CompraServiceInterface;
 use App\Contracts\Services\Stock\StockServiceInterface;
 use App\DTOs\Purchases\CompraDTO;
 use App\DTOs\Purchases\CompraResponseDTO;
-use App\Enums\OriginType;
+use App\Enums\TransactionStatus;
 use App\Models\Purchases\Compra;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,7 @@ class CompraService implements CompraServiceInterface
     public function __construct(
         private CompraRepositoryInterface $repository,
         private StockServiceInterface $stockService,
+        private AccountPayableServiceInterface $accountPayableService
     ) {
     }
 
@@ -50,6 +52,7 @@ class CompraService implements CompraServiceInterface
             $this->repository->storeItens($compra, $dto->itens);
 
             $this->stockService->proccessItensPurchase($compra, $dto->itens);
+            $this->accountPayableService->proccessPurchase($compra);
             return $compra;
         });
 
@@ -59,9 +62,33 @@ class CompraService implements CompraServiceInterface
 
     public function update(Compra $compra, CompraDTO $dto): CompraResponseDTO
     {
-        $compra = $this->repository->update($compra, $dto->toArray());
+        // Sem mudança de status: update simples, sem transação nem propagação.
+        if (! $this->isStatusChanging($compra, $dto)) {
+            $compra = $this->repository->update($compra, $dto->toArray());
+
+            return CompraResponseDTO::fromModel($compra);
+        }
+
+        // Mudança de status sincroniza estoque e conta a pagar — escrita múltipla, exige transação.
+        $compra = DB::transaction(function () use ($compra, $dto) {
+            $compra = $this->repository->update($compra, $dto->toArray());
+
+            // cancelar a compra estorna a entrada de estoque
+            if ($compra->status === TransactionStatus::CANCELED) {
+                $this->stockService->reverseItensPurchase($compra);
+            }
+
+            $this->accountPayableService->syncStatusFromPurchase($compra);
+
+            return $compra;
+        });
 
         return CompraResponseDTO::fromModel($compra);
+    }
+
+    private function isStatusChanging(Compra $compra, CompraDTO $dto): bool
+    {
+        return $dto->status !== null && $compra->status?->value !== $dto->status;
     }
 
     public function delete(Compra $compra)

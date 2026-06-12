@@ -66,6 +66,14 @@ use App\Contracts\Services\Adjustment\StockAdjustmentServiceInterface;
 use App\Services\Adjustment\StockAdjustmentService;
 use App\Contracts\Repositories\Adjustment\StockAdjustmentRepositoryInterface;
 use App\Repositories\Adjustment\StockAdjustmentRepository;
+use App\Contracts\Services\Finance\AccountPayableServiceInterface;
+use App\Services\Finance\AccountPayableService;
+use App\Contracts\Repositories\Finance\AccountPayableRepositoryInterface;
+use App\Repositories\Finance\AccountPayableRepository;
+use App\Contracts\Services\Finance\AccountReceivableServiceInterface;
+use App\Services\Finance\AccountReceivableService;
+use App\Contracts\Repositories\Finance\AccountReceivableRepositoryInterface;
+use App\Repositories\Finance\AccountReceivableRepository;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -170,6 +178,22 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             StockAdjustmentRepositoryInterface::class,
             StockAdjustmentRepository::class
+        );
+        $this->app->bind(
+            AccountPayableServiceInterface::class,
+            AccountPayableService::class
+        );
+        $this->app->bind(
+            AccountPayableRepositoryInterface::class,
+            AccountPayableRepository::class
+        );
+        $this->app->bind(
+            AccountReceivableServiceInterface::class,
+            AccountReceivableService::class
+        );
+        $this->app->bind(
+            AccountReceivableRepositoryInterface::class,
+            AccountReceivableRepository::class
         );
     }
 

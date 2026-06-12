@@ -4,11 +4,11 @@ namespace App\Models\Purchases;
 
 use App\Models\Accout\Store;
 use App\Models\Accout\User;
+use App\Enums\TransactionStatus;
 use App\Models\Business\Fornecedor;
-use App\Models\Financial\ContaPagar;
+use App\Models\Finance\AccountPayable;
 use App\Models\ListSuspended\Company;
 use App\Models\ListSuspended\FormaPagamento;
-use App\Models\ListSuspended\Status;
 use App\Models\Stock\Stock;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,7 +26,7 @@ class Compra extends Model
         'fornecedor_id',
         'user_id',
         'forma_pagamento_id',
-        'status_id',
+        'status',
         'numero_nota',
         'data_compra',
         'valor_total',
@@ -39,6 +39,7 @@ class Compra extends Model
     protected $casts = [
         'data_compra'  => 'date',
         'valor_total'  => 'decimal:2',
+        'status'       => TransactionStatus::class,
     ];
 
     public function company()
@@ -66,11 +67,6 @@ class Compra extends Model
         return $this->belongsTo(FormaPagamento::class, 'forma_pagamento_id');
     }
 
-    public function status()
-    {
-        return $this->belongsTo(Status::class, 'status_id');
-    }
-
     public function itens()
     {
         return $this->hasMany(CompraItem::class);
@@ -78,7 +74,8 @@ class Compra extends Model
 
     public function contasPagar()
     {
-        return $this->hasMany(ContaPagar::class, 'compra_id');
+        return $this->hasMany(AccountPayable::class, 'origem_id')
+            ->where('origem_tipo', 'compra');
     }
 
     public function movimentacoes()

@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->foreignId('fornecedor_id')->constrained('fornecedores');
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('forma_pagamento_id')->constrained('forma_pagamentos');
-            $table->foreignId('status_id')->constrained('status')->default(1);
+            $table->enum('status', ['pendente', 'concluido', 'atrasado', 'cancelado'])->default('pendente');
             $table->string('numero_nota')->nullable();
             $table->date('data_compra');
             $table->decimal('valor_total', 10, 2);

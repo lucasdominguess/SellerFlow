@@ -3,6 +3,7 @@
 namespace Tests\Unit\Services;
 
 use App\Contracts\Repositories\Purchases\CompraRepositoryInterface;
+use App\Contracts\Services\Finance\AccountPayableServiceInterface;
 use App\Contracts\Services\Stock\StockServiceInterface;
 use App\DTOs\Purchases\CompraDTO;
 use App\DTOs\Purchases\CompraResponseDTO;
@@ -14,9 +15,14 @@ use Illuminate\Support\Collection;
 describe('CompraService', function () {
 
     beforeEach(function () {
-        $this->repositoryMock   = $this->createMock(CompraRepositoryInterface::class);
-        $this->stockServiceMock = $this->createMock(StockServiceInterface::class);
-        $this->service          = new CompraService($this->repositoryMock, $this->stockServiceMock);
+        $this->repositoryMock            = $this->createMock(CompraRepositoryInterface::class);
+        $this->stockServiceMock          = $this->createMock(StockServiceInterface::class);
+        $this->accountPayableServiceMock = $this->createMock(AccountPayableServiceInterface::class);
+        $this->service                   = new CompraService(
+            $this->repositoryMock,
+            $this->stockServiceMock,
+            $this->accountPayableServiceMock,
+        );
     });
 
     // verifica que store calcula valor_total a partir dos itens, persiste a compra,

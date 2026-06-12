@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Sales;
 
+use App\Enums\TransactionStatus;
 use App\Models\Sales\Venda;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -28,7 +29,7 @@ class VendaFactory extends Factory
             'valor_frete'           => $frete,
             'valor_liquido'         => round($bruto - $taxa - $frete, 2),
             'data_previsao_repasse' => $this->faker->dateTimeBetween('now', '+30 days')->format('Y-m-d'),
-            'status_id'             => 1,
+            'status'                => TransactionStatus::PENDING->value,
             'observacao'            => null,
         ];
     }

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Status;
 use App\Models\Accout\User;
 use Illuminate\Database\Seeder;
 
@@ -11,10 +12,10 @@ class UserSeeder extends Seeder
     {
         // Usuário fixo para desenvolvimento/testes
         User::factory()->create([
-            'name'      => 'Administrador',
-            'email'     => 'admin@sellerflow.com',
+            'name'      => 'Lucas Domingues',
+            'email'     => 'lunnairestore@gmail.com',
             'password'  => bcrypt('password'),
-            'status_id' => 2,
+            'status_id' => Status::ACTIVE->value,
         ]);
 
         User::factory()->count(5)->create();

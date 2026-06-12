@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Models\Finance;
+
+use App\Enums\TransactionStatus;
+use App\Models\ListSuspended\CategoriaFinanceira;
+use App\Models\ListSuspended\Company;
+use App\Models\ListSuspended\FormaPagamento;
+use App\Models\Purchases\Compra;
+use App\Models\Sales\Venda;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class AccountPayable extends Model
+{
+    /** @use HasFactory<\Database\Factories\Finance\AccountPayableFactory> */
+    use HasFactory;
+
+    public $table = 'account_payables';
+
+    protected $fillable = [
+        'valor',
+        'vencimento',
+        'pago_em',
+        'status',
+        'categoria_financeira_id',
+        'forma_pagamento_id',
+        'origem_tipo',
+        'origem_id',
+        'company_id',
+        'observacao',
+    ];
+
+    protected $hidden = ['created_at', 'updated_at'];
+
+    protected $casts = [
+        'vencimento' => 'date',
+        'pago_em'    => 'date',
+        'valor'      => 'decimal:2',
+        'status'     => TransactionStatus::class,
+    ];
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function categoriaFinanceira()
+    {
+        return $this->belongsTo(CategoriaFinanceira::class);
+    }
+
+    public function formaPagamento()
+    {
+        return $this->belongsTo(FormaPagamento::class);
+    }
+
+    public function compra()
+    {
+        return $this->belongsTo(Compra::class, 'origem_id');
+    }
+
+    public function venda()
+    {
+        return $this->belongsTo(Venda::class, 'origem_id');
+    }
+}

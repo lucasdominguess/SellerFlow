@@ -94,6 +94,48 @@ class StockService implements StockServiceInterface
             $this->repository->store($dto->toArray());
         }, $itens);
     }
+
+    // Estorno do cancelamento da compra: cada ENTRADA original é anulada por uma SAIDA
+    // de mesma quantidade. O StockObserver recalcula stock_balances automaticamente.
+    public function reverseItensPurchase(Compra $compra)
+    {
+        $compra->loadMissing('itens');
+
+        $compra->itens->each(function ($item) use ($compra) {
+            $dto = new StockDTO(
+                product_id: $item->product_id,
+                user_id: $compra->user_id,
+                tipo: TipoStock::SAIDA->value,
+                quantidade: $item->quantidade,
+                origem_tipo: OriginType::COMPRA->value,
+                origem_id: $compra->id,
+                observacao: 'Estorno: cancelamento da compra #' . $compra->id,
+                company_id: $compra->company_id
+            );
+            $this->repository->store($dto->toArray());
+        });
+    }
+
+    // Estorno do cancelamento da venda: cada SAIDA original é anulada por uma ENTRADA
+    // de mesma quantidade, devolvendo o saldo ao estoque.
+    public function reverseItensSale(Venda $venda)
+    {
+        $venda->loadMissing('itens');
+
+        $venda->itens->each(function ($item) use ($venda) {
+            $dto = new StockDTO(
+                product_id: $item->product_id,
+                user_id: $venda->user_id,
+                tipo: TipoStock::ENTRADA->value,
+                quantidade: $item->quantidade,
+                origem_tipo: OriginType::VENDA->value,
+                origem_id: $venda->id,
+                observacao: 'Estorno: cancelamento da venda #' . $venda->id,
+                company_id: $venda->company_id
+            );
+            $this->repository->store($dto->toArray());
+        });
+    }
     public function proccessItensAdjustment(StockAdjustment $stockAdjustment)
     {
         $dto = new StockDTO(

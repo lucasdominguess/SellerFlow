@@ -3,7 +3,7 @@
 namespace App\DTOs\Sales;
 
 use App\Classes\AuthContext;
-use App\Enums\Status;
+use App\Enums\TransactionStatus;
 use App\DTOs\Sales\VendaItemDTO;
 
 class VendasDTO
@@ -20,7 +20,7 @@ class VendasDTO
         public readonly ?float $valor_frete,
         public readonly ?string $data_previsao_repasse,
         public readonly ?string $observacao,
-        public readonly ?int $status_id = null,
+        public readonly ?string $status = null,
         // VendaItemDTO[] — presente apenas no create; update não altera itens por este fluxo
         public readonly array $venda_itens = [],
     ) {}
@@ -41,7 +41,8 @@ class VendasDTO
             valor_frete:      isset($data['valor_frete']) ? (float) $data['valor_frete'] : null,
             data_previsao_repasse: $data['data_previsao_repasse'] ?? null,
             observacao:            $data['observacao'] ?? null,
-            status_id:             $data['status_id'] ?? Status::ACTIVE->value, // trocar depos para Enum proprio
+            // venda nasce sempre pendente; status só muda via update
+            status:                TransactionStatus::PENDING->value,
             venda_itens: array_map(
                 fn(array $item) => VendaItemDTO::fromArray($item),
                 $data['venda_itens'] ?? []
@@ -65,7 +66,7 @@ class VendasDTO
             valor_frete:      isset($data['valor_frete']) ? (float) $data['valor_frete'] : null,
             data_previsao_repasse: $data['data_previsao_repasse'] ?? null,
             observacao:            $data['observacao'] ?? null,
-            status_id:             $data['status_id'] ?? Status::ACTIVE->value, // default ativo
+            status:                $data['status'] ?? null,
         );
     }
 
@@ -84,7 +85,7 @@ class VendasDTO
             'valor_frete'           => $this->valor_frete,
             'data_previsao_repasse' => $this->data_previsao_repasse,
             'observacao'            => $this->observacao,
-            'status_id'             => $this->status_id,
+            'status'                => $this->status,
         ], fn ($value) => !is_null($value));
     }
 }

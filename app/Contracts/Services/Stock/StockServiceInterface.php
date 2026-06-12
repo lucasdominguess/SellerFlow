@@ -26,6 +26,9 @@ interface StockServiceInterface
     public function proccessItensPurchase(Compra $compra,array $itens);
     public function proccessItensSale(Venda $venda,array $itens);
 
+    public function reverseItensPurchase(Compra $compra);
+    public function reverseItensSale(Venda $venda);
+
     public function proccessItensAdjustment(StockAdjustment $stockAdjustment);
 
     public function checkQuantityProductsInStock(int $companyId, ?int $productId = null, ?string $productName = null, ?string $sku = null, int $perPage = 15, int $page = 1): LengthAwarePaginator;

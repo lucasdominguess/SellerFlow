@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Purchases;
 
+use App\Enums\TransactionStatus;
 use App\Models\Purchases\Compra;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,7 +19,7 @@ class CompraFactory extends Factory
             'fornecedor_id'     => $this->faker->numberBetween(1, 20),
             'user_id'           => 1,
             'forma_pagamento_id'=> $this->faker->numberBetween(1, 5),
-            'status_id'         => 1,
+            'status'            => TransactionStatus::PENDING->value,
             'numero_nota'       => $this->faker->optional(0.7)->numerify('NF-#####'),
             'data_compra'       => $this->faker->dateTimeBetween('-6 months', 'now')->format('Y-m-d'),
             'valor_total'       => $this->faker->randomFloat(2, 100, 5000),

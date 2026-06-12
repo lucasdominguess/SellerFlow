@@ -21,7 +21,7 @@ class CompraCreateRequest extends FormRequest
             'fornecedor_id' => 'required|integer|exists:fornecedores,id',
             'user_id' => 'required|integer|exists:users,id',
             'forma_pagamento_id' => 'required|integer|exists:forma_pagamentos,id',
-            'status_id' => 'required|integer|exists:status,id',
+            // status não vem do cliente no create: a compra sempre nasce 'pendente'
             'numero_nota' => 'nullable|string|max:255',
             'data_compra' => 'required|date',
             // 'valor_total' => 'required|numeric|min:0',
@@ -68,7 +68,6 @@ class CompraCreateRequest extends FormRequest
         return [
             'fornecedor_id' => 'fornecedor',
             'forma_pagamento_id' => 'forma de pagamento',
-            'status_id' => 'status',
             'numero_nota' => 'número da nota',
             'data_compra' => 'data da compra',
             'valor_total' => 'valor total',

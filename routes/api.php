@@ -18,6 +18,8 @@ use App\Http\Controllers\Purchases\ComprasController;
 use App\Http\Controllers\Purchases\CompraController;
 use App\Http\Controllers\Stock\StockController;
 use App\Http\Controllers\Adjustment\StockAdjustmentController;
+use App\Http\Controllers\Finance\AccountPayableController;
+use App\Http\Controllers\Finance\AccountReceivableController;
 Route::prefix('/v1')->group(function () {
 
     //List Suspended
@@ -55,6 +57,9 @@ Route::prefix('/v1')->group(function () {
     Route::get('/stock-check-quantity', [StockController::class, 'checkQuantityProductsInStock']);
     Route::apiResource('/stock', StockController::class);
 
+    //Finance
+    Route::apiResource('/account-payable', AccountPayableController::class);
+    Route::apiResource('/account-receivable', AccountReceivableController::class);
 
     Route::get('/test', [TestController::class, 'test']);
     });// end middleware jwt
@@ -70,4 +75,3 @@ Route::prefix('/v1')->group(function () {
 
 
 Route::fallback(fn() => response(["message" => 'Página não encontrada'], 404));
-

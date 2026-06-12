@@ -3,6 +3,7 @@
 namespace App\DTOs\Purchases;
 
 use App\Classes\AuthContext;
+use App\Enums\TransactionStatus;
 
 class CompraDTO
 {
@@ -12,7 +13,7 @@ class CompraDTO
         public readonly ?int $user_id,
         public readonly ?int $fornecedor_id,
         public readonly ?int $forma_pagamento_id,
-        public readonly ?int $status_id,
+        public readonly ?string $status,
         public readonly ?string $numero_nota,
         public readonly ?string $data_compra,
         public readonly ?float $valor_total,
@@ -31,7 +32,8 @@ class CompraDTO
             user_id:           $data['user_id'],
             fornecedor_id:     (int) $data['fornecedor_id'],
             forma_pagamento_id: (int) $data['forma_pagamento_id'],
-            status_id:         (int) $data['status_id'],
+            // compra nasce sempre pendente; status só muda via update
+            status:            TransactionStatus::PENDING->value,
             numero_nota:       $data['numero_nota'] ?? null,
             data_compra:       $data['data_compra'] ?? null,
             valor_total:       isset($data['valor_total']) ? (float) $data['valor_total'] : null,
@@ -54,7 +56,7 @@ class CompraDTO
             user_id:           null,
             fornecedor_id:     isset($data['fornecedor_id']) ? (int) $data['fornecedor_id'] : null,
             forma_pagamento_id: isset($data['forma_pagamento_id']) ? (int) $data['forma_pagamento_id'] : null,
-            status_id:         isset($data['status_id']) ? (int) $data['status_id'] : null,
+            status:            $data['status'] ?? null,
             numero_nota:       $data['numero_nota'] ?? null,
             data_compra:       $data['data_compra'] ?? null,
             valor_total:       isset($data['valor_total']) ? (float) $data['valor_total'] : null,
@@ -73,7 +75,7 @@ class CompraDTO
             'user_id'           => $this->user_id,
             'fornecedor_id'     => $this->fornecedor_id,
             'forma_pagamento_id' => $this->forma_pagamento_id,
-            'status_id'         => $this->status_id,
+            'status'            => $this->status,
             'numero_nota'       => $this->numero_nota,
             'data_compra'       => $this->data_compra,
             'valor_total'       => $this->valor_total,

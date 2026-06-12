@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Sales;
 
+use App\Enums\TransactionStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -31,6 +32,8 @@ class VendasUpdateRequest extends FormRequest
             'taxa_marketplace'      => ['sometimes', 'nullable', 'numeric', 'min:0', 'decimal:0,2'],
             'valor_frete'           => ['sometimes', 'nullable', 'numeric', 'min:0', 'decimal:0,2'],
             'data_previsao_repasse' => ['sometimes', 'nullable', 'date'],
+            // 'atrasado' é estado exclusivo do financeiro — não pode ser definido na venda.
+            'status'                => ['sometimes', Rule::enum(TransactionStatus::class)->except([TransactionStatus::OVERDUE])],
             'observacao'            => ['sometimes', 'nullable', 'string'],
         ];
     }

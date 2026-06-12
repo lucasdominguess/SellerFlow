@@ -21,14 +21,6 @@ return new class extends Migration {
         Schema::table('movimentacoes_estoque', function (Blueprint $table) {
             $table->foreignId('company_id')->default(1)->after('id')->constrained('companies');
         });
-
-        Schema::table('contas_pagar', function (Blueprint $table) {
-            $table->foreignId('company_id')->default(1)->after('id')->constrained('companies');
-        });
-
-        Schema::table('contas_receber', function (Blueprint $table) {
-            $table->foreignId('company_id')->default(1)->after('id')->constrained('companies');
-        });
     }
 
     public function down(): void
@@ -44,16 +36,6 @@ return new class extends Migration {
         });
 
         Schema::table('movimentacoes_estoque', function (Blueprint $table) {
-            $table->dropForeign(['company_id']);
-            $table->dropColumn('company_id');
-        });
-
-        Schema::table('contas_pagar', function (Blueprint $table) {
-            $table->dropForeign(['company_id']);
-            $table->dropColumn('company_id');
-        });
-
-        Schema::table('contas_receber', function (Blueprint $table) {
             $table->dropForeign(['company_id']);
             $table->dropColumn('company_id');
         });

@@ -24,8 +24,7 @@ class DatabaseSeeder extends Seeder
             // CompraSeeder::class,              // compras + compra_itens → company, store, fornecedor, user, product
             // VendaSeeder::class,               // vendas + venda_itens → company, store, market_place, user, product, status
             // AjusteEstoqueSeeder::class,       // ajustes_estoque + movimentacoes_estoque → company, product, user
-            // ContaPagarSeeder::class,          // contas_pagar → company, user, categoria_financeira, forma_pagamento, fornecedor
-            // ContaReceberSeeder::class,        // contas_receber → company, user, market_place
+
         ]);
     }
 }
