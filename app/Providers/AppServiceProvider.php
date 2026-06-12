@@ -74,6 +74,10 @@ use App\Contracts\Services\Finance\AccountReceivableServiceInterface;
 use App\Services\Finance\AccountReceivableService;
 use App\Contracts\Repositories\Finance\AccountReceivableRepositoryInterface;
 use App\Repositories\Finance\AccountReceivableRepository;
+use App\Contracts\Services\Finance\CashFlowServiceInterface;
+use App\Services\Finance\CashFlowService;
+use App\Contracts\Repositories\Finance\CashFlowRepositoryInterface;
+use App\Repositories\Finance\CashFlowRepository;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -194,6 +198,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             AccountReceivableRepositoryInterface::class,
             AccountReceivableRepository::class
+        );
+        $this->app->bind(
+            CashFlowServiceInterface::class,
+            CashFlowService::class
+        );
+        $this->app->bind(
+            CashFlowRepositoryInterface::class,
+            CashFlowRepository::class
         );
     }
 

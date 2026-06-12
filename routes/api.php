@@ -20,6 +20,7 @@ use App\Http\Controllers\Stock\StockController;
 use App\Http\Controllers\Adjustment\StockAdjustmentController;
 use App\Http\Controllers\Finance\AccountPayableController;
 use App\Http\Controllers\Finance\AccountReceivableController;
+use App\Http\Controllers\Finance\CashFlowController;
 Route::prefix('/v1')->group(function () {
 
     //List Suspended
@@ -58,6 +59,7 @@ Route::prefix('/v1')->group(function () {
     Route::apiResource('/stock', StockController::class);
 
     //Finance
+    Route::get('/finance/cash-flow', [CashFlowController::class, 'index']);
     Route::apiResource('/account-payable', AccountPayableController::class);
     Route::apiResource('/account-receivable', AccountReceivableController::class);
 
