@@ -14,7 +14,7 @@ class MarketPlace extends Model
     public $table = 'market_places';
     public $timestamps = false;
 
-    public $fillable = ['name', 'description', 'taxa_percent', 'taxa_fix_itens', 'status_id'];
+    public $fillable = ['name', 'description', 'taxa_percentual', 'taxa_fixa', 'status_id'];
 
     public function stores()
     {

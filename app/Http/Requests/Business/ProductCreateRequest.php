@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Business;
 
+use App\Classes\Sku;
 use Illuminate\Foundation\Http\FormRequest;
+use Override;
 
 class ProductCreateRequest extends FormRequest
 {
@@ -54,5 +56,19 @@ class ProductCreateRequest extends FormRequest
             'fornecedor_id' => 'fornecedor',
             'path_image'    => 'imagem',
         ];
+    }
+    // public function prepareForValidation()
+    // {
+    //     $this->merge([
+    //         'sku' => Sku::generate($this->input('name')),
+    //     ]);
+
+
+    // }
+      public function validationData(): array
+    {
+        return array_merge(parent::validationData(), [
+          'sku' => Sku::generate($this->input('sku')),
+        ]);
     }
 }

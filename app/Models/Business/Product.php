@@ -20,6 +20,7 @@ class Product extends Model
         'price_unit',
         'price_box',
         'status_id',
+        'fornecedor_id',
         'path_image'
     ];
     public $hidden = [

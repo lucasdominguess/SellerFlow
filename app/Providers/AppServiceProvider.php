@@ -6,78 +6,74 @@ use App\Contracts\Repositories\Accout\CompanyRepositoryInterface;
 use App\Contracts\Repositories\Accout\StoreRepositoryInterface;
 use App\Contracts\Repositories\Accout\UserRepositoryInterface;
 use App\Contracts\Repositories\Accout\UserStoreRepositoryInterface;
+use App\Contracts\Repositories\Adjustment\StockAdjustmentRepositoryInterface;
 use App\Contracts\Repositories\Business\FornecedorRepositoryInterface;
 use App\Contracts\Repositories\Business\ProductRepositoryInterface;
+use App\Contracts\Repositories\Business\ValidateProductRepositoryInterface;
+use App\Contracts\Repositories\Finance\AccountPayableRepositoryInterface;
+use App\Contracts\Repositories\Finance\AccountReceivableRepositoryInterface;
+use App\Contracts\Repositories\Finance\CashFlowRepositoryInterface;
 use App\Contracts\Repositories\ListSuspended\ListSuspendedRepositoryInterface;
+use App\Contracts\Repositories\Purchases\CompraRepositoryInterface;
+use App\Contracts\Repositories\Sales\VendasRepositoryInterface;
+use App\Contracts\Repositories\Stock\StockBalanceRepositoryInterface;
+use App\Contracts\Repositories\Stock\StockRepositoryInterface;
 use App\Contracts\Services\Accout\CompanyServiceInterface;
 use App\Contracts\Services\Accout\StoreServiceInterface;
 use App\Contracts\Services\Accout\UserServiceInterface;
 use App\Contracts\Services\Accout\UserStoreServiceInterface;
+use App\Contracts\Services\Adjustment\StockAdjustmentServiceInterface;
 use App\Contracts\Services\Auth\AuthServiceInterface;
 use App\Contracts\Services\Business\FornecedorServiceInterface;
 use App\Contracts\Services\Business\ProductServiceInterface;
+use App\Contracts\Services\Business\ValidateProductServiceInterface;
+use App\Contracts\Services\Finance\AccountPayableServiceInterface;
+use App\Contracts\Services\Finance\AccountReceivableServiceInterface;
+use App\Contracts\Services\Finance\CashFlowServiceInterface;
 use App\Contracts\Services\ListSuspended\ListSuspendedServiceInterface;
+use App\Contracts\Services\Purchases\CompraServiceInterface;
+use App\Contracts\Services\Sales\VendasServiceInterface;
+use App\Contracts\Services\Stock\StockServiceInterface;
 use App\Interfaces\PdfExporterInterface;
+use App\Models\Stock\Stock;
+use App\Observers\StockObserver;
 use App\Repositories\Accout\CompanyRepository;
 use App\Repositories\Accout\StoreRepository;
 use App\Repositories\Accout\UserRepository;
 use App\Repositories\Accout\UserStoreRepository;
+use App\Repositories\Adjustment\StockAdjustmentRepository;
 use App\Repositories\Business\FornecedorRepository;
 use App\Repositories\Business\ProductRepository;
+use App\Repositories\Business\ValidateProductRepository;
+use App\Repositories\Finance\AccountPayableRepository;
+use App\Repositories\Finance\AccountReceivableRepository;
+use App\Repositories\Finance\CashFlowRepository;
 use App\Repositories\ListSuspended\ListSuspendedRepository;
+use App\Repositories\Purchases\CompraRepository;
+use App\Repositories\Sales\VendasRepository;
+use App\Repositories\Stock\StockBalanceRepository;
+use App\Repositories\Stock\StockRepository;
 use App\Services\Accout\CompanyService;
 use App\Services\Accout\StoreService;
 use App\Services\Accout\UserService;
 use App\Services\Accout\UserStoreService;
+use App\Services\Adjustment\StockAdjustmentService;
 use App\Services\Auth\AuthService;
 use App\Services\Business\FornecedorService;
 use App\Services\Business\ProductService;
+use App\Services\Business\ValidateProductService;
 use App\Services\DomPdfService;
+use App\Services\Finance\AccountPayableService;
+use App\Services\Finance\AccountReceivableService;
+use App\Services\Finance\CashFlowService;
 use App\Services\ListSuspended\ListSuspendedService;
+use App\Services\Purchases\CompraService;
+use App\Services\Sales\VendasService;
+use App\Services\Stock\StockService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
-use App\Contracts\Services\Sales\VendasServiceInterface;
-use App\Services\Sales\VendasService;
-use App\Contracts\Repositories\Sales\VendasRepositoryInterface;
-use App\Repositories\Sales\VendasRepository;
-use App\Contracts\Services\Sales\VendaItemServiceInterface;
-use App\Services\Sales\VendaItemService;
-use App\Contracts\Repositories\Sales\VendaItemRepositoryInterface;
-use App\Repositories\Sales\VendaItemRepository;
-use App\Contracts\Services\Purchases\ComprasServiceInterface;
-use App\Services\Purchases\ComprasService;
-use App\Contracts\Repositories\Purchases\ComprasRepositoryInterface;
-use App\Repositories\Purchases\ComprasRepository;
-use App\Contracts\Services\Purchases\CompraServiceInterface;
-use App\Services\Purchases\CompraService;
-use App\Contracts\Repositories\Purchases\CompraRepositoryInterface;
-use App\Repositories\Purchases\CompraRepository;
-use App\Contracts\Services\Stock\StockServiceInterface;
-use App\Services\Stock\StockService;
-use App\Contracts\Repositories\Stock\StockRepositoryInterface;
-use App\Repositories\Stock\StockRepository;
-use App\Contracts\Repositories\Stock\StockBalanceRepositoryInterface;
-use App\Repositories\Stock\StockBalanceRepository;
-use App\Models\Stock\Stock;
-use App\Observers\StockObserver;
-use App\Contracts\Services\Adjustment\StockAdjustmentServiceInterface;
-use App\Services\Adjustment\StockAdjustmentService;
-use App\Contracts\Repositories\Adjustment\StockAdjustmentRepositoryInterface;
-use App\Repositories\Adjustment\StockAdjustmentRepository;
-use App\Contracts\Services\Finance\AccountPayableServiceInterface;
-use App\Services\Finance\AccountPayableService;
-use App\Contracts\Repositories\Finance\AccountPayableRepositoryInterface;
-use App\Repositories\Finance\AccountPayableRepository;
-use App\Contracts\Services\Finance\AccountReceivableServiceInterface;
-use App\Services\Finance\AccountReceivableService;
-use App\Contracts\Repositories\Finance\AccountReceivableRepositoryInterface;
-use App\Repositories\Finance\AccountReceivableRepository;
-use App\Contracts\Services\Finance\CashFlowServiceInterface;
-use App\Services\Finance\CashFlowService;
-use App\Contracts\Repositories\Finance\CashFlowRepositoryInterface;
-use App\Repositories\Finance\CashFlowRepository;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -146,7 +142,7 @@ class AppServiceProvider extends ServiceProvider
             FornecedorRepositoryInterface::class,
             FornecedorRepository::class
         );
-        $this->app->bind( AuthServiceInterface::class, AuthService::class);
+        $this->app->bind(AuthServiceInterface::class, AuthService::class);
         $this->app->bind(
             VendasServiceInterface::class,
             VendasService::class
@@ -206,6 +202,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             CashFlowRepositoryInterface::class,
             CashFlowRepository::class
+        );
+        $this->app->bind(
+            ValidateProductServiceInterface::class,
+            ValidateProductService::class
+        );
+        $this->app->bind(
+            ValidateProductRepositoryInterface::class,
+            ValidateProductRepository::class
         );
     }
 
