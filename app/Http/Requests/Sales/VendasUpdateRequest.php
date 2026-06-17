@@ -50,6 +50,7 @@ class VendasUpdateRequest extends FormRequest
             'min'     => 'O campo :attribute deve ser maior ou igual a :min.',
             'decimal' => 'O campo :attribute deve ter no máximo 2 casas decimais.',
             'date'    => 'O campo :attribute deve ser uma data válida.',
+            'status.enum'  => 'O status selecionado para :attribute é inválido.',
         ];
     }
 

@@ -4,23 +4,22 @@ use App\Http\Controllers\Accout\CompanyController;
 use App\Http\Controllers\Accout\StoreController;
 use App\Http\Controllers\Accout\UserController;
 use App\Http\Controllers\Accout\UserStoreController;
+use App\Http\Controllers\Adjustment\StockAdjustmentController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Business\FornecedorController;
 use App\Http\Controllers\Business\ProductController;
+use App\Http\Controllers\Business\ValidateProductController;
+use App\Http\Controllers\Finance\AccountPayableController;
+use App\Http\Controllers\Finance\AccountReceivableController;
+use App\Http\Controllers\Finance\CashFlowController;
 use App\Http\Controllers\ListSuspended\ListSuspendedController;
+use App\Http\Controllers\Purchases\CompraController;
 use App\Http\Controllers\Sales\VendasController;
+use App\Http\Controllers\Stock\StockController;
 use App\Http\Controllers\Test\TestController;
 use App\Http\Middleware\JwtMiddleware;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Sales\VendaItemController;
-use App\Http\Controllers\Purchases\ComprasController;
-use App\Http\Controllers\Purchases\CompraController;
-use App\Http\Controllers\Stock\StockController;
-use App\Http\Controllers\Adjustment\StockAdjustmentController;
-use App\Http\Controllers\Finance\AccountPayableController;
-use App\Http\Controllers\Finance\AccountReceivableController;
-use App\Http\Controllers\Finance\CashFlowController;
 Route::prefix('/v1')->group(function () {
 
     //List Suspended
@@ -44,6 +43,10 @@ Route::prefix('/v1')->group(function () {
 
     //Business
     Route::apiResource('product', ProductController::class);
+    // Route::apiResource('validate-product', ValidateProductController::class);
+    Route::post('/validate-product',[ValidateProductController::class, 'validate']);
+    Route::post('/validate-product-save',[ValidateProductController::class, 'store']);
+
     Route::apiResource('fornecedor', FornecedorController::class);
 
     //Purchases
@@ -77,3 +80,5 @@ Route::prefix('/v1')->group(function () {
 
 
 Route::fallback(fn() => response(["message" => 'Página não encontrada'], 404));
+
+
