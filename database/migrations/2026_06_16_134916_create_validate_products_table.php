@@ -25,9 +25,9 @@ Schema::create('validate_products', function (Blueprint $table) {
     $table->string('catalog_link')->nullable();
 
 
-    $table->foreignId('fornecedor_id')->nullable()->constrained('fornecedores')->nullOnDelete();
+    $table->foreignId('supplier_id')->nullable()->constrained('suppliers')->nullOnDelete();
 
- 
+
     $table->decimal('price_sale', 10, 2);
     $table->decimal('price_buy', 10, 2);
     $table->decimal('cust_additional', 10, 2)->default(0);

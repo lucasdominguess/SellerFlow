@@ -32,7 +32,7 @@ class Product extends Model
     {
         return $this->belongsTo(Status::class, 'status_id');
     }
-    public function fornecedor()
+    public function supplier()
     {
         return $this->belongsTo(Supplier::class, 'fornecedor_id');
     }

@@ -3,7 +3,7 @@
 namespace App\Models\Business;
 
 use App\Models\Accout\User;
-use App\Models\Business\Fornecedor;
+use App\Models\Business\Supplier;
 use App\Models\ListSuspended\Company;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,7 +24,7 @@ class ValidateProduct extends Model
         'brand',
         'description',
         'catalog_link',
-        'fornecedor_id',
+        'supplier_id',
         'price_sale',
         'price_buy',
         'cust_additional',
@@ -60,8 +60,8 @@ class ValidateProduct extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function fornecedor(): BelongsTo
+    public function supplier(): BelongsTo
     {
-        return $this->belongsTo(Fornecedor::class);
+        return $this->belongsTo(Supplier::class);
     }
 }
