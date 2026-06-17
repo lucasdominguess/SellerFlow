@@ -2,7 +2,7 @@
 
 namespace App\DTOs\Business;
 
-use App\Models\Business\Fornecedor;
+use App\Models\Business\Supplier;
 
 class FornecedorResponseDTO
 {
@@ -19,7 +19,7 @@ class FornecedorResponseDTO
         public readonly int $status_id,
     ) {}
 
-    public static function fromModel(Fornecedor $model): self
+    public static function fromModel(Supplier $model): self
     {
         return new self(
             id: $model->id,

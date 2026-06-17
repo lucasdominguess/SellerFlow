@@ -15,7 +15,7 @@ interface StockBalanceRepositoryInterface
         int $page
     ): LengthAwarePaginator;
 
-    // Recalcula (upsert) o saldo de um produto a partir de movimentacoes_estoque.
+    // Recalcula (upsert) o saldo de um produto a partir de stock_movements.
     // Se o produto não tiver mais movimentações, remove a linha de saldo.
     public function recomputeFor(int $companyId, int $productId): void;
 }

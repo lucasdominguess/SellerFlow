@@ -9,7 +9,7 @@ use App\Contracts\Services\Stock\StockServiceInterface;
 use App\DTOs\Sales\VendasDTO;
 use App\DTOs\Sales\VendasResponseDTO;
 use App\Enums\TransactionStatus;
-use App\Models\Sales\Venda;
+use App\Models\Sales\Sale;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
@@ -34,7 +34,7 @@ class VendasService implements VendasServiceInterface
         return $paginator;
     }
 
-    public function show(Venda $venda): VendasResponseDTO
+    public function show(Sale $venda): VendasResponseDTO
     {
         $venda = $this->repository->show($venda);
 
@@ -65,7 +65,7 @@ class VendasService implements VendasServiceInterface
         return VendasResponseDTO::fromModel($venda);
     }
 
-    public function update(Venda $venda, VendasDTO $dto): VendasResponseDTO
+    public function update(Sale $venda, VendasDTO $dto): VendasResponseDTO
     {
         $data = $dto->toArray();
         // recalcula só quando algum componente do valor mudou, usando o valor atual como fallback
@@ -101,7 +101,7 @@ class VendasService implements VendasServiceInterface
         return VendasResponseDTO::fromModel($venda);
     }
 
-    private function isStatusChanging(Venda $venda, VendasDTO $dto): bool
+    private function isStatusChanging(Sale $venda, VendasDTO $dto): bool
     {
         return $dto->status !== null && $venda->status?->value !== $dto->status;
     }
@@ -111,7 +111,7 @@ class VendasService implements VendasServiceInterface
         return round($bruto - $taxa - $frete, 2);
     }
 
-    public function delete(Venda $venda)
+    public function delete(Sale $venda)
     {
         return $this->repository->delete($venda);
 

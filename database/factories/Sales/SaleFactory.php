@@ -3,13 +3,13 @@
 namespace Database\Factories\Sales;
 
 use App\Enums\TransactionStatus;
-use App\Models\Sales\Venda;
+use App\Models\Sales\Sale;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Venda>
+ * @extends Factory<Sale>
  */
-class VendaFactory extends Factory
+class SaleFactory extends Factory
 {
     public function definition(): array
     {

@@ -19,8 +19,8 @@ class FornecedorUpdateRequest extends FormRequest
         return [
             'name'         => ['sometimes', 'string', 'max:255'],
             'responsavel'  => ['sometimes', 'nullable', 'string', 'max:255'],
-            'cnpj'         => ['sometimes', 'string', 'max:18', Rule::unique('fornecedores', 'cnpj')->ignore($currentId)],
-            'email'        => ['sometimes', 'string', 'email', 'max:255', Rule::unique('fornecedores', 'email')->ignore($currentId)],
+            'cnpj'         => ['sometimes', 'string', 'max:18', Rule::unique('suppliers', 'cnpj')->ignore($currentId)],
+            'email'        => ['sometimes', 'string', 'email', 'max:255', Rule::unique('suppliers', 'email')->ignore($currentId)],
             'phone'        => ['sometimes', 'nullable', 'string', 'max:20'],
             'address'      => ['sometimes', 'nullable', 'string', 'max:255'],
             'link_catalog' => ['sometimes', 'nullable', 'string', 'url', 'max:255'],

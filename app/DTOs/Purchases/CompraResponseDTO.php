@@ -2,7 +2,7 @@
 
 namespace App\DTOs\Purchases;
 
-use App\Models\Purchases\Compra;
+use App\Models\Purchases\Purchase;
 
 class CompraResponseDTO implements \JsonSerializable
 {
@@ -22,7 +22,7 @@ class CompraResponseDTO implements \JsonSerializable
         public readonly array $itens = [],
     ) {}
 
-    public static function fromModel(Compra $model): self
+    public static function fromModel(Purchase $model): self
     {
         return new self(
             id:                $model->id,

@@ -5,8 +5,8 @@ namespace App\Contracts\Services\Stock;
 use App\DTOs\Adjustment\StockAdjustmentDTO;
 use App\DTOs\Stock\StockDTO;
 use App\DTOs\Stock\StockResponseDTO;
-use App\Models\Purchases\Compra;
-use App\Models\Sales\Venda;
+use App\Models\Purchases\Purchase;
+use App\Models\Sales\Sale;
 use App\Models\Stock\Stock;
 use App\Models\Stock\StockAdjustment;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -23,11 +23,11 @@ interface StockServiceInterface
 
     public function delete(Stock $stock);
 
-    public function proccessItensPurchase(Compra $compra,array $itens);
-    public function proccessItensSale(Venda $venda,array $itens);
+    public function proccessItensPurchase(Purchase $compra,array $itens);
+    public function proccessItensSale(Sale $venda,array $itens);
 
-    public function reverseItensPurchase(Compra $compra);
-    public function reverseItensSale(Venda $venda);
+    public function reverseItensPurchase(Purchase $compra);
+    public function reverseItensSale(Sale $venda);
 
     public function proccessItensAdjustment(StockAdjustment $stockAdjustment);
 

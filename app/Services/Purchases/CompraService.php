@@ -9,7 +9,7 @@ use App\Contracts\Services\Stock\StockServiceInterface;
 use App\DTOs\Purchases\CompraDTO;
 use App\DTOs\Purchases\CompraResponseDTO;
 use App\Enums\TransactionStatus;
-use App\Models\Purchases\Compra;
+use App\Models\Purchases\Purchase;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
@@ -33,7 +33,7 @@ class CompraService implements CompraServiceInterface
         return $paginator;
     }
 
-    public function show(Compra $compra): CompraResponseDTO
+    public function show(Purchase $compra): CompraResponseDTO
     {
         $compra = $this->repository->show($compra);
 
@@ -60,7 +60,7 @@ class CompraService implements CompraServiceInterface
         return CompraResponseDTO::fromModel($compra);
     }
 
-    public function update(Compra $compra, CompraDTO $dto): CompraResponseDTO
+    public function update(Purchase $compra, CompraDTO $dto): CompraResponseDTO
     {
         // Sem mudança de status: update simples, sem transação nem propagação.
         if (! $this->isStatusChanging($compra, $dto)) {
@@ -86,12 +86,12 @@ class CompraService implements CompraServiceInterface
         return CompraResponseDTO::fromModel($compra);
     }
 
-    private function isStatusChanging(Compra $compra, CompraDTO $dto): bool
+    private function isStatusChanging(Purchase $compra, CompraDTO $dto): bool
     {
         return $dto->status !== null && $compra->status?->value !== $dto->status;
     }
 
-    public function delete(Compra $compra)
+    public function delete(Purchase $compra)
     {
         return $this->repository->delete($compra);
     }

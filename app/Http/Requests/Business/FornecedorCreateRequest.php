@@ -16,8 +16,8 @@ class FornecedorCreateRequest extends FormRequest
         return [
             'name'         => ['required', 'string', 'max:255'],
             'responsavel'  => ['nullable', 'string', 'max:255'],
-            'cnpj'         => ['required', 'string', 'max:18', 'unique:fornecedores,cnpj'],
-            'email'        => ['required', 'string', 'email', 'max:255', 'unique:fornecedores,email'],
+            'cnpj'         => ['required', 'string', 'max:18', 'unique:suppliers,cnpj'],
+            'email'        => ['required', 'string', 'email', 'max:255', 'unique:suppliers,email'],
             'phone'        => ['nullable', 'string', 'max:20'],
             'address'      => ['nullable', 'string', 'max:255'],
             'link_catalog' => ['nullable', 'string', 'url', 'max:255'],

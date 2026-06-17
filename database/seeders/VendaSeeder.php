@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\Sales\Venda;
-use App\Models\Sales\VendaItem;
+use App\Models\Sales\Sale;
+use App\Models\Sales\SaleItem;
 use Illuminate\Database\Seeder;
 
 class VendaSeeder extends Seeder
 {
     public function run(): void
     {
-        Venda::factory()->count(30)->create()->each(function (Venda $venda) {
-            VendaItem::factory()->count(rand(1, 4))->create(['venda_id' => $venda->id]);
+        Sale::factory()->count(30)->create()->each(function (Sale $venda) {
+            SaleItem::factory()->count(rand(1, 4))->create(['venda_id' => $venda->id]);
         });
     }
 }

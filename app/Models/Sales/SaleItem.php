@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Models\Purchases;
+namespace App\Models\Sales;
 
 use App\Models\Business\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CompraItem extends Model
+class SaleItem extends Model
 {
-    /** @use HasFactory<\Database\Factories\Purchases\CompraItemFactory> */
+    /** @use HasFactory<\Database\Factories\Sales\SaleItemFactory> */
     use HasFactory;
 
-    public $table = 'compra_itens';
+    public $table = 'sale_items';
 
     protected $fillable = [
-        'compra_id',
+        'venda_id',
         'product_id',
         'quantidade',
         'valor_unitario',
@@ -28,9 +28,10 @@ class CompraItem extends Model
         'valor_total'    => 'decimal:2',
     ];
 
-    public function compra()
+    // método 'venda' mantido: a FK continua 'venda_id'
+    public function venda()
     {
-        return $this->belongsTo(Compra::class);
+        return $this->belongsTo(Sale::class);
     }
 
     public function product()

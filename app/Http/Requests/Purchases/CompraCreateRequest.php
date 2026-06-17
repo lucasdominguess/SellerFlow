@@ -18,9 +18,9 @@ class CompraCreateRequest extends FormRequest
         return [
             'company_id' => 'required|integer|exists:companies,id',
             'store_id' => 'required|integer|exists:stores,id',
-            'fornecedor_id' => 'required|integer|exists:fornecedores,id',
+            'fornecedor_id' => 'required|integer|exists:suppliers,id',
             'user_id' => 'required|integer|exists:users,id',
-            'forma_pagamento_id' => 'required|integer|exists:forma_pagamentos,id',
+            'forma_pagamento_id' => 'required|integer|exists:payment_methods,id',
             // status não vem do cliente no create: a compra sempre nasce 'pendente'
             'numero_nota' => 'nullable|string|max:255',
             'data_compra' => 'required|date',

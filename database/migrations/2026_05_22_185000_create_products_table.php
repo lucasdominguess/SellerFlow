@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->decimal('price_unit', 10, 2);
             $table->decimal('price_box', 10, 2);
             $table->foreignId('status_id')->constrained('status')->default(1);
-            $table->foreignId('fornecedor_id')->constrained('fornecedores')->nullable();
+            $table->foreignId('fornecedor_id')->constrained('suppliers')->nullable();
             $table->string('path_image')->nullable();
             $table->timestamps();
         });

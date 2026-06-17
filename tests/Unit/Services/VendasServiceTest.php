@@ -7,7 +7,7 @@ use App\Contracts\Services\Finance\AccountReceivableServiceInterface;
 use App\Contracts\Services\Stock\StockServiceInterface;
 use App\DTOs\Sales\VendasDTO;
 use App\DTOs\Sales\VendasResponseDTO;
-use App\Models\Sales\Venda;
+use App\Models\Sales\Sale;
 use App\Services\Sales\VendasService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -46,7 +46,7 @@ describe('VendasService', function () {
         $expectedData                  = $dto->toArray();
         $expectedData['valor_liquido'] = 160.00; // 200 - 30 - 10
 
-        $model = Venda::factory()->make([
+        $model = Sale::factory()->make([
             'id'               => 1,
             'company_id'       => 1,
             'valor_bruto'      => 200.00,
@@ -81,7 +81,7 @@ describe('VendasService', function () {
 
     // verifica que show delega ao repository e retorna VendasResponseDTO
     it('returns VendasResponseDTO for existing venda on show', function () {
-        $model = Venda::factory()->make(['id' => 5]);
+        $model = Sale::factory()->make(['id' => 5]);
 
         $this->repositoryMock
             ->expects($this->once())
@@ -99,7 +99,7 @@ describe('VendasService', function () {
     // como fallback quando apenas valor_bruto e alterado
     it('recalculates valor_liquido using current venda values as fallback', function () {
         $dto      = VendasDTO::fromUpdateRequest(['valor_bruto' => 250.00]);
-        $original = Venda::factory()->make([
+        $original = Sale::factory()->make([
             'id'               => 3,
             'valor_bruto'      => 200.00,
             'taxa_marketplace' => 20.00,
@@ -110,7 +110,7 @@ describe('VendasService', function () {
         $expectedData                  = $dto->toArray();
         $expectedData['valor_liquido'] = 225.00; // 250 - 20 - 5 (taxa e frete vêm do model atual)
 
-        $updated = Venda::factory()->make([
+        $updated = Sale::factory()->make([
             'id'               => 3,
             'valor_bruto'      => 250.00,
             'taxa_marketplace' => 20.00,
@@ -133,12 +133,12 @@ describe('VendasService', function () {
     // verifica que update nao recalcula valor_liquido quando nenhum componente do valor muda
     it('does not recalculate valor_liquido when no value component changes', function () {
         $dto      = VendasDTO::fromUpdateRequest(['observacao' => 'Pedido com atraso']);
-        $original = Venda::factory()->make(['id' => 4, 'observacao' => null]);
+        $original = Sale::factory()->make(['id' => 4, 'observacao' => null]);
 
         $expectedData = $dto->toArray();
         expect($expectedData)->not->toHaveKey('valor_liquido');
 
-        $updated = Venda::factory()->make(['id' => 4, 'observacao' => 'Pedido com atraso']);
+        $updated = Sale::factory()->make(['id' => 4, 'observacao' => 'Pedido com atraso']);
 
         $this->repositoryMock
             ->expects($this->once())
@@ -153,7 +153,7 @@ describe('VendasService', function () {
 
     // verifica que delete delega a exclusao ao repository uma unica vez
     it('delegates deletion to repository', function () {
-        $model = Venda::factory()->make(['id' => 7]);
+        $model = Sale::factory()->make(['id' => 7]);
 
         $this->repositoryMock
             ->expects($this->once())
@@ -165,7 +165,7 @@ describe('VendasService', function () {
 
     // verifica que index transforma os itens do paginator em arrays de VendasResponseDTO
     it('transforms paginator items into VendasResponseDTO arrays on index', function () {
-        $model      = Venda::factory()->make(['id' => 1, 'numero_pedido' => '999', 'valor_liquido' => 99.90]);
+        $model      = Sale::factory()->make(['id' => 1, 'numero_pedido' => '999', 'valor_liquido' => 99.90]);
         $collection = new Collection([$model]);
         $paginator  = new LengthAwarePaginator($collection, 1, 15, 1);
 

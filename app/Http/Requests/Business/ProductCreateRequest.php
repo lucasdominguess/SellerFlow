@@ -21,7 +21,7 @@ class ProductCreateRequest extends FormRequest
             'price_unit'   => ['required', 'numeric', 'min:0', 'decimal:0,2'],
             'price_box'    => ['required', 'numeric', 'min:0', 'decimal:0,2'],
             'status_id'    => ['required', 'integer', 'exists:status,id'],
-            'fornecedor_id'=> ['nullable', 'integer', 'exists:fornecedores,id'],
+            'fornecedor_id'=> ['nullable', 'integer', 'exists:suppliers,id'],
             'path_image'   => ['nullable', 'string', 'max:255'],
         ];
     }

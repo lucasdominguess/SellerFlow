@@ -8,7 +8,7 @@ use App\DTOs\Business\FornecedorDTO;
 use App\Http\Requests\Business\FilterFornecedorIndexRequest;
 use App\Http\Requests\Business\FornecedorCreateRequest;
 use App\Http\Requests\Business\FornecedorUpdateRequest;
-use App\Models\Business\Fornecedor;
+use App\Models\Business\Supplier;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 
@@ -26,7 +26,7 @@ class FornecedorController extends Controller
         return ApiResponse::paginated($paginator, message: 'Fornecedors recuperados com sucesso');
     }
 
-    public function show(Fornecedor $fornecedor): JsonResponse
+    public function show(Supplier $fornecedor): JsonResponse
     {
         $fornecedorResponse = $this->service->show($fornecedor);
 
@@ -41,7 +41,7 @@ class FornecedorController extends Controller
         return ApiResponse::created($fornecedorResponse, 'Fornecedor criado com sucesso');
     }
 
-    public function update(Fornecedor $fornecedor, FornecedorUpdateRequest $request): JsonResponse
+    public function update(Supplier $fornecedor, FornecedorUpdateRequest $request): JsonResponse
     {
         $data = $request->validated();
         $fornecedorResponse = $this->service->update($fornecedor, FornecedorDTO::fromRequest($data));
@@ -49,7 +49,7 @@ class FornecedorController extends Controller
         return ApiResponse::success($fornecedorResponse, 'Fornecedor atualizado com sucesso');
     }
 
-    public function destroy(Fornecedor $fornecedor): JsonResponse
+    public function destroy(Supplier $fornecedor): JsonResponse
     {
         $this->service->delete($fornecedor);
 

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\ListSuspended\CategoriaFinanceira;
+use App\Models\ListSuspended\FinancialCategory;
 use Illuminate\Database\Seeder;
 
 class CategoriaFinanceiraSeeder extends Seeder
@@ -12,7 +12,7 @@ class CategoriaFinanceiraSeeder extends Seeder
      */
     public function run(): void
     {
-        CategoriaFinanceira::factory()->createMany(
+        FinancialCategory::factory()->createMany(
             [
                 [
                     'name' => 'ENTRADA'

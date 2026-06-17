@@ -8,7 +8,7 @@ use App\DTOs\Sales\VendasDTO;
 use App\Http\Requests\Sales\FilterVendasIndexRequest;
 use App\Http\Requests\Sales\VendasCreateRequest;
 use App\Http\Requests\Sales\VendasUpdateRequest;
-use App\Models\Sales\Venda;
+use App\Models\Sales\Sale;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 
@@ -26,7 +26,7 @@ class VendasController extends Controller
         return ApiResponse::paginated($paginator, message: 'Vendas recuperadas com sucesso');
     }
 
-    public function show(Venda $venda): JsonResponse
+    public function show(Sale $venda): JsonResponse
     {
         $vendaResponse = $this->service->show($venda);
 
@@ -41,7 +41,7 @@ class VendasController extends Controller
         return ApiResponse::created($vendaResponse, 'Venda criada com sucesso');
     }
 
-    public function update(Venda $venda, VendasUpdateRequest $request): JsonResponse
+    public function update(Sale $venda, VendasUpdateRequest $request): JsonResponse
     {
         $data = $request->validated();
         $vendaResponse = $this->service->update($venda, VendasDTO::fromUpdateRequest($data));
@@ -49,7 +49,7 @@ class VendasController extends Controller
         return ApiResponse::success($vendaResponse, 'Venda atualizada com sucesso');
     }
 
-    public function destroy(Venda $venda): JsonResponse
+    public function destroy(Sale $venda): JsonResponse
     {
         $this->service->delete($venda);
 

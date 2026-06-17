@@ -7,7 +7,7 @@ use App\Contracts\Services\Finance\AccountPayableServiceInterface;
 use App\Contracts\Services\Stock\StockServiceInterface;
 use App\DTOs\Purchases\CompraDTO;
 use App\DTOs\Purchases\CompraResponseDTO;
-use App\Models\Purchases\Compra;
+use App\Models\Purchases\Purchase;
 use App\Services\Purchases\CompraService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -46,7 +46,7 @@ describe('CompraService', function () {
         $expectedData                = $dto->toArray();
         $expectedData['valor_total'] = 160.00; // (2*50.00) + (3*20.00)
 
-        $model = Compra::factory()->make([
+        $model = Purchase::factory()->make([
             'id'          => 1,
             'company_id'  => 1,
             'valor_total' => 160.00,
@@ -78,7 +78,7 @@ describe('CompraService', function () {
 
     // verifica que show delega ao repository e retorna CompraResponseDTO
     it('returns CompraResponseDTO for existing compra on show', function () {
-        $model = Compra::factory()->make(['id' => 5, 'valor_total' => 100.00]);
+        $model = Purchase::factory()->make(['id' => 5, 'valor_total' => 100.00]);
 
         $this->repositoryMock
             ->expects($this->once())
@@ -95,8 +95,8 @@ describe('CompraService', function () {
     // verifica que update repassa os dados ao repository e retorna CompraResponseDTO atualizado
     it('updates compra and returns updated CompraResponseDTO', function () {
         $dto      = CompraDTO::fromUpdateRequest(['observacao' => 'Nota fiscal corrigida']);
-        $original = Compra::factory()->make(['id' => 3, 'observacao' => null]);
-        $updated  = Compra::factory()->make(['id' => 3, 'observacao' => 'Nota fiscal corrigida']);
+        $original = Purchase::factory()->make(['id' => 3, 'observacao' => null]);
+        $updated  = Purchase::factory()->make(['id' => 3, 'observacao' => 'Nota fiscal corrigida']);
 
         $this->repositoryMock
             ->expects($this->once())
@@ -112,7 +112,7 @@ describe('CompraService', function () {
 
     // verifica que delete delega a exclusao ao repository uma unica vez
     it('delegates deletion to repository', function () {
-        $model = Compra::factory()->make(['id' => 7]);
+        $model = Purchase::factory()->make(['id' => 7]);
 
         $this->repositoryMock
             ->expects($this->once())
@@ -124,7 +124,7 @@ describe('CompraService', function () {
 
     // verifica que index transforma os itens do paginator em arrays de CompraResponseDTO
     it('transforms paginator items into CompraResponseDTO arrays on index', function () {
-        $model      = Compra::factory()->make(['id' => 1, 'numero_nota' => 'NF-100', 'valor_total' => 250.50]);
+        $model      = Purchase::factory()->make(['id' => 1, 'numero_nota' => 'NF-100', 'valor_total' => 250.50]);
         $collection = new Collection([$model]);
         $paginator  = new LengthAwarePaginator($collection, 1, 15, 1);
 

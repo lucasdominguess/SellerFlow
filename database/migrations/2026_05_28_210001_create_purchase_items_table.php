@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('venda_itens', function (Blueprint $table) {
+        Schema::create('purchase_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('venda_id')->constrained('vendas')->cascadeOnDelete();
+            $table->foreignId('compra_id')->constrained('purchases')->cascadeOnDelete();
             $table->foreignId('product_id')->constrained('products');
             $table->integer('quantidade');
             $table->decimal('valor_unitario', 10, 2);
@@ -20,6 +20,6 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Schema::dropIfExists('venda_itens');
+        Schema::dropIfExists('purchase_items');
     }
 };

@@ -2,7 +2,7 @@
 
 namespace App\DTOs\Sales;
 
-use App\Models\Sales\Venda;
+use App\Models\Sales\Sale;
 use App\DTOs\Sales\VendaItemResponseDTO;
 
 class VendasResponseDTO implements \JsonSerializable
@@ -25,7 +25,7 @@ class VendasResponseDTO implements \JsonSerializable
         public readonly array $itens = [],
     ) {}
 
-    public static function fromModel(Venda $model): self
+    public static function fromModel(Sale $model): self
     {
         return new self(
             id: $model->id,

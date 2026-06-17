@@ -3,11 +3,11 @@
 namespace App\Models\Finance;
 
 use App\Enums\TransactionStatus;
-use App\Models\ListSuspended\CategoriaFinanceira;
+use App\Models\ListSuspended\FinancialCategory;
 use App\Models\ListSuspended\Company;
-use App\Models\ListSuspended\FormaPagamento;
-use App\Models\Purchases\Compra;
-use App\Models\Sales\Venda;
+use App\Models\ListSuspended\PaymentMethod;
+use App\Models\Purchases\Purchase;
+use App\Models\Sales\Sale;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -47,21 +47,21 @@ class AccountPayable extends Model
 
     public function categoriaFinanceira()
     {
-        return $this->belongsTo(CategoriaFinanceira::class);
+        return $this->belongsTo(FinancialCategory::class);
     }
 
     public function formaPagamento()
     {
-        return $this->belongsTo(FormaPagamento::class);
+        return $this->belongsTo(PaymentMethod::class);
     }
 
     public function compra()
     {
-        return $this->belongsTo(Compra::class, 'origem_id');
+        return $this->belongsTo(Purchase::class, 'origem_id');
     }
 
     public function venda()
     {
-        return $this->belongsTo(Venda::class, 'origem_id');
+        return $this->belongsTo(Sale::class, 'origem_id');
     }
 }

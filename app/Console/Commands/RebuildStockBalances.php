@@ -10,11 +10,11 @@ class RebuildStockBalances extends Command
 {
     protected $signature = 'stock:rebuild-balances';
 
-    protected $description = 'Recalcula stock_balances a partir de movimentacoes_estoque (backfill / reparo)';
+    protected $description = 'Recalcula stock_balances a partir de stock_movements (backfill / reparo)';
 
     public function handle(StockBalanceRepositoryInterface $balanceRepository): int
     {
-        $pairs = DB::table('movimentacoes_estoque')
+        $pairs = DB::table('stock_movements')
             ->select('company_id', 'product_id')
             ->distinct()
             ->get();

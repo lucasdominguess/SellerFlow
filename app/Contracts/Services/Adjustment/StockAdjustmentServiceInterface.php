@@ -13,6 +13,6 @@ interface StockAdjustmentServiceInterface
 
     public function show(StockAdjustment $stockAdjustment): StockAdjustmentResponseDTO;
 
-    // Um item por linha em ajustes_estoque: retorna uma ResponseDTO por item enviado
+    // Um item por linha em stock_adjustments: retorna uma ResponseDTO por item enviado
     public function store(StockAdjustmentDTO $dto): array;
 }

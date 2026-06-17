@@ -4,14 +4,14 @@ namespace App\Repositories\Purchases;
 
 use App\Contracts\Repositories\Purchases\CompraRepositoryInterface;
 use App\DTOs\Purchases\CompraItemDTO;
-use App\Models\Purchases\Compra;
+use App\Models\Purchases\Purchase;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class CompraRepository implements CompraRepositoryInterface
 {
     public function __construct(
-        private Compra $compraModel,
+        private Purchase $compraModel,
     ) {}
 
     public function index(int $perPage = 15, int $page = 1, ?array $filters = []): LengthAwarePaginator
@@ -28,12 +28,12 @@ class CompraRepository implements CompraRepositoryInterface
         return $query->orderByDesc('id')->paginate($perPage);
     }
 
-    public function show(Compra $compra): Compra
+    public function show(Purchase $compra): Purchase
     {
         return $compra->load('itens');
     }
 
-    public function store(array $data): Compra
+    public function store(array $data): Purchase
     {
         return $this->compraModel->create($data);
     }
@@ -43,7 +43,7 @@ class CompraRepository implements CompraRepositoryInterface
      * Cria os itens da compra em lote, calcula valor_total (quantidade * valor_unitario)
      * e retorna a compra com a relação itens carregada.
      */
-    public function storeItens(Compra $compra, array $itens): Compra
+    public function storeItens(Purchase $compra, array $itens): Purchase
     {
         $compra->itens()->createMany(
             array_map(fn(CompraItemDTO $item) => [
@@ -55,14 +55,14 @@ class CompraRepository implements CompraRepositoryInterface
         return $compra->load('itens');
     }
 
-    public function update(Compra $compra, array $data): Compra
+    public function update(Purchase $compra, array $data): Purchase
     {
         $compra->update($data);
 
         return $compra;
     }
 
-    public function delete(Compra $compra)
+    public function delete(Purchase $compra)
     {
         DB::transaction(function () use ($compra) {
             $compra->itens()->delete();

@@ -5,7 +5,7 @@ namespace App\Contracts\Services\Finance;
 use App\DTOs\Finance\AccountPayableDTO;
 use App\DTOs\Finance\AccountPayableResponseDTO;
 use App\Models\Finance\AccountPayable;
-use App\Models\Purchases\Compra;
+use App\Models\Purchases\Purchase;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface AccountPayableServiceInterface
@@ -20,7 +20,7 @@ interface AccountPayableServiceInterface
 
     public function delete(AccountPayable $accountPayable);
 
-    public function proccessPurchase(Compra $compra) : AccountPayable;
+    public function proccessPurchase(Purchase $compra) : AccountPayable;
 
-    public function syncStatusFromPurchase(Compra $compra): void;
+    public function syncStatusFromPurchase(Purchase $compra): void;
 }

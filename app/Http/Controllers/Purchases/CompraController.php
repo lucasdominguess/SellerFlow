@@ -8,7 +8,7 @@ use App\Classes\ApiResponse;
 use App\Http\Requests\Purchases\CompraCreateRequest;
 use App\Http\Requests\Purchases\CompraUpdateRequest;
 use App\Http\Requests\Purchases\FilterCompraIndexRequest;
-use App\Models\Purchases\Compra;
+use App\Models\Purchases\Purchase;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 
@@ -26,7 +26,7 @@ class CompraController extends Controller
         return ApiResponse::paginated($paginator, message: 'Compras recuperados com sucesso');
     }
 
-    public function show(Compra $compra): JsonResponse
+    public function show(Purchase $compra): JsonResponse
     {
         $compraResponse = $this->service->show($compra);
 
@@ -41,7 +41,7 @@ class CompraController extends Controller
         return ApiResponse::created($compraResponse, 'Compra criado com sucesso');
     }
 
-    public function update(Compra $compra, CompraUpdateRequest $request): JsonResponse
+    public function update(Purchase $compra, CompraUpdateRequest $request): JsonResponse
     {
         $data = $request->validated();
         $compraResponse = $this->service->update($compra, CompraDTO::fromUpdateRequest($data));
@@ -49,7 +49,7 @@ class CompraController extends Controller
         return ApiResponse::success($compraResponse, 'Compra atualizado com sucesso');
     }
 
-    public function destroy(Compra $compra): JsonResponse
+    public function destroy(Purchase $compra): JsonResponse
     {
         $this->service->delete($compra);
 

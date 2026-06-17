@@ -5,7 +5,7 @@ namespace App\Contracts\Services\Finance;
 use App\DTOs\Finance\AccountReceivableDTO;
 use App\DTOs\Finance\AccountReceivableResponseDTO;
 use App\Models\Finance\AccountReceivable;
-use App\Models\Sales\Venda;
+use App\Models\Sales\Sale;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface AccountReceivableServiceInterface
@@ -20,7 +20,7 @@ interface AccountReceivableServiceInterface
 
     public function delete(AccountReceivable $accountReceivable);
 
-    public function proccessSale(Venda $venda) : AccountReceivable;
+    public function proccessSale(Sale $venda) : AccountReceivable;
 
-    public function syncStatusFromSale(Venda $venda): void;
+    public function syncStatusFromSale(Sale $venda): void;
 }

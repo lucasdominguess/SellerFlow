@@ -47,8 +47,8 @@ class StockBalanceRepository implements StockBalanceRepositoryInterface
     public function recomputeFor(int $companyId, int $productId): void
     {
         // Mesma lógica de agregação da listagem antiga, porém escopada a um único produto.
-        $totals = DB::table('movimentacoes_estoque as me')
-            ->leftJoin('ajustes_estoque as ae', function ($join) {
+        $totals = DB::table('stock_movements as me')
+            ->leftJoin('stock_adjustments as ae', function ($join) {
                 $join->on('ae.id', '=', 'me.origem_id')
                     ->where('me.origem_tipo', '=', OriginType::AJUSTE_MANUAL->value)
                     ->where('me.tipo', '=', TipoStock::AJUSTE->value);
@@ -73,7 +73,7 @@ class StockBalanceRepository implements StockBalanceRepositoryInterface
         }
 
         // Usuário do ajuste mais recente (denormalizado para a leitura não precisar da subquery correlacionada).
-        $lastAdjustmentUserId = DB::table('ajustes_estoque')
+        $lastAdjustmentUserId = DB::table('stock_adjustments')
             ->where('company_id', $companyId)
             ->where('product_id', $productId)
             ->orderByDesc('created_at')

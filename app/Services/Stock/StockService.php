@@ -10,8 +10,8 @@ use App\DTOs\Stock\StockDTO;
 use App\DTOs\Stock\StockResponseDTO;
 use App\Enums\OriginType;
 use App\Enums\TipoStock;
-use App\Models\Purchases\Compra;
-use App\Models\Sales\Venda;
+use App\Models\Purchases\Purchase;
+use App\Models\Sales\Sale;
 use App\Models\Stock\Stock;
 use App\Models\Stock\StockAdjustment;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -61,7 +61,7 @@ class StockService implements StockServiceInterface
     }
 
 
-    public function proccessItensPurchase(Compra $compra,array $itens)
+    public function proccessItensPurchase(Purchase $compra,array $itens)
     {
         array_map(function ($item) use ($compra) {
             $dto = new StockDTO(
@@ -78,7 +78,7 @@ class StockService implements StockServiceInterface
         }, $itens);
     }
 
-    public function proccessItensSale(Venda $venda,array $itens)
+    public function proccessItensSale(Sale $venda,array $itens)
     {
         array_map(function ($item) use ($venda) {
             $dto = new StockDTO(
@@ -97,7 +97,7 @@ class StockService implements StockServiceInterface
 
     // Estorno do cancelamento da compra: cada ENTRADA original é anulada por uma SAIDA
     // de mesma quantidade. O StockObserver recalcula stock_balances automaticamente.
-    public function reverseItensPurchase(Compra $compra)
+    public function reverseItensPurchase(Purchase $compra)
     {
         $compra->loadMissing('itens');
 
@@ -118,7 +118,7 @@ class StockService implements StockServiceInterface
 
     // Estorno do cancelamento da venda: cada SAIDA original é anulada por uma ENTRADA
     // de mesma quantidade, devolvendo o saldo ao estoque.
-    public function reverseItensSale(Venda $venda)
+    public function reverseItensSale(Sale $venda)
     {
         $venda->loadMissing('itens');
 
@@ -142,8 +142,8 @@ class StockService implements StockServiceInterface
             product_id: $stockAdjustment->product_id,
             user_id: $stockAdjustment->user_id,
             tipo: TipoStock::AJUSTE->value,
-            // movimentacoes_estoque.quantidade é sempre positivo; o sinal de
-            // ajustes_estoque.quantidade indica entrada (+) ou saída (-)
+            // stock_movements.quantidade é sempre positivo; o sinal de
+            // stock_adjustments.quantidade indica entrada (+) ou saída (-)
             quantidade: abs($stockAdjustment->quantidade),
             origem_tipo: OriginType::AJUSTE_MANUAL->value,
             origem_id: $stockAdjustment->id,

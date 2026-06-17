@@ -6,7 +6,7 @@ use App\Contracts\Repositories\Business\FornecedorRepositoryInterface;
 use App\Contracts\Services\Business\FornecedorServiceInterface;
 use App\DTOs\Business\FornecedorDTO;
 use App\DTOs\Business\FornecedorResponseDTO;
-use App\Models\Business\Fornecedor;
+use App\Models\Business\Supplier;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class FornecedorService implements FornecedorServiceInterface
@@ -26,7 +26,7 @@ class FornecedorService implements FornecedorServiceInterface
         return $paginator;
     }
 
-    public function show(Fornecedor $fornecedor): FornecedorResponseDTO
+    public function show(Supplier $fornecedor): FornecedorResponseDTO
     {
         $fornecedor = $this->repository->show($fornecedor);
 
@@ -40,14 +40,14 @@ class FornecedorService implements FornecedorServiceInterface
         return FornecedorResponseDTO::fromModel($fornecedor);
     }
 
-    public function update(Fornecedor $fornecedor, FornecedorDTO $dto): FornecedorResponseDTO
+    public function update(Supplier $fornecedor, FornecedorDTO $dto): FornecedorResponseDTO
     {
         $fornecedor = $this->repository->update($fornecedor, $dto->toArray());
 
         return FornecedorResponseDTO::fromModel($fornecedor);
     }
 
-    public function delete(Fornecedor $fornecedor)
+    public function delete(Supplier $fornecedor)
     {
         return $this->repository->delete($fornecedor);
     }

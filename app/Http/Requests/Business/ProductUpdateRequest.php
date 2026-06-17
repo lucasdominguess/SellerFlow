@@ -24,7 +24,7 @@ class ProductUpdateRequest extends FormRequest
             'price_unit'   => ['sometimes', 'numeric', 'min:0', 'decimal:0,2'],
             'price_box'    => ['sometimes', 'numeric', 'min:0', 'decimal:0,2'],
             'status_id'    => ['sometimes', 'integer', 'exists:status,id'],
-            'fornecedor_id'=> ['sometimes', 'nullable', 'integer', 'exists:fornecedores,id'],
+            'fornecedor_id'=> ['sometimes', 'nullable', 'integer', 'exists:suppliers,id'],
             'path_image'   => ['sometimes', 'nullable', 'string', 'max:255'],
         ];
     }

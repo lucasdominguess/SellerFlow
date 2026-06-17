@@ -3,13 +3,13 @@
 namespace App\Repositories\Business;
 
 use App\Contracts\Repositories\Business\FornecedorRepositoryInterface;
-use App\Models\Business\Fornecedor;
+use App\Models\Business\Supplier;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class FornecedorRepository implements FornecedorRepositoryInterface
 {
     public function __construct(
-        private Fornecedor $fornecedorModel,
+        private Supplier $fornecedorModel,
     ) {}
 
     public function index(int $perPage = 15, int $page = 1, ?array $filters = []): LengthAwarePaginator
@@ -26,25 +26,25 @@ class FornecedorRepository implements FornecedorRepositoryInterface
         return $query->orderByDesc('id')->paginate($perPage);
     }
 
-    public function show(Fornecedor $fornecedor): Fornecedor
+    public function show(Supplier $fornecedor): Supplier
     {
         // Route model binding já buscou o registro — adicione $->load('relacao') se precisar
         return $fornecedor;
     }
 
-    public function store(array $data): Fornecedor
+    public function store(array $data): Supplier
     {
         return $this->fornecedorModel->create($data);
     }
 
-    public function update(Fornecedor $fornecedor, array $data): Fornecedor
+    public function update(Supplier $fornecedor, array $data): Supplier
     {
         $fornecedor->update($data);
 
         return $fornecedor;
     }
 
-    public function delete(Fornecedor $fornecedor)
+    public function delete(Supplier $fornecedor)
     {
         return $fornecedor->delete();
     }

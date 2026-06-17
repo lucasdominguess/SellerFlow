@@ -13,7 +13,7 @@ class Stock extends Model
     /** @use HasFactory<\Database\Factories\Stock\StockFactory> */
     use HasFactory;
 
-    public $table = 'movimentacoes_estoque';
+    public $table = 'stock_movements';
 
     protected $fillable = [
         'company_id',

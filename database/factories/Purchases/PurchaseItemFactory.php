@@ -2,13 +2,13 @@
 
 namespace Database\Factories\Purchases;
 
-use App\Models\Purchases\CompraItem;
+use App\Models\Purchases\PurchaseItem;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<CompraItem>
+ * @extends Factory<PurchaseItem>
  */
-class CompraItemFactory extends Factory
+class PurchaseItemFactory extends Factory
 {
     public function definition(): array
     {

@@ -2,13 +2,13 @@
 
 namespace Database\Factories\Sales;
 
-use App\Models\Sales\VendaItem;
+use App\Models\Sales\SaleItem;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<VendaItem>
+ * @extends Factory<SaleItem>
  */
-class VendaItemFactory extends Factory
+class SaleItemFactory extends Factory
 {
     public function definition(): array
     {

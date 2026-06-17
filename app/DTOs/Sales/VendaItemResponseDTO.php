@@ -2,7 +2,7 @@
 
 namespace App\DTOs\Sales;
 
-use App\Models\Sales\VendaItem;
+use App\Models\Sales\SaleItem;
 
 class VendaItemResponseDTO implements \JsonSerializable
 {
@@ -15,7 +15,7 @@ class VendaItemResponseDTO implements \JsonSerializable
         public readonly float $valor_total,
     ) {}
 
-    public static function fromModel(VendaItem $model): self
+    public static function fromModel(SaleItem $model): self
     {
         return new self(
             id:             $model->id,

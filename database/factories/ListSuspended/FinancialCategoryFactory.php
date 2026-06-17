@@ -2,13 +2,13 @@
 
 namespace Database\Factories\ListSuspended;
 
-use App\Models\ListSuspended\CategoriaFinanceira;
+use App\Models\ListSuspended\FinancialCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<CategoriaFinanceira>
+ * @extends Factory<FinancialCategory>
  */
-class CategoriaFinanceiraFactory extends Factory
+class FinancialCategoryFactory extends Factory
 {
     /**
      * Define the model's default state.

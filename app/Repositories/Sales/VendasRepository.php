@@ -5,14 +5,14 @@ namespace App\Repositories\Sales;
 use App\Classes\AuthContext;
 use App\Contracts\Repositories\Sales\VendasRepositoryInterface;
 use App\DTOs\Sales\VendaItemDTO;
-use App\Models\Sales\Venda;
+use App\Models\Sales\Sale;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class VendasRepository implements VendasRepositoryInterface
 {
     public function __construct(
-        private Venda $vendaModel,
+        private Sale $vendaModel,
     ) {}
 
     public function index(int $perPage = 15, int $page = 1, ?array $filters = []): LengthAwarePaginator
@@ -30,12 +30,12 @@ class VendasRepository implements VendasRepositoryInterface
         return $query->orderByDesc('id')->paginate($perPage);
     }
 
-    public function show(Venda $venda): Venda
+    public function show(Sale $venda): Sale
     {
         return $venda->load('itens');
     }
 
-    public function store(array $data): Venda
+    public function store(array $data): Sale
     {
         return $this->vendaModel->create($data);
     }
@@ -45,7 +45,7 @@ class VendasRepository implements VendasRepositoryInterface
      * Cria os itens da venda em lote, calcula valor_total (quantidade * valor_unitario)
      * e retorna a venda com a relação itens carregada.
      */
-    public function storeItens(Venda $venda, array $itens): Venda
+    public function storeItens(Sale $venda, array $itens): Sale
     {
         $venda->itens()->createMany(
             array_map(fn(VendaItemDTO $item) => [
@@ -57,14 +57,14 @@ class VendasRepository implements VendasRepositoryInterface
         return $venda->load('itens');
     }
 
-    public function update(Venda $venda, array $data): Venda
+    public function update(Sale $venda, array $data): Sale
     {
         $venda->update($data);
 
         return $venda;
     }
 
-    public function delete(Venda $venda)
+    public function delete(Sale $venda)
     {
         DB::transaction(function () use ($venda) {
             $venda->itens()->delete();

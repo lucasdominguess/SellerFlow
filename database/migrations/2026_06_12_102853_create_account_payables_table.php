@@ -16,8 +16,8 @@ return new class extends Migration {
             $table->date('vencimento')->nullable();
             $table->date('pago_em')->nullable();
             $table->enum('status', ['pendente', 'concluido', 'atrasado', 'cancelado'])->default('pendente');
-            $table->foreignId('categoria_financeira_id')->constrained('categoria_financeiras')->nullable();
-            $table->foreignId('forma_pagamento_id')->constrained('forma_pagamentos')->nullable();
+            $table->foreignId('categoria_financeira_id')->constrained('financial_categories')->nullable();
+            $table->foreignId('forma_pagamento_id')->constrained('payment_methods')->nullable();
             $table->enum('origem_tipo', ['compra', 'venda', 'ajuste_manual'])->default('ajuste_manual');
             $table->unsignedBigInteger('origem_id')->nullable();
             $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');

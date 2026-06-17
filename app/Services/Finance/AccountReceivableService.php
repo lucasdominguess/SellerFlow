@@ -9,7 +9,7 @@ use App\DTOs\Finance\AccountReceivableResponseDTO;
 use App\Enums\OriginType;
 use App\Enums\TransactionStatus;
 use App\Models\Finance\AccountReceivable;
-use App\Models\Sales\Venda;
+use App\Models\Sales\Sale;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class AccountReceivableService implements AccountReceivableServiceInterface
@@ -54,7 +54,7 @@ class AccountReceivableService implements AccountReceivableServiceInterface
     {
         return $this->repository->delete($accountReceivable);
     }
-    public function proccessSale(Venda $venda) : AccountReceivable
+    public function proccessSale(Sale $venda) : AccountReceivable
     {
         $data =[
             'valor' => $venda->valor_bruto,
@@ -72,7 +72,7 @@ class AccountReceivableService implements AccountReceivableServiceInterface
 
     // Propaga o status da venda para a conta a receber vinculada.
     // COMPLETED marca recebido_em; voltar para PENDING limpa recebido_em. 'atrasado' nunca vem da venda.
-    public function syncStatusFromSale(Venda $venda): void
+    public function syncStatusFromSale(Sale $venda): void
     {
         $status = $venda->status;
 

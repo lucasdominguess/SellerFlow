@@ -7,19 +7,20 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('compra_itens', function (Blueprint $table) {
+        Schema::create('stock_adjustments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('compra_id')->constrained('compras')->cascadeOnDelete();
             $table->foreignId('product_id')->constrained('products');
+            $table->foreignId('user_id')->constrained('users');
+            // Positivo = entrada, negativo = saída (perda, quebra)
             $table->integer('quantidade');
-            $table->decimal('valor_unitario', 10, 2);
-            $table->decimal('valor_total', 10, 2);
+            $table->enum('motivo', ['perda', 'quebra', 'contagem_fisica', 'devolucao', 'outro']);
+            $table->text('observacao')->nullable();
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('compra_itens');
+        Schema::dropIfExists('stock_adjustments');
     }
 };

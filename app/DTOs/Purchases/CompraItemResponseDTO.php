@@ -2,7 +2,7 @@
 
 namespace App\DTOs\Purchases;
 
-use App\Models\Purchases\CompraItem;
+use App\Models\Purchases\PurchaseItem;
 
 class CompraItemResponseDTO implements \JsonSerializable
 {
@@ -15,7 +15,7 @@ class CompraItemResponseDTO implements \JsonSerializable
         public readonly float $valor_total,
     ) {}
 
-    public static function fromModel(CompraItem $model): self
+    public static function fromModel(PurchaseItem $model): self
     {
         return new self(
             id:             $model->id,

@@ -6,12 +6,12 @@ use App\Models\ListSuspended\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Fornecedor extends Model
+class Supplier extends Model
 {
-    /** @use HasFactory<\Database\Factories\\Business\FornecedorFactory> */
+    /** @use HasFactory<\Database\Factories\Business\SupplierFactory> */
     use HasFactory;
 
-    public $table = 'fornecedores';
+    public $table = 'suppliers';
     protected $fillable = [
         'name',
         'responsavel',
@@ -22,12 +22,12 @@ class Fornecedor extends Model
         'link_catalog',
         'description',
         'status_id'
-
-        ];
+    ];
     public $hidden = [
         'created_at',
         'updated_at'
     ];
+
     public function status()
     {
         return $this->belongsTo(Status::class, 'status_id');

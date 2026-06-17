@@ -20,8 +20,8 @@ class AccountPayableUpdateRequest extends FormRequest
             'vencimento' => ['sometimes', 'nullable', 'date'],
             'pago_em' => ['sometimes', 'nullable', 'date'],
             'status' => ['sometimes', Rule::enum(TransactionStatus::class)],
-            'categoria_financeira_id' => ['sometimes', 'nullable', 'integer', 'exists:categoria_financeiras,id'],
-            'forma_pagamento_id' => ['sometimes', 'nullable', 'integer', 'exists:forma_pagamentos,id'],
+            'categoria_financeira_id' => ['sometimes', 'nullable', 'integer', 'exists:financial_categories,id'],
+            'forma_pagamento_id' => ['sometimes', 'nullable', 'integer', 'exists:payment_methods,id'],
             'observacao' => ['sometimes', 'nullable', 'string', 'max:1000'],
         ];
     }

@@ -18,8 +18,8 @@ class CompraUpdateRequest extends FormRequest
         // identidade (company_id, store_id, user_id) é imutável e não vem do cliente.
         // 'atrasado' é estado exclusivo do financeiro — não pode ser definido na compra.
         return [
-            'fornecedor_id'      => ['sometimes', 'integer', 'exists:fornecedores,id'],
-            'forma_pagamento_id' => ['sometimes', 'integer', 'exists:forma_pagamentos,id'],
+            'fornecedor_id'      => ['sometimes', 'integer', 'exists:suppliers,id'],
+            'forma_pagamento_id' => ['sometimes', 'integer', 'exists:payment_methods,id'],
             'status'             => ['sometimes', Rule::enum(TransactionStatus::class)->except([TransactionStatus::OVERDUE])],
             'numero_nota'        => ['sometimes', 'nullable', 'string', 'max:255'],
             'data_compra'        => ['sometimes', 'date'],

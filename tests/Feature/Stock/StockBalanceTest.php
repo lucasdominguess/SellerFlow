@@ -3,7 +3,7 @@
 namespace Tests\Feature\Stock;
 
 use App\Models\Accout\User;
-use App\Models\Business\Fornecedor;
+use App\Models\Business\Supplier;
 use App\Models\Business\Product;
 use App\Models\ListSuspended\Company;
 use App\Models\Stock\Stock;
@@ -42,7 +42,7 @@ describe('StockBalance (saldo materializado)', function () {
 
         $this->company    = Company::factory()->create();
         $this->user       = User::factory()->create();
-        $fornecedor       = Fornecedor::factory()->create();
+        $fornecedor       = Supplier::factory()->create();
         $this->product    = Product::factory()->create(['status_id' => 1, 'fornecedor_id' => $fornecedor->id]);
     });
 

@@ -13,12 +13,12 @@ use App\Models\Stock\Stock;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Venda extends Model
+class Sale extends Model
 {
-    /** @use HasFactory<\Database\Factories\Sales\VendaFactory> */
+    /** @use HasFactory<\Database\Factories\Sales\SaleFactory> */
     use HasFactory;
 
-    public $table = 'vendas';
+    public $table = 'sales';
 
     protected $fillable = [
         'company_id',
@@ -48,15 +48,6 @@ class Venda extends Model
         'status'                 => TransactionStatus::class,
     ];
 
-    // tenant scoping no route model binding: só resolve vendas da empresa do
-    // usuário logado. Se o id pertencer a outra empresa, devolve 404 (fail-closed).
-    // public function resolveRouteBinding($value, $field = null)
-    // {
-    //     return $this->where($field ?? $this->getRouteKeyName(), $value)
-    //         ->where('company_id', AuthContext::companyId())
-    //         ->firstOrFail();
-    // }
-
     public function company()
     {
         return $this->belongsTo(Company::class);
@@ -77,9 +68,10 @@ class Venda extends Model
         return $this->belongsTo(User::class);
     }
 
+    // FK explícita: a coluna continua 'venda_id' (não renomeada)
     public function itens()
     {
-        return $this->hasMany(VendaItem::class);
+        return $this->hasMany(SaleItem::class, 'venda_id');
     }
 
     public function contaReceber()

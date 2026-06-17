@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\ListSuspended\FormaPagamento;
+use App\Models\ListSuspended\PaymentMethod;
 use Illuminate\Database\Seeder;
 
 class FormaPagamentoSeeder extends Seeder
@@ -12,7 +12,7 @@ class FormaPagamentoSeeder extends Seeder
      */
     public function run(): void
     {
-       FormaPagamento::factory()->createMany([
+       PaymentMethod::factory()->createMany([
         [
         'name'=>'DEBITO'
         ],

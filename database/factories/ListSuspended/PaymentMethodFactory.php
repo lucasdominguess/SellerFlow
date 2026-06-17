@@ -2,13 +2,13 @@
 
 namespace Database\Factories\ListSuspended;
 
-use App\Models\ListSuspended\FormaPagamento;
+use App\Models\ListSuspended\PaymentMethod;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<FormaPagamento>
+ * @extends Factory<PaymentMethod>
  */
-class FormaPagamentoFactory extends Factory
+class PaymentMethodFactory extends Factory
 {
     /**
      * Define the model's default state.

@@ -7,7 +7,7 @@ class StockAdjustmentDTO
     public function __construct(
         public readonly ?int $company_id,
         public readonly ?int $user_id,
-        // StockAdjustmentItemDTO[] — cada item vira uma linha própria em ajustes_estoque
+        // StockAdjustmentItemDTO[] — cada item vira uma linha própria em stock_adjustments
         public readonly array $itens = [],
     ) {
     }

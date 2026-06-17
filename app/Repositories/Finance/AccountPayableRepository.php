@@ -6,7 +6,7 @@ use App\Contracts\Repositories\Finance\AccountPayableRepositoryInterface;
 use App\Enums\CategoryFinance;
 use App\Enums\OriginType;
 use App\Models\Finance\AccountPayable;
-use App\Models\Purchases\Compra;
+use App\Models\Purchases\Purchase;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class AccountPayableRepository implements AccountPayableRepositoryInterface

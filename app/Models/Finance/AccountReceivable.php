@@ -5,8 +5,8 @@ namespace App\Models\Finance;
 use App\Enums\TransactionStatus;
 use App\Models\Accout\Store;
 use App\Models\ListSuspended\Company;
-use App\Models\Purchases\Compra;
-use App\Models\Sales\Venda;
+use App\Models\Purchases\Purchase;
+use App\Models\Sales\Sale;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -45,12 +45,12 @@ class AccountReceivable extends Model
 
     public function compra()
     {
-        return $this->belongsTo(Compra::class, 'origem_id');
+        return $this->belongsTo(Purchase::class, 'origem_id');
     }
 
     public function venda()
     {
-        return $this->belongsTo(Venda::class, 'origem_id');
+        return $this->belongsTo(Sale::class, 'origem_id');
     }
     public function store()
     {

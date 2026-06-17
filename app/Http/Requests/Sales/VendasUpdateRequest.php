@@ -23,7 +23,7 @@ class VendasUpdateRequest extends FormRequest
             'market_place_id'       => ['sometimes', 'integer', 'exists:market_places,id'],
             'numero_pedido'         => [
                 'sometimes', 'string', 'max:255',
-                Rule::unique('vendas', 'numero_pedido')
+                Rule::unique('sales', 'numero_pedido')
                     ->ignore($currentId)
                     ->where(fn ($query) => $query->where('market_place_id', $marketPlaceId)),
             ],

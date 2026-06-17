@@ -17,13 +17,13 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,                // users → status
             UserStoreSeeder::class,           // user_stores → users, stores, roles, status
             CompanyUserSeeder::class,         // company_users → company, user, role, status
-            CategoriaFinanceiraSeeder::class, // categoria_financeiras (sem FK)
-            FormaPagamentoSeeder::class,      // forma_pagamentos (sem FK)
-            FornecedorSeeder::class,          // fornecedores → status
-            ProductSeeder::class,             // products → status, fornecedores
-            // CompraSeeder::class,              // compras + compra_itens → company, store, fornecedor, user, product
-            // VendaSeeder::class,               // vendas + venda_itens → company, store, market_place, user, product, status
-            // AjusteEstoqueSeeder::class,       // ajustes_estoque + movimentacoes_estoque → company, product, user
+            CategoriaFinanceiraSeeder::class, // financial_categories (sem FK)
+            FormaPagamentoSeeder::class,      // payment_methods (sem FK)
+            FornecedorSeeder::class,          // suppliers → status
+            ProductSeeder::class,             // products → status, suppliers
+            // CompraSeeder::class,              // purchases + purchase_items → company, store, supplier, user, product
+            // VendaSeeder::class,               // sales + sale_items → company, store, market_place, user, product, status
+            // AjusteEstoqueSeeder::class,       // stock_adjustments + stock_movements → company, product, user
 
         ]);
     }

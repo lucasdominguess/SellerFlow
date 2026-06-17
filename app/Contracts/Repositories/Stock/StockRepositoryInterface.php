@@ -2,8 +2,6 @@
 
 namespace App\Contracts\Repositories\Stock;
 
-use App\Models\Purchases\Compra;
-use App\Models\Sales\Venda;
 use App\Models\Stock\Stock;
 use App\Models\Stock\StockAdjustment;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;

@@ -5,20 +5,20 @@ namespace App\Models\Purchases;
 use App\Models\Accout\Store;
 use App\Models\Accout\User;
 use App\Enums\TransactionStatus;
-use App\Models\Business\Fornecedor;
+use App\Models\Business\Supplier;
 use App\Models\Finance\AccountPayable;
 use App\Models\ListSuspended\Company;
-use App\Models\ListSuspended\FormaPagamento;
+use App\Models\ListSuspended\PaymentMethod;
 use App\Models\Stock\Stock;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Compra extends Model
+class Purchase extends Model
 {
-    /** @use HasFactory<\Database\Factories\Purchases\CompraFactory> */
+    /** @use HasFactory<\Database\Factories\Purchases\PurchaseFactory> */
     use HasFactory;
 
-    public $table = 'compras';
+    public $table = 'purchases';
 
     protected $fillable = [
         'company_id',
@@ -52,9 +52,10 @@ class Compra extends Model
         return $this->belongsTo(Store::class);
     }
 
+    // método 'fornecedor' mantido: a FK continua 'fornecedor_id'
     public function fornecedor()
     {
-        return $this->belongsTo(Fornecedor::class);
+        return $this->belongsTo(Supplier::class);
     }
 
     public function user()
@@ -64,12 +65,13 @@ class Compra extends Model
 
     public function formaPagamento()
     {
-        return $this->belongsTo(FormaPagamento::class, 'forma_pagamento_id');
+        return $this->belongsTo(PaymentMethod::class, 'forma_pagamento_id');
     }
 
+    // FK explícita: a coluna continua 'compra_id' (não renomeada)
     public function itens()
     {
-        return $this->hasMany(CompraItem::class);
+        return $this->hasMany(PurchaseItem::class, 'compra_id');
     }
 
     public function contasPagar()

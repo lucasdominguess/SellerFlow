@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('compras', function (Blueprint $table) {
+        Schema::create('purchases', function (Blueprint $table) {
             $table->id();
             $table->foreignId('company_id')->constrained('companies');
             $table->foreignId('store_id')->constrained('stores');
-            $table->foreignId('fornecedor_id')->constrained('fornecedores');
+            $table->foreignId('fornecedor_id')->constrained('suppliers');
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('forma_pagamento_id')->constrained('forma_pagamentos');
+            $table->foreignId('forma_pagamento_id')->constrained('payment_methods');
             $table->enum('status', ['pendente', 'concluido', 'atrasado', 'cancelado'])->default('pendente');
             $table->string('numero_nota')->nullable();
             $table->date('data_compra');
@@ -26,6 +26,6 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Schema::dropIfExists('compras');
+        Schema::dropIfExists('purchases');
     }
 };

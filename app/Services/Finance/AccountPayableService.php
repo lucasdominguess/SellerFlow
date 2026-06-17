@@ -11,8 +11,7 @@ use App\Enums\FormPayment;
 use App\Enums\OriginType;
 use App\Enums\TransactionStatus;
 use App\Models\Finance\AccountPayable;
-use App\Models\Purchases\Compra;
-use App\Models\Sales\Venda;
+use App\Models\Purchases\Purchase;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class AccountPayableService implements AccountPayableServiceInterface
@@ -58,7 +57,7 @@ class AccountPayableService implements AccountPayableServiceInterface
         return $this->repository->delete($accountPayable);
     }
 
-    public function proccessPurchase(Compra $compra) : AccountPayable
+    public function proccessPurchase(Purchase $compra) : AccountPayable
     {
       $data =[
           'valor' => $compra->valor_total,
@@ -78,7 +77,7 @@ class AccountPayableService implements AccountPayableServiceInterface
 
     // Propaga o status da compra para a(s) conta(s) a pagar vinculada(s).
     // COMPLETED marca pago_em; voltar para PENDING limpa pago_em. 'atrasado' nunca vem da compra.
-    public function syncStatusFromPurchase(Compra $compra): void
+    public function syncStatusFromPurchase(Purchase $compra): void
     {
         $status = $compra->status;
 

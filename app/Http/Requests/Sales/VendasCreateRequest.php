@@ -27,7 +27,7 @@ class VendasCreateRequest extends FormRequest
                 'string',
                 'max:255',
                 // unique composto: numero_pedido é único por marketplace (unique[market_place_id, numero_pedido])
-                Rule::unique('vendas', 'numero_pedido')
+                Rule::unique('sales', 'numero_pedido')
                     ->where(fn($query) => $query->where('market_place_id', $this->market_place_id)),
             ],
             'data_venda' => ['required', 'date'],
