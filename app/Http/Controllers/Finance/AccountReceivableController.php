@@ -23,7 +23,7 @@ class AccountReceivableController extends Controller
         $data = $request->validated();
         $paginator = $this->service->index($data['perPage'], $data['page'], $data['filters']);
 
-        return ApiResponse::paginated($paginator, 'AccountReceivables recuperados com sucesso');
+        return ApiResponse::paginated($paginator, message: 'AccountReceivables recuperados com sucesso');
     }
 
     public function show(AccountReceivable $accountReceivable): JsonResponse

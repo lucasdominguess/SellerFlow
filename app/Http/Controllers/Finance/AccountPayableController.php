@@ -23,7 +23,7 @@ class AccountPayableController extends Controller
         $data = $request->validated();
         $paginator = $this->service->index($data['perPage'], $data['page'], $data['filters']);
 
-        return ApiResponse::paginated($paginator, 'AccountPayables recuperados com sucesso');
+        return ApiResponse::paginated($paginator, message: 'AccountPayables recuperados com sucesso');
     }
 
     public function show(AccountPayable $accountPayable): JsonResponse
