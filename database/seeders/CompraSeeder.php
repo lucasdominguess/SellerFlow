@@ -2,16 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\Purchases\Purchase;
-use App\Models\Purchases\PurchaseItem;
 use Illuminate\Database\Seeder;
 
+// O seed de compras agora vive em FluxoComercialSeeder, que gera compras, estoque,
+// vendas e contas de forma sincronizada. Mantido vazio para não duplicar dados.
 class CompraSeeder extends Seeder
 {
     public function run(): void
     {
-        Purchase::factory()->count(20)->create()->each(function (Purchase $compra) {
-            PurchaseItem::factory()->count(rand(1, 5))->create(['compra_id' => $compra->id]);
-        });
+        //
     }
 }

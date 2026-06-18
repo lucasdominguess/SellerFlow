@@ -21,8 +21,10 @@ class DatabaseSeeder extends Seeder
             FormaPagamentoSeeder::class,      // payment_methods (sem FK)
             FornecedorSeeder::class,          // suppliers → status
             ProductSeeder::class,             // products → status, suppliers
-            // CompraSeeder::class,              // purchases + purchase_items → company, store, supplier, user, product
-            // VendaSeeder::class,               // sales + sale_items → company, store, market_place, user, product, status
+
+            // Fluxo comercial sincronizado: compras → estoque → vendas → contas (a pagar/receber).
+            // Reaproveita os services reais, então alimenta stock_balances e a stock_investment_view.
+            FluxoComercialSeeder::class,
             // AjusteEstoqueSeeder::class,       // stock_adjustments + stock_movements → company, product, user
 
         ]);

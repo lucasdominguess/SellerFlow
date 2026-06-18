@@ -7,6 +7,7 @@ use App\Contracts\Repositories\Stock\StockRepositoryInterface;
 use App\Contracts\Services\Stock\StockServiceInterface;
 use App\DTOs\Stock\StockBalanceDTO;
 use App\DTOs\Stock\StockDTO;
+use App\DTOs\Stock\StockInvestmentDTO;
 use App\DTOs\Stock\StockResponseDTO;
 use App\Enums\OriginType;
 use App\Enums\TipoStock;
@@ -161,5 +162,19 @@ class StockService implements StockServiceInterface
         );
 
         return $paginator;
+    }
+
+    public function stockInvestment(int $companyId, ?int $productId = null, ?string $productName = null, ?string $sku = null, int $perPage = 15, int $page = 1): array
+    {
+        $paginator = $this->balanceRepository->paginateInvestment($companyId, $productId, $productName, $sku, $perPage, $page);
+
+        $paginator->getCollection()->transform(
+            fn ($row) => StockInvestmentDTO::fromQueryResult($row)->toArray()
+        );
+
+        return [
+            'total_investido' => $this->balanceRepository->totalInvested($companyId, $productId, $productName, $sku),
+            'paginator'       => $paginator,
+        ];
     }
 }

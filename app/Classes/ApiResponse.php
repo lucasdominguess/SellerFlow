@@ -136,7 +136,8 @@ class ApiResponse
         ?string $resourceClass = null,
         string $message = 'Operação realizada com sucesso',
         int $statusCode = Response::HTTP_OK,
-        array $headers = []
+        array $headers = [],
+        array $extra = []
     ): JsonResponse {
         $data = $paginator->items();
 
@@ -154,7 +155,7 @@ class ApiResponse
             }
         }
 
-        return response()->json([
+        return response()->json(array_merge([
             'success' => true,
             'message' => $message,
             'data'    => $data,
@@ -166,6 +167,6 @@ class ApiResponse
                 'to'           => $paginator->lastItem(),
                 'total'        => $paginator->total(),
             ],
-        ], $statusCode, $headers);
+        ], $extra), $statusCode, $headers);
     }
 }

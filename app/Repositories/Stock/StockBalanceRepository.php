@@ -44,6 +44,59 @@ class StockBalanceRepository implements StockBalanceRepositoryInterface
             ->paginate($perPage, ['*'], 'page', $page);
     }
 
+    // Lê da view stock_investment_view (cálculo FIFO no banco); aqui só aplicamos
+    // os joins de rótulo e os filtros, mantendo a paginação idiomática.
+    public function paginateInvestment(
+        int $companyId,
+        ?int $productId,
+        ?string $productName,
+        ?string $sku,
+        int $perPage,
+        int $page
+    ): LengthAwarePaginator {
+        return $this->investmentQuery($companyId, $productId, $productName, $sku)
+            ->orderBy('p.name')
+            ->select([
+                'v.company_id',
+                'c.name as company_name',
+                'v.product_id',
+                'p.sku',
+                'p.name as product_name',
+                'v.saldo_atual',
+                'v.valor_investido',
+                'v.composicao',
+                'v.tem_unidade_sem_custo',
+            ])
+            ->paginate($perPage, ['*'], 'page', $page);
+    }
+
+    public function totalInvested(
+        int $companyId,
+        ?int $productId,
+        ?string $productName,
+        ?string $sku
+    ): float {
+        return (float) $this->investmentQuery($companyId, $productId, $productName, $sku)
+            ->sum('v.valor_investido');
+    }
+
+    // Esqueleto compartilhado pela listagem e pelo total: company_id é obrigatório;
+    // product_id, sku e name são filtros opcionais.
+    private function investmentQuery(
+        int $companyId,
+        ?int $productId,
+        ?string $productName,
+        ?string $sku
+    ): \Illuminate\Database\Query\Builder {
+        return DB::table('stock_investment_view as v')
+            ->join('products as p', 'p.id', '=', 'v.product_id')
+            ->join('companies as c', 'c.id', '=', 'v.company_id')
+            ->where('v.company_id', $companyId)
+            ->when($productId, fn ($query) => $query->where('v.product_id', $productId))
+            ->when($productName, fn ($query) => $query->where('p.name', 'ilike', "%{$productName}%"))
+            ->when($sku, fn ($query) => $query->where('p.sku', 'ilike', "%{$sku}%"));
+    }
+
     public function recomputeFor(int $companyId, int $productId): void
     {
         // Mesma lógica de agregação da listagem antiga, porém escopada a um único produto.

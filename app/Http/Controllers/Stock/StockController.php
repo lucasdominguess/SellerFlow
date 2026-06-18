@@ -8,10 +8,12 @@ use App\DTOs\Stock\StockDTO;
 use App\Http\Requests\Stock\CheckStockQuantityRequest;
 use App\Http\Requests\Stock\FilterStockIndexRequest;
 use App\Http\Requests\Stock\StockCreateRequest;
+use App\Http\Requests\Stock\StockInvestmentRequest;
 use App\Http\Requests\Stock\StockUpdateRequest;
 use App\Models\Stock\Stock;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Log;
 
 class StockController extends Controller
 {
@@ -70,5 +72,28 @@ class StockController extends Controller
         );
 
         return ApiResponse::paginated($paginator, null, 'Quantidade de produtos em estoque recuperada com sucesso');
+    }
+
+    public function investmentInStock(StockInvestmentRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+        Log::info($data);
+        
+        $result = $this->service->stockInvestment(
+            companyId: $data['company_id'],
+            productId: $data['product_id'] ?? null,
+            productName: $data['product_name'] ?? null,
+            sku: $data['sku'] ?? null,
+            perPage: $data['perPage'],
+            page: $data['page'],
+        );
+
+        return ApiResponse::paginated(
+            $result['paginator'],
+            null,
+            'Valor investido no estoque recuperado com sucesso',
+            headers: [],
+            extra: ['total_investido' => $result['total_investido']],
+        );
     }
 }
