@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -83,6 +84,14 @@ return Application::configure(basePath: dirname(__DIR__))
 
             return response()->json([
                 'message' => 'Registro para o id especificado não foi encontrado',
+                'error' => $exception->getMessage(),
+            ], 404);
+        });
+        $exceptions->render(function (TokenBlacklistedException $exception): JsonResponse {
+            Log::warning($exception->getMessage());
+
+            return response()->json([
+                'message' => 'Token inválido',
                 'error' => $exception->getMessage(),
             ], 404);
         });

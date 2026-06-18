@@ -7,15 +7,15 @@ use App\Contracts\Repositories\Accout\StoreRepositoryInterface;
 use App\Contracts\Repositories\Accout\UserRepositoryInterface;
 use App\Contracts\Repositories\Accout\UserStoreRepositoryInterface;
 use App\Contracts\Repositories\Adjustment\StockAdjustmentRepositoryInterface;
-use App\Contracts\Repositories\Business\FornecedorRepositoryInterface;
+use App\Contracts\Repositories\Business\SupplierRepositoryInterface;
 use App\Contracts\Repositories\Business\ProductRepositoryInterface;
 use App\Contracts\Repositories\Business\ValidateProductRepositoryInterface;
 use App\Contracts\Repositories\Finance\AccountPayableRepositoryInterface;
 use App\Contracts\Repositories\Finance\AccountReceivableRepositoryInterface;
 use App\Contracts\Repositories\Finance\CashFlowRepositoryInterface;
 use App\Contracts\Repositories\ListSuspended\ListSuspendedRepositoryInterface;
-use App\Contracts\Repositories\Purchases\CompraRepositoryInterface;
-use App\Contracts\Repositories\Sales\VendasRepositoryInterface;
+use App\Contracts\Repositories\Purchases\PurchaseRepositoryInterface;
+use App\Contracts\Repositories\Sales\SaleRepositoryInterface;
 use App\Contracts\Repositories\Stock\StockBalanceRepositoryInterface;
 use App\Contracts\Repositories\Stock\StockRepositoryInterface;
 use App\Contracts\Services\Accout\CompanyServiceInterface;
@@ -24,15 +24,15 @@ use App\Contracts\Services\Accout\UserServiceInterface;
 use App\Contracts\Services\Accout\UserStoreServiceInterface;
 use App\Contracts\Services\Adjustment\StockAdjustmentServiceInterface;
 use App\Contracts\Services\Auth\AuthServiceInterface;
-use App\Contracts\Services\Business\FornecedorServiceInterface;
+use App\Contracts\Services\Business\SupplierServiceInterface;
 use App\Contracts\Services\Business\ProductServiceInterface;
 use App\Contracts\Services\Business\ValidateProductServiceInterface;
 use App\Contracts\Services\Finance\AccountPayableServiceInterface;
 use App\Contracts\Services\Finance\AccountReceivableServiceInterface;
 use App\Contracts\Services\Finance\CashFlowServiceInterface;
 use App\Contracts\Services\ListSuspended\ListSuspendedServiceInterface;
-use App\Contracts\Services\Purchases\CompraServiceInterface;
-use App\Contracts\Services\Sales\VendasServiceInterface;
+use App\Contracts\Services\Purchases\PurchaseServiceInterface;
+use App\Contracts\Services\Sales\SaleServiceInterface;
 use App\Contracts\Services\Stock\StockServiceInterface;
 use App\Interfaces\PdfExporterInterface;
 use App\Models\Stock\Stock;
@@ -42,15 +42,15 @@ use App\Repositories\Accout\StoreRepository;
 use App\Repositories\Accout\UserRepository;
 use App\Repositories\Accout\UserStoreRepository;
 use App\Repositories\Adjustment\StockAdjustmentRepository;
-use App\Repositories\Business\FornecedorRepository;
+use App\Repositories\Business\SupplierRepository;
 use App\Repositories\Business\ProductRepository;
 use App\Repositories\Business\ValidateProductRepository;
 use App\Repositories\Finance\AccountPayableRepository;
 use App\Repositories\Finance\AccountReceivableRepository;
 use App\Repositories\Finance\CashFlowRepository;
 use App\Repositories\ListSuspended\ListSuspendedRepository;
-use App\Repositories\Purchases\CompraRepository;
-use App\Repositories\Sales\VendasRepository;
+use App\Repositories\Purchases\PurchaseRepository;
+use App\Repositories\Sales\SaleRepository;
 use App\Repositories\Stock\StockBalanceRepository;
 use App\Repositories\Stock\StockRepository;
 use App\Services\Accout\CompanyService;
@@ -59,7 +59,7 @@ use App\Services\Accout\UserService;
 use App\Services\Accout\UserStoreService;
 use App\Services\Adjustment\StockAdjustmentService;
 use App\Services\Auth\AuthService;
-use App\Services\Business\FornecedorService;
+use App\Services\Business\SupplierService;
 use App\Services\Business\ProductService;
 use App\Services\Business\ValidateProductService;
 use App\Services\DomPdfService;
@@ -67,8 +67,8 @@ use App\Services\Finance\AccountPayableService;
 use App\Services\Finance\AccountReceivableService;
 use App\Services\Finance\CashFlowService;
 use App\Services\ListSuspended\ListSuspendedService;
-use App\Services\Purchases\CompraService;
-use App\Services\Sales\VendasService;
+use App\Services\Purchases\PurchaseService;
+use App\Services\Sales\SaleService;
 use App\Services\Stock\StockService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
@@ -135,29 +135,29 @@ class AppServiceProvider extends ServiceProvider
             ProductRepository::class
         );
         $this->app->bind(
-            FornecedorServiceInterface::class,
-            FornecedorService::class
+            SupplierServiceInterface::class,
+            SupplierService::class
         );
         $this->app->bind(
-            FornecedorRepositoryInterface::class,
-            FornecedorRepository::class
+            SupplierRepositoryInterface::class,
+            SupplierRepository::class
         );
         $this->app->bind(AuthServiceInterface::class, AuthService::class);
         $this->app->bind(
-            VendasServiceInterface::class,
-            VendasService::class
+            SaleServiceInterface::class,
+            SaleService::class
         );
         $this->app->bind(
-            VendasRepositoryInterface::class,
-            VendasRepository::class
+            SaleRepositoryInterface::class,
+            SaleRepository::class
         );
         $this->app->bind(
-            CompraServiceInterface::class,
-            CompraService::class
+            PurchaseServiceInterface::class,
+            PurchaseService::class
         );
         $this->app->bind(
-            CompraRepositoryInterface::class,
-            CompraRepository::class
+            PurchaseRepositoryInterface::class,
+            PurchaseRepository::class
         );
         $this->app->bind(
             StockServiceInterface::class,

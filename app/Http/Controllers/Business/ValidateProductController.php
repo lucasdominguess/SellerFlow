@@ -24,7 +24,7 @@ class ValidateProductController extends Controller
         $data = $request->validated();
         $paginator = $this->service->index($data['perPage'], $data['page'], $data['filters']);
 
-        return ApiResponse::paginated($paginator, 'ValidateProducts recuperados com sucesso');
+        return ApiResponse::paginated($paginator, message: 'ValidateProducts recuperados com sucesso');
     }
 
     public function show(ValidateProduct $validateProduct): JsonResponse

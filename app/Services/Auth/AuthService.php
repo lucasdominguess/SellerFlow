@@ -61,7 +61,11 @@ class AuthService implements AuthServiceInterface
             throw new InvalidCredentialsException();
         }
 
-        $user = auth('api')->user();
+        $user = auth('api')->setToken($newToken)->authenticate();
+
+        if ($user->status_id !== Status::ACTIVE->value) {
+            throw new UserInactiveException();
+        }
 
         return LoginResponseDTO::fromToken($newToken, $user);
     }

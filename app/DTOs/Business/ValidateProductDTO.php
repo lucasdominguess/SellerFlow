@@ -9,7 +9,7 @@ class ValidateProductDTO
     public ?string $brand,
     public ?string $description,
     public ?string $catalog_link,
-    public ?int $fornecedor_id,
+    public ?int $supplier_id,
 
     public float $price_sale,
     public float $price_buy,
@@ -27,7 +27,7 @@ class ValidateProductDTO
             $data['brand'] ?? null,
             $data['description'] ?? null,
             $data['catalog_link'] ?? null,
-            $data['fornecedor_id'] ?? null,
+            $data['supplier_id'] ?? null,
             $data['price_sale'],
             $data['price_buy'],
             $data['cust_additional'] ?? 0,
@@ -45,7 +45,7 @@ class ValidateProductDTO
             'brand' => $this->brand,
             'description' => $this->description,
             'catalog_link' => $this->catalog_link,
-            'fornecedor_id' => $this->fornecedor_id,
+            'supplier_id' => $this->supplier_id,
 
             'price_sale' => $this->price_sale,
             'price_buy' => $this->price_buy,

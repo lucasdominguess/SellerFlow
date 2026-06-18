@@ -2,23 +2,23 @@
 
 namespace Tests\Unit\Services;
 
-use App\Contracts\Repositories\Purchases\CompraRepositoryInterface;
+use App\Contracts\Repositories\Purchases\PurchaseRepositoryInterface;
 use App\Contracts\Services\Finance\AccountPayableServiceInterface;
 use App\Contracts\Services\Stock\StockServiceInterface;
-use App\DTOs\Purchases\CompraDTO;
-use App\DTOs\Purchases\CompraResponseDTO;
+use App\DTOs\Purchases\PurchaseDTO;
+use App\DTOs\Purchases\PurchaseResponseDTO;
 use App\Models\Purchases\Purchase;
-use App\Services\Purchases\CompraService;
+use App\Services\Purchases\PurchaseService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
-describe('CompraService', function () {
+describe('PurchaseService', function () {
 
     beforeEach(function () {
-        $this->repositoryMock            = $this->createMock(CompraRepositoryInterface::class);
+        $this->repositoryMock            = $this->createMock(PurchaseRepositoryInterface::class);
         $this->stockServiceMock          = $this->createMock(StockServiceInterface::class);
         $this->accountPayableServiceMock = $this->createMock(AccountPayableServiceInterface::class);
-        $this->service                   = new CompraService(
+        $this->service                   = new PurchaseService(
             $this->repositoryMock,
             $this->stockServiceMock,
             $this->accountPayableServiceMock,
@@ -28,7 +28,7 @@ describe('CompraService', function () {
     // verifica que store calcula valor_total a partir dos itens, persiste a compra,
     // os itens e processa a entrada no estoque
     it('stores compra with calculated valor_total, items and stock entry', function () {
-        $dto = CompraDTO::fromCreateRequest([
+        $dto = PurchaseDTO::fromCreateRequest([
             'company_id'         => 1,
             'store_id'           => 1,
             'user_id'            => 1,
@@ -71,13 +71,13 @@ describe('CompraService', function () {
 
         $result = $this->service->store($dto);
 
-        expect($result)->toBeInstanceOf(CompraResponseDTO::class)
+        expect($result)->toBeInstanceOf(PurchaseResponseDTO::class)
             ->and($result->id)->toBe(1)
             ->and($result->valor_total)->toBe(160.00);
     });
 
-    // verifica que show delega ao repository e retorna CompraResponseDTO
-    it('returns CompraResponseDTO for existing compra on show', function () {
+    // verifica que show delega ao repository e retorna PurchaseResponseDTO
+    it('returns PurchaseResponseDTO for existing compra on show', function () {
         $model = Purchase::factory()->make(['id' => 5, 'valor_total' => 100.00]);
 
         $this->repositoryMock
@@ -88,13 +88,13 @@ describe('CompraService', function () {
 
         $result = $this->service->show($model);
 
-        expect($result)->toBeInstanceOf(CompraResponseDTO::class)
+        expect($result)->toBeInstanceOf(PurchaseResponseDTO::class)
             ->and($result->id)->toBe(5);
     });
 
-    // verifica que update repassa os dados ao repository e retorna CompraResponseDTO atualizado
-    it('updates compra and returns updated CompraResponseDTO', function () {
-        $dto      = CompraDTO::fromUpdateRequest(['observacao' => 'Nota fiscal corrigida']);
+    // verifica que update repassa os dados ao repository e retorna PurchaseResponseDTO atualizado
+    it('updates compra and returns updated PurchaseResponseDTO', function () {
+        $dto      = PurchaseDTO::fromUpdateRequest(['observacao' => 'Nota fiscal corrigida']);
         $original = Purchase::factory()->make(['id' => 3, 'observacao' => null]);
         $updated  = Purchase::factory()->make(['id' => 3, 'observacao' => 'Nota fiscal corrigida']);
 
@@ -106,7 +106,7 @@ describe('CompraService', function () {
 
         $result = $this->service->update($original, $dto);
 
-        expect($result)->toBeInstanceOf(CompraResponseDTO::class)
+        expect($result)->toBeInstanceOf(PurchaseResponseDTO::class)
             ->and($result->observacao)->toBe('Nota fiscal corrigida');
     });
 
@@ -122,8 +122,8 @@ describe('CompraService', function () {
         $this->service->delete($model);
     });
 
-    // verifica que index transforma os itens do paginator em arrays de CompraResponseDTO
-    it('transforms paginator items into CompraResponseDTO arrays on index', function () {
+    // verifica que index transforma os itens do paginator em arrays de PurchaseResponseDTO
+    it('transforms paginator items into PurchaseResponseDTO arrays on index', function () {
         $model      = Purchase::factory()->make(['id' => 1, 'numero_nota' => 'NF-100', 'valor_total' => 250.50]);
         $collection = new Collection([$model]);
         $paginator  = new LengthAwarePaginator($collection, 1, 15, 1);

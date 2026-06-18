@@ -2,23 +2,23 @@
 
 namespace Tests\Unit\Services;
 
-use App\Contracts\Repositories\Sales\VendasRepositoryInterface;
+use App\Contracts\Repositories\Sales\SaleRepositoryInterface;
 use App\Contracts\Services\Finance\AccountReceivableServiceInterface;
 use App\Contracts\Services\Stock\StockServiceInterface;
-use App\DTOs\Sales\VendasDTO;
-use App\DTOs\Sales\VendasResponseDTO;
+use App\DTOs\Sales\SaleDTO;
+use App\DTOs\Sales\SaleResponseDTO;
 use App\Models\Sales\Sale;
-use App\Services\Sales\VendasService;
+use App\Services\Sales\SaleService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
-describe('VendasService', function () {
+describe('SaleService', function () {
 
     beforeEach(function () {
-        $this->repositoryMock               = $this->createMock(VendasRepositoryInterface::class);
+        $this->repositoryMock               = $this->createMock(SaleRepositoryInterface::class);
         $this->stockServiceMock             = $this->createMock(StockServiceInterface::class);
         $this->accountReceivableServiceMock = $this->createMock(AccountReceivableServiceInterface::class);
-        $this->service                      = new VendasService(
+        $this->service                      = new SaleService(
             $this->repositoryMock,
             $this->stockServiceMock,
             $this->accountReceivableServiceMock,
@@ -28,7 +28,7 @@ describe('VendasService', function () {
     // verifica que store calcula valor_liquido (bruto - taxa - frete), persiste a venda,
     // os itens e processa a saida do estoque
     it('stores venda with calculated valor_liquido, items and stock exit', function () {
-        $dto = VendasDTO::fromCreateRequest([
+        $dto = SaleDTO::fromCreateRequest([
             'company_id'       => 1,
             'store_id'         => 1,
             'user_id'          => 1,
@@ -74,13 +74,13 @@ describe('VendasService', function () {
 
         $result = $this->service->store($dto);
 
-        expect($result)->toBeInstanceOf(VendasResponseDTO::class)
+        expect($result)->toBeInstanceOf(SaleResponseDTO::class)
             ->and($result->id)->toBe(1)
             ->and($result->valor_liquido)->toBe(160.00);
     });
 
-    // verifica que show delega ao repository e retorna VendasResponseDTO
-    it('returns VendasResponseDTO for existing venda on show', function () {
+    // verifica que show delega ao repository e retorna SaleResponseDTO
+    it('returns SaleResponseDTO for existing venda on show', function () {
         $model = Sale::factory()->make(['id' => 5]);
 
         $this->repositoryMock
@@ -91,14 +91,14 @@ describe('VendasService', function () {
 
         $result = $this->service->show($model);
 
-        expect($result)->toBeInstanceOf(VendasResponseDTO::class)
+        expect($result)->toBeInstanceOf(SaleResponseDTO::class)
             ->and($result->id)->toBe(5);
     });
 
     // verifica que update recalcula valor_liquido usando os valores atuais da venda
     // como fallback quando apenas valor_bruto e alterado
     it('recalculates valor_liquido using current venda values as fallback', function () {
-        $dto      = VendasDTO::fromUpdateRequest(['valor_bruto' => 250.00]);
+        $dto      = SaleDTO::fromUpdateRequest(['valor_bruto' => 250.00]);
         $original = Sale::factory()->make([
             'id'               => 3,
             'valor_bruto'      => 200.00,
@@ -126,13 +126,13 @@ describe('VendasService', function () {
 
         $result = $this->service->update($original, $dto);
 
-        expect($result)->toBeInstanceOf(VendasResponseDTO::class)
+        expect($result)->toBeInstanceOf(SaleResponseDTO::class)
             ->and($result->valor_liquido)->toBe(225.00);
     });
 
     // verifica que update nao recalcula valor_liquido quando nenhum componente do valor muda
     it('does not recalculate valor_liquido when no value component changes', function () {
-        $dto      = VendasDTO::fromUpdateRequest(['observacao' => 'Pedido com atraso']);
+        $dto      = SaleDTO::fromUpdateRequest(['observacao' => 'Pedido com atraso']);
         $original = Sale::factory()->make(['id' => 4, 'observacao' => null]);
 
         $expectedData = $dto->toArray();
@@ -163,8 +163,8 @@ describe('VendasService', function () {
         $this->service->delete($model);
     });
 
-    // verifica que index transforma os itens do paginator em arrays de VendasResponseDTO
-    it('transforms paginator items into VendasResponseDTO arrays on index', function () {
+    // verifica que index transforma os itens do paginator em arrays de SaleResponseDTO
+    it('transforms paginator items into SaleResponseDTO arrays on index', function () {
         $model      = Sale::factory()->make(['id' => 1, 'numero_pedido' => '999', 'valor_liquido' => 99.90]);
         $collection = new Collection([$model]);
         $paginator  = new LengthAwarePaginator($collection, 1, 15, 1);

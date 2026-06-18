@@ -22,7 +22,7 @@ public function rules(): array
             'brand'           => ['sometimes', 'nullable', 'string', 'max:255'],
             'description'     => ['sometimes', 'nullable', 'string', 'max:1000'],
             'catalog_link'    => ['sometimes', 'nullable', 'url', 'max:2048'],
-            'fornecedor_id'   => ['sometimes', 'nullable', 'integer', 'exists:fornecedores,id'],
+            'supplier_id'   => ['sometimes', 'nullable', 'integer', 'exists:suppliers,id'],
             'price_sale'      => ['required', 'numeric', 'min:0', 'decimal:0,2'],
             'price_buy'       => ['required', 'numeric', 'min:0', 'decimal:0,2'],
             'cust_additional' => ['sometimes', 'numeric', 'min:0', 'decimal:0,2'],

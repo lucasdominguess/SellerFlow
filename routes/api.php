@@ -43,9 +43,10 @@ Route::prefix('/v1')->group(function () {
 
     //Business
     Route::apiResource('product', ProductController::class);
-    // Route::apiResource('validate-product', ValidateProductController::class);
-    Route::post('/validate-product',[ValidateProductController::class, 'validate']);
-    Route::post('/validate-product-save',[ValidateProductController::class, 'store']);
+
+    Route::apiResource('validate-product', ValidateProductController::class);
+    Route::post('/check-validate-product',[ValidateProductController::class, 'validate']);
+    // Route::post('/validate-product-save',[ValidateProductController::class, 'store']);
 
     Route::apiResource('fornecedor', FornecedorController::class);
 
@@ -55,9 +56,9 @@ Route::prefix('/v1')->group(function () {
     Route::apiResource('/vendas', VendasController::class);
 
     //Stock
-    // Ajuste de estoque é imutável: sem update/destroy via API (ver StockAdjustmentService)
+
     Route::apiResource('/stock-adjustment', StockAdjustmentController::class)->only(['index', 'show', 'store']);
-    // precisa vir antes do apiResource('/stock', ...) para não ser capturada por GET /stock/{stock}
+
     Route::get('/stock-check-quantity', [StockController::class, 'checkQuantityProductsInStock']);
     Route::apiResource('/stock', StockController::class);
 

@@ -61,11 +61,11 @@ class AuthController extends Controller
     }
     public function refreshToken()
     {
-        $newToken = $this->authService->refreshToken();
+        $data = $this->authService->refreshToken();
 
         $cookie = cookie(
             name: 'token',
-            value: $newToken,
+           value: $data->token,
             minutes: 60,
             httpOnly: true,
             secure: true,
@@ -73,10 +73,10 @@ class AuthController extends Controller
         );
 
         return ApiResponse::success(
-            data: ['token' => $newToken],
+            data: ['token' => $data->token],
             message: 'Token atualizado com sucesso'
         )
-            ->header('Authorization', 'Bearer ' . $newToken)
+            ->header('Authorization', 'Bearer ' . $data->token)
             ->header('Access-Control-Expose-Headers', 'Authorization')
             ->cookie($cookie);
     }
