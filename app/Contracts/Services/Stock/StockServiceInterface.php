@@ -3,7 +3,9 @@
 namespace App\Contracts\Services\Stock;
 
 use App\DTOs\Adjustment\StockAdjustmentDTO;
+use App\DTOs\Stock\CheckStockQuantityDTO;
 use App\DTOs\Stock\StockDTO;
+use App\DTOs\Stock\StockInvestmentQueryDTO;
 use App\DTOs\Stock\StockResponseDTO;
 use App\Models\Purchases\Purchase;
 use App\Models\Sales\Sale;
@@ -31,8 +33,8 @@ interface StockServiceInterface
 
     public function proccessItensAdjustment(StockAdjustment $stockAdjustment);
 
-    public function checkQuantityProductsInStock(int $companyId, ?int $productId = null, ?string $productName = null, ?string $sku = null, int $perPage = 15, int $page = 1): LengthAwarePaginator;
+    public function checkQuantityProductsInStock(CheckStockQuantityDTO $dto): LengthAwarePaginator;
 
     // Retorna ['total_investido' => float, 'paginator' => LengthAwarePaginator].
-    public function stockInvestment(int $companyId, ?int $productId = null, ?string $productName = null, ?string $sku = null, int $perPage = 15, int $page = 1): array;
+    public function stockInvestment(StockInvestmentQueryDTO $dto): array;
 }

@@ -5,9 +5,11 @@ namespace App\Services\Stock;
 use App\Contracts\Repositories\Stock\StockBalanceRepositoryInterface;
 use App\Contracts\Repositories\Stock\StockRepositoryInterface;
 use App\Contracts\Services\Stock\StockServiceInterface;
+use App\DTOs\Stock\CheckStockQuantityDTO;
 use App\DTOs\Stock\StockBalanceDTO;
 use App\DTOs\Stock\StockDTO;
 use App\DTOs\Stock\StockInvestmentDTO;
+use App\DTOs\Stock\StockInvestmentQueryDTO;
 use App\DTOs\Stock\StockResponseDTO;
 use App\Enums\OriginType;
 use App\Enums\TipoStock;
@@ -153,9 +155,16 @@ class StockService implements StockServiceInterface
         );
         $this->repository->store($dto->toArray());
     }
-    public function checkQuantityProductsInStock(int $companyId, ?int $productId = null, ?string $productName = null, ?string $sku = null, int $perPage = 15, int $page = 1): LengthAwarePaginator
+    public function checkQuantityProductsInStock(CheckStockQuantityDTO $dto): LengthAwarePaginator
     {
-        $paginator = $this->balanceRepository->paginate($companyId, $productId, $productName, $sku, $perPage, $page);
+        $paginator = $this->balanceRepository->paginate(
+            $dto->company_id,
+            $dto->product_id,
+            $dto->product_name,
+            $dto->sku,
+            $dto->perPage,
+            $dto->page,
+        );
 
         $paginator->getCollection()->transform(
             fn ($row) => StockBalanceDTO::fromQueryResult($row)->toArray()
@@ -164,16 +173,28 @@ class StockService implements StockServiceInterface
         return $paginator;
     }
 
-    public function stockInvestment(int $companyId, ?int $productId = null, ?string $productName = null, ?string $sku = null, int $perPage = 15, int $page = 1): array
+    public function stockInvestment(StockInvestmentQueryDTO $dto): array
     {
-        $paginator = $this->balanceRepository->paginateInvestment($companyId, $productId, $productName, $sku, $perPage, $page);
+        $paginator = $this->balanceRepository->paginateInvestment(
+            $dto->company_id,
+            $dto->product_id,
+            $dto->product_name,
+            $dto->sku,
+            $dto->perPage,
+            $dto->page,
+        );
 
         $paginator->getCollection()->transform(
             fn ($row) => StockInvestmentDTO::fromQueryResult($row)->toArray()
         );
 
         return [
-            'total_investido' => $this->balanceRepository->totalInvested($companyId, $productId, $productName, $sku),
+            'total_investido' => $this->balanceRepository->totalInvested(
+                $dto->company_id,
+                $dto->product_id,
+                $dto->product_name,
+                $dto->sku,
+            ),
             'paginator'       => $paginator,
         ];
     }

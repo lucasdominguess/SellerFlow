@@ -9,6 +9,7 @@ use App\Contracts\Repositories\Accout\UserStoreRepositoryInterface;
 use App\Contracts\Repositories\Adjustment\StockAdjustmentRepositoryInterface;
 use App\Contracts\Repositories\Business\SupplierRepositoryInterface;
 use App\Contracts\Repositories\Business\ProductRepositoryInterface;
+use App\Contracts\Repositories\Business\ProductImageRepositoryInterface;
 use App\Contracts\Repositories\Business\ValidateProductRepositoryInterface;
 use App\Contracts\Repositories\Finance\AccountPayableRepositoryInterface;
 use App\Contracts\Repositories\Finance\AccountReceivableRepositoryInterface;
@@ -44,6 +45,7 @@ use App\Repositories\Accout\UserStoreRepository;
 use App\Repositories\Adjustment\StockAdjustmentRepository;
 use App\Repositories\Business\SupplierRepository;
 use App\Repositories\Business\ProductRepository;
+use App\Repositories\Business\ProductImageRepository;
 use App\Repositories\Business\ValidateProductRepository;
 use App\Repositories\Finance\AccountPayableRepository;
 use App\Repositories\Finance\AccountReceivableRepository;
@@ -133,6 +135,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             ProductRepositoryInterface::class,
             ProductRepository::class
+        );
+        $this->app->bind(
+            ProductImageRepositoryInterface::class,
+            ProductImageRepository::class
         );
         $this->app->bind(
             SupplierServiceInterface::class,

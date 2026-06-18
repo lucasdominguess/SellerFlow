@@ -1,7 +1,8 @@
 # Projeto: SellerFlow
 
-**Stack:** Laravel 11, PHP 8.2+, Postgres, Redis, Docker (multi-stage), Vanilla JS + Blade, Vite.
-**Tipo:** API REST + frontend Blade. Ferramenta interna de gestão para seller de marketplaces (foco Shopee).
+**Stack:** Laravel 11, PHP 8.3+, Postgres, Redis. Backend API REST.
+**Frontend:** apartado — SPA em Vue.js consumindo a API (repositório separado).
+**Tipo:** API REST. Ferramenta interna de gestão para seller de marketplaces (foco Shopee).
 **Status:** MVP em desenvolvimento — escopo em `Plans/plan-sellerflow-sistema.md` (no Obsidian Brain).
 
 ---
@@ -16,16 +17,25 @@ Este projeto consulta o Brain global para padrões arquiteturais reutilizáveis.
 
 ### Quando consultar o Brain (regra mecânica)
 
+> `Skills/ops/skill-core.md` é o índice operacional do Brain — leia-o primeiro em caso de dúvida sobre qual skill usar.
+
 | Tarefa                                                    | Skill primária                            |
 | --------------------------------------------------------- | ------------------------------------------ |
 | Criar/refatorar fluxo backend (Controller→Service→Repo) | `Skills/dev/skill-layers.md`             |
+| Padrões de engenheiro backend sênior (PHP/Laravel)      | `Skills/dev/skill-back.md`               |
+| Preencher DTOs/FormRequests do `make:crud` via schema     | `Skills/dev/skill-dto-filler.md`         |
 | Revisão de segurança / discordância ativa              | `Skills/dev/skill-secur.md`              |
 | Escrever testes (Pest)                                    | `Skills/dev/skill-qa.md`                 |
-| Tela/UI nova (Blade + CSS + JS isolados)                  | `Skills/dev/skill-front.md`              |
-| Setup Docker, deploy, CI/CD                               | `Skills/dev/skill-infra.md`              |
+| Testes unitários/feature por camada                      | `Skills/dev/skill-unit-tests.md`         |
+| Tela/UI nova (frontend Vue apartado)                      | `Skills/dev/skill-front.md`              |
+| Setup de infra / deploy / CI/CD                           | `Skills/dev/skill-infra.md`              |
 | Documentar API (Swagger/OpenAPI)                          | `Skills/dev/skill-swagger-docs.md`       |
+| Gerar/atualizar collection no Postman                     | `Skills/dev/skill-postman-crud.md`       |
+| Banco de dados via Supabase (MCP)                         | `Skills/dev/skill-supabase.md`           |
 | Tarefa complexa (>3 arquivos, planejar antes de codar)    | `Skills/ops/skill-planner.md`            |
 | Decisão arquitetural durável                            | `Skills/ops/skill-memory.md` (criar ADR) |
+| Modo aprendizado / mentoria técnica                      | `Skills/ops/skill-mentor.md`             |
+| Setup/configuração de MCPs                               | `Skills/ops/mcp-setup.md`                |
 
 ### Quando NÃO consultar o Brain
 
@@ -41,6 +51,7 @@ Este projeto consulta o Brain global para padrões arquiteturais reutilizáveis.
 
 - **Fluxo canônico:** `FormRequest → CommandDTO → Service → Repository → ResponseDTO`. Detalhe em `Skills/dev/skill-layers.md`.
 - Nunca passar `$request` cru ao Service — sempre `$request->validated()`.
+- Service sempre **recebe um CommandDTO** (domínio), nunca array puro. O Controller monta `XDTO::fromRequest($request->validated())` e entrega o DTO ao Service.
 - Service nunca retorna Eloquent Model — sempre `ResponseDTO::fromModel()`.
 - Repository é o único que faz query. `create()` e `update()` chamam `->load($this->withRelations())` antes de retornar.
 - Interface do Repository declarada e vinculada no `AppServiceProvider`.
@@ -59,27 +70,11 @@ php artisan serve
 php artisan migrate:fresh --seed
 ./vendor/bin/pest
 
-# Frontend / assets
-npm run dev
-npm run build
-
-# Docker
-docker compose up -d
-docker compose logs -f app
-
-# Geradores custom do projeto
-php artisan make:dto {Name}
-php artisan make:service {Name}
-php artisan postman:generate
+# Geradores custom do projeto (preferir a criar arquivos manualmente)
+php artisan make:crud {Name}        # stack CRUD completo + binds + rotas (aceita subpastas, ex: Business/Product)
+php artisan make:service {Name}     # Service (flags: -r repo, -c contract, -C controller, -d dto, -m métodos CRUD)
+php artisan make:dto {Name}         # DTO (-r ResponseDTO, -A fromArray, --all gera o par completo)
+php artisan postman:generate        # gera/atualiza a collection do Postman
+php artisan stock:rebuild-balances  # recalcula stock_balances a partir de stock_movements
+php artisan cls                     # limpa caches (--all inclui Composer, --prod otimiza p/ produção)
 ```
-
----
-
-## Notas específicas deste projeto
-
-- **Sessão:** driver padrão é `cookie` (commit `0f8d016`). Não voltar para `file` — containers Render são stateless.
-- **Custom commands:** `app/Console/Commands/` tem `MakeDTO`, `MakeService`, `PostmanGenerate`, `CleanAll`. Preferir esses geradores a criar arquivos manualmente.
-- **Exception handler:** `CustomException.php` (não `CustomExcepiton.php` — typo do legado já corrigido). Registrado em `bootstrap/app.php`.
-- **Shopee integração:** **fora do MVP**. Vendas/compras entram manualmente. Não sugerir integração com a API da Shopee nesta fase.
-- **Multi-loja:** modelar com tabela própria, **mas não implementar UI/lógica multi-loja**. Uma loja só no MVP.
-- **Custo de produto / margem:** não calcular nesta versão. Ignorar campos de custo médio.

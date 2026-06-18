@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Stock;
 
 use App\Classes\ApiResponse;
 use App\Contracts\Services\Stock\StockServiceInterface;
+use App\DTOs\Stock\CheckStockQuantityDTO;
 use App\DTOs\Stock\StockDTO;
+use App\DTOs\Stock\StockInvestmentQueryDTO;
 use App\Http\Requests\Stock\CheckStockQuantityRequest;
 use App\Http\Requests\Stock\FilterStockIndexRequest;
 use App\Http\Requests\Stock\StockCreateRequest;
@@ -60,15 +62,8 @@ class StockController extends Controller
     }
     public function checkQuantityProductsInStock(CheckStockQuantityRequest $request): JsonResponse
     {
-        $data = $request->validated();
-
         $paginator = $this->service->checkQuantityProductsInStock(
-            companyId: $data['company_id'],
-            productId: $data['product_id'] ?? null,
-            productName: $data['product_name'] ?? null,
-            sku: $data['sku'] ?? null,
-            perPage: $data['perPage'],
-            page: $data['page'],
+            CheckStockQuantityDTO::fromRequest($request->validated())
         );
 
         return ApiResponse::paginated($paginator, null, 'Quantidade de produtos em estoque recuperada com sucesso');
@@ -76,21 +71,13 @@ class StockController extends Controller
 
     public function investmentInStock(StockInvestmentRequest $request): JsonResponse
     {
-        $data = $request->validated();
-        Log::info($data);
-        
         $result = $this->service->stockInvestment(
-            companyId: $data['company_id'],
-            productId: $data['product_id'] ?? null,
-            productName: $data['product_name'] ?? null,
-            sku: $data['sku'] ?? null,
-            perPage: $data['perPage'],
-            page: $data['page'],
+            StockInvestmentQueryDTO::fromRequest($request->validated())
         );
 
         return ApiResponse::paginated(
             $result['paginator'],
-            null,
+           message:
             'Valor investido no estoque recuperado com sucesso',
             headers: [],
             extra: ['total_investido' => $result['total_investido']],

@@ -13,21 +13,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class JwtMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
+
     public function handle(Request $request, Closure $next): Response
     {
         try {
 
             $request->header('Authorization');
 
-            $token = JWTAuth::getToken();
-            Log::info('Token recebido: ' . $token ? $token : 'Nenhum token encontrado');
             JWTAuth::parseToken()->authenticate();
-            // Log::info('Token atual: ' . $token);
 
         } catch (TokenExpiredException $e) {
             Log::warning('TokenExpiredException: ' . $e->getMessage());
@@ -42,10 +35,6 @@ class JwtMiddleware
             return response(['erro' => 'Token inválido', 'msg' => $e->getMessage()], 401);
         }
 
-        // $refresh = JWTAuth::refresh();
-        // // log::info('Token renovado com sucesso');
-        // log::info('Token renovado: ' . $refresh);
-        // return $next($request)->header('Authorization', 'Bearer ' . $refresh);
         return $next($request);
     }
 }

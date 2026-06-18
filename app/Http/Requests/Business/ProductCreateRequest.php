@@ -4,7 +4,7 @@ namespace App\Http\Requests\Business;
 
 use App\Classes\Sku;
 use Illuminate\Foundation\Http\FormRequest;
-use Override;
+
 
 class ProductCreateRequest extends FormRequest
 {
@@ -24,7 +24,8 @@ class ProductCreateRequest extends FormRequest
             'price_box'    => ['required', 'numeric', 'min:0', 'decimal:0,2'],
             'status_id'    => ['required', 'integer', 'exists:status,id'],
             'fornecedor_id'=> ['nullable', 'integer', 'exists:suppliers,id'],
-            'path_image'   => ['nullable', 'string', 'max:255'],
+            'images'       => ['nullable', 'array', 'max:10'],
+            'images.*'     => ['image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ];
     }
 
@@ -40,6 +41,10 @@ class ProductCreateRequest extends FormRequest
             'decimal'  => 'O campo :attribute deve ter no máximo 2 casas decimais.',
             'integer'  => 'O campo :attribute deve ser um número inteiro.',
             'exists'   => 'O :attribute informado não existe.',
+            'image'    => 'O campo :attribute deve ser uma imagem.',
+            'mimes'    => 'O campo :attribute deve ser um arquivo do tipo: :values.',
+            'images.max'   => 'É permitido no máximo 10 imagens.',
+            'images.*.max' => 'Cada imagem deve ter no máximo 2MB.',
         ];
     }
 
@@ -54,17 +59,10 @@ class ProductCreateRequest extends FormRequest
             'price_box'     => 'preço por caixa',
             'status_id'     => 'status',
             'fornecedor_id' => 'fornecedor',
-            'path_image'    => 'imagem',
+            'images'        => 'imagens',
+            'images.*'      => 'imagem',
         ];
     }
-    // public function prepareForValidation()
-    // {
-    //     $this->merge([
-    //         'sku' => Sku::generate($this->input('name')),
-    //     ]);
-
-
-    // }
       public function validationData(): array
     {
         return array_merge(parent::validationData(), [

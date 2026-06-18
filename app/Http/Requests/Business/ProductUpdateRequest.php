@@ -25,7 +25,8 @@ class ProductUpdateRequest extends FormRequest
             'price_box'    => ['sometimes', 'numeric', 'min:0', 'decimal:0,2'],
             'status_id'    => ['sometimes', 'integer', 'exists:status,id'],
             'fornecedor_id'=> ['sometimes', 'nullable', 'integer', 'exists:suppliers,id'],
-            'path_image'   => ['sometimes', 'nullable', 'string', 'max:255'],
+            'images'       => ['sometimes', 'nullable', 'array', 'max:10'],
+            'images.*'     => ['image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ];
     }
 
@@ -40,6 +41,10 @@ class ProductUpdateRequest extends FormRequest
             'decimal' => 'O campo :attribute deve ter no máximo 2 casas decimais.',
             'integer' => 'O campo :attribute deve ser um número inteiro.',
             'exists'  => 'O :attribute informado não existe.',
+            'image'   => 'O campo :attribute deve ser uma imagem.',
+            'mimes'   => 'O campo :attribute deve ser um arquivo do tipo: :values.',
+            'images.max'   => 'É permitido no máximo 10 imagens.',
+            'images.*.max' => 'Cada imagem deve ter no máximo 2MB.',
         ];
     }
 
@@ -54,7 +59,8 @@ class ProductUpdateRequest extends FormRequest
             'price_box'     => 'preço por caixa',
             'status_id'     => 'status',
             'fornecedor_id' => 'fornecedor',
-            'path_image'    => 'imagem',
+            'images'        => 'imagens',
+            'images.*'      => 'imagem',
         ];
     }
 }

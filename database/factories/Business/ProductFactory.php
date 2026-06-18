@@ -26,7 +26,6 @@ class ProductFactory extends Factory
             'price_box' => $this->faker->randomFloat(2, 100, 500),
             'status_id' => rand(1, 3),
             'fornecedor_id' => rand(1, 20),
-            'path_image' => null
         ];
     }
 }

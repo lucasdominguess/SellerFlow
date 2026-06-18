@@ -21,7 +21,6 @@ class Product extends Model
         'price_box',
         'status_id',
         'fornecedor_id',
-        'path_image'
     ];
     public $hidden = [
         'created_at',
@@ -35,6 +34,11 @@ class Product extends Model
     public function supplier()
     {
         return $this->belongsTo(Supplier::class, 'fornecedor_id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class, 'product_id')->orderBy('position');
     }
 
 }

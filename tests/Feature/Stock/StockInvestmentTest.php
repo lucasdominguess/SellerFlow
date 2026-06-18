@@ -3,6 +3,7 @@
 namespace Tests\Feature\Stock;
 
 use App\Contracts\Services\Stock\StockServiceInterface;
+use App\DTOs\Stock\StockInvestmentQueryDTO;
 use App\Models\Accout\Store;
 use App\Models\Accout\User;
 use App\Models\Business\Product;
@@ -93,7 +94,11 @@ describe('StockInvestment (valor investido FIFO)', function () {
         makeStockMovement($companyId, $productId, $userId, 'saida', 3);
 
         $result = app(StockServiceInterface::class)
-            ->stockInvestment($companyId, null, null, null, 15, 1);
+            ->stockInvestment(StockInvestmentQueryDTO::fromRequest([
+                'company_id' => $companyId,
+                'perPage'    => 15,
+                'page'       => 1,
+            ]));
 
         expect($result['total_investido'])->toBe(80.0);
 
@@ -119,7 +124,11 @@ describe('StockInvestment (valor investido FIFO)', function () {
         makeStockMovement($companyId, $productId, $userId, 'entrada', 5);
 
         $result = app(StockServiceInterface::class)
-            ->stockInvestment($companyId, null, null, null, 15, 1);
+            ->stockInvestment(StockInvestmentQueryDTO::fromRequest([
+                'company_id' => $companyId,
+                'perPage'    => 15,
+                'page'       => 1,
+            ]));
 
         // saldo 5, todas valorizadas a 10 (a compra de 99 foi cancelada)
         expect($result['total_investido'])->toBe(50.0);
@@ -149,7 +158,11 @@ describe('StockInvestment (valor investido FIFO)', function () {
         ]);
 
         $result = app(StockServiceInterface::class)
-            ->stockInvestment($companyId, null, null, null, 15, 1);
+            ->stockInvestment(StockInvestmentQueryDTO::fromRequest([
+                'company_id' => $companyId,
+                'perPage'    => 15,
+                'page'       => 1,
+            ]));
 
         $row = $result['paginator']->items()[0];
         expect($row['saldo_atual'])->toBe(5)
@@ -168,7 +181,11 @@ describe('StockInvestment (valor investido FIFO)', function () {
         makeStockMovement($companyId, $productId, $userId, 'saida', 4);
 
         $result = app(StockServiceInterface::class)
-            ->stockInvestment($companyId, null, null, null, 15, 1);
+            ->stockInvestment(StockInvestmentQueryDTO::fromRequest([
+                'company_id' => $companyId,
+                'perPage'    => 15,
+                'page'       => 1,
+            ]));
 
         expect($result['paginator']->total())->toBe(0)
             ->and($result['total_investido'])->toBe(0.0);

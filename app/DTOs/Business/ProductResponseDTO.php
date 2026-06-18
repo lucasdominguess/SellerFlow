@@ -2,6 +2,7 @@
 
 namespace App\DTOs\Business;
 
+use App\DTOs\Business\SupplierResponseDTO;
 use App\Models\Business\Product;
 
 class ProductResponseDTO
@@ -15,8 +16,8 @@ class ProductResponseDTO
         public readonly float $price_unit,
         public readonly float $price_box,
         public readonly int $status_id,
-        public readonly ?string $path_image,
-        public readonly ?FornecedorResponseDTO $fornecedor,
+        public readonly array $images,
+        public readonly ?SupplierResponseDTO $fornecedor,
     ) {}
 
     public static function fromModel(Product $model): self
@@ -30,11 +31,13 @@ class ProductResponseDTO
             price_unit: $model->price_unit,
             price_box: $model->price_box,
             status_id: $model->status_id,
-            path_image: $model->path_image,
-            fornecedor: $model->fornecedor
-                ? FornecedorResponseDTO::fromModel($model->fornecedor)
+            images: $model->images
+                ->map(fn($image) => ProductImageResponseDTO::fromModel($image)->toArray())
+                ->values()
+                ->all(),
+            fornecedor: $model->supplier
+                ? SupplierResponseDTO::fromModel($model->supplier)
                 : null,
-
         );
     }
 
@@ -49,7 +52,7 @@ class ProductResponseDTO
             'price_unit'  => $this->price_unit,
             'price_box'   => $this->price_box,
             'status_id'   => $this->status_id,
-            'path_image'  => $this->path_image,
+            'images'      => $this->images,
             'fornecedor'  => $this->fornecedor?->toArray(),
         ];
     }

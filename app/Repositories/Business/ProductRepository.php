@@ -14,38 +14,44 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function index(int $perPage = 15, int $page = 1, ?array $filters = []): LengthAwarePaginator
     {
-        $query = $this->productModel->query();
+        $query = $this->productModel->with($this->withRelations());
 
-        if (empty($filters)) return $query->orderByDesc('id')->paginate($perPage);
-
-        // Adicione filtros específicos aqui:
-        // if (!empty($filters['name'])) {
-        //     $query->where('name', 'like', '%' . $filters['name'] . '%');
-        // }
+        if (!empty($filters)) {
+            // Adicione filtros específicos aqui:
+            // if (!empty($filters['name'])) {
+            //     $query->where('name', 'like', '%' . $filters['name'] . '%');
+            // }
+        }
 
         return $query->orderByDesc('id')->paginate($perPage);
     }
 
     public function show(Product $product): Product
     {
-        // Route model binding já buscou o registro — adicione $->load('relacao') se precisar
-        return $product;
+        return $product->load($this->withRelations());
     }
 
     public function store(array $data): Product
     {
-        return $this->productModel->create($data);
+        $product = $this->productModel->create($data);
+
+        return $product->load($this->withRelations());
     }
 
     public function update(Product $product, array $data): Product
     {
         $product->update($data);
 
-        return $product;
+        return $product->load($this->withRelations());
     }
 
     public function delete(Product $product)
     {
         return $product->delete();
+    }
+
+    private function withRelations(): array
+    {
+        return ['status', 'supplier', 'images'];
     }
 }

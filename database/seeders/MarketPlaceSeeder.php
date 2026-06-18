@@ -20,25 +20,25 @@ class MarketPlaceSeeder extends Seeder
 
                 [
                     'name' => 'Amazon',
-                    'taxa_percentual' => 16.0,
+                    'taxa_percentual' => 20,
                     'taxa_fixa' => 4.0,
                     'status_id' => 2,
                 ],
                 [
                     'name' => 'Mercado Livre',
-                    'taxa_percentual' => 16.0,
+                    'taxa_percentual' => 20,
                     'taxa_fixa' => 4.0,
                     'status_id' => 1,
                 ],
                 [
                     'name' => 'Shopee',
-                    'taxa_percentual' => 16.0,
+                    'taxa_percentual' => 20,
                     'taxa_fixa' => 4.0,
                     'status_id' => 1,
                 ],
                 [
                     'name' => 'Tiktok Shop',
-                    'taxa_percentual' => 16.0,
+                    'taxa_percentual' => 20,
                     'taxa_fixa' => 4.0,
                     'status_id' => 1,
                 ]

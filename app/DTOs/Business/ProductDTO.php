@@ -13,7 +13,8 @@ class ProductDTO
         public readonly ?float $price_box,
         public readonly ?int $status_id,
         public readonly ?int $fornecedor_id,
-        public readonly ?string $path_image,
+        // UploadedFile[] — arquivos a anexar; não vão no toArray() (tabela separada)
+        public readonly array $images = [],
     ) {}
 
     public static function fromRequest(array $data): self
@@ -27,11 +28,16 @@ class ProductDTO
             price_box: isset($data['price_box']) ? (float) $data['price_box'] : null,
             status_id: $data['status_id'] ?? null,
             fornecedor_id: $data['fornecedor_id'] ?? null,
-            path_image: $data['path_image'] ?? null,
+            images: $data['images'] ?? [],
         );
     }
 
-    // Retorna apenas os campos presentes (não-null), evitando sobrescrever dados no update
+    public function hasImages(): bool
+    {
+        return $this->images !== [];
+    }
+
+    // Retorna apenas os campos presentes (não-null) da tabela products; images é tratado à parte
     public function toArray(): array
     {
         return array_filter([
@@ -43,7 +49,6 @@ class ProductDTO
             'price_box'     => $this->price_box,
             'status_id'     => $this->status_id,
             'fornecedor_id' => $this->fornecedor_id,
-            'path_image'    => $this->path_image,
         ], fn($value) => !is_null($value));
     }
 }
