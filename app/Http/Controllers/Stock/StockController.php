@@ -28,7 +28,7 @@ class StockController extends Controller
         $data = $request->validated();
         $paginator = $this->service->index($data['perPage'], $data['page'], $data['filters']);
 
-        return ApiResponse::paginated($paginator, 'Stocks recuperados com sucesso');
+        return ApiResponse::paginated($paginator, message: 'Stocks recuperados com sucesso');
     }
 
     public function show(Stock $stock): JsonResponse

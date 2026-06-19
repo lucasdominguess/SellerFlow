@@ -2,6 +2,7 @@
 
 namespace App\Models\Finance;
 
+use App\Enums\OriginType;
 use App\Enums\TransactionStatus;
 use App\Models\Concerns\BelongsToCompany;
 use App\Models\ListSuspended\FinancialCategory;
@@ -40,6 +41,13 @@ class AccountPayable extends Model
         'pago_em'    => 'date',
         'valor'      => 'decimal:2',
         'status'     => TransactionStatus::class,
+    ];
+
+    // Defaults no create (as colunas têm default no banco, mas o model não é recarregado
+    // após o create, então status/origem_tipo viriam null em memória). Não afeta updates.
+    protected $attributes = [
+        'status'      => TransactionStatus::PENDING->value,
+        'origem_tipo' => OriginType::AJUSTE_MANUAL->value,
     ];
 
     public function company()

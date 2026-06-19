@@ -18,7 +18,7 @@ class StoreUpdateRequest extends FormRequest
             'email' => ['sometimes', 'string', 'email', 'max:255'],
             'description' => ['sometimes', 'string', 'max:255'],
             'status_id' => ['sometimes', 'integer', 'exists:status,id'],
-            'marketplace_id' => ['sometimes', 'integer', 'exists:marketplaces,id'],
+            'marketplace_id' => ['sometimes', 'integer', 'exists:market_places,id'],
             'company_id' => ['sometimes', 'integer', 'exists:companies,id'],
         ];
     }

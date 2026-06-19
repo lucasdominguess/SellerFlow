@@ -5,10 +5,10 @@ namespace App\DTOs\Accout;
 class UserStoreDTO
 {
     public function __construct(
-        public readonly string $user_id,
-        public readonly string $store_id,
-        public readonly string $role_id,
-        public readonly string $status_id,
+        public readonly ?int $user_id,
+        public readonly ?int $store_id,
+        public readonly ?int $role_id,
+        public readonly ?int $status_id,
     ) {}
 
     public static function fromRequest(array $data): self
@@ -21,13 +21,15 @@ class UserStoreDTO
         );
     }
 
+    // Retorna apenas os campos presentes (não-null), evitando sobrescrever dados no update.
+    // No create, todos os 4 campos são obrigatórios na validação, então sempre vêm preenchidos.
     public function toArray(): array
     {
-        return [
+        return array_filter([
             'user_id' => $this->user_id,
             'store_id' => $this->store_id,
             'role_id' => $this->role_id,
             'status_id' => $this->status_id,
-        ];
+        ], fn ($value) => !is_null($value));
     }
 }

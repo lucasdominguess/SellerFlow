@@ -22,7 +22,7 @@ class StockAdjustmentController extends Controller
         $data = $request->validated();
         $paginator = $this->service->index($data['perPage'], $data['page'], $data['filters']);
 
-        return ApiResponse::paginated($paginator, 'StockAdjustments recuperados com sucesso');
+        return ApiResponse::paginated($paginator, message: 'StockAdjustments recuperados com sucesso');
     }
 
     public function show(StockAdjustment $stockAdjustment): JsonResponse

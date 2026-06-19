@@ -7,6 +7,8 @@ use App\Models\Business\ValidateProduct;
 class ValidateProductResponseDTO implements \JsonSerializable
 {
     public function __construct(
+        // null no preview (fromArray/check-validate-product, que não persiste); presente em fromModel
+        public readonly ?int $id,
         public readonly float $price_sale,
         public readonly float $price_buy,
         public readonly float $cust_additional,
@@ -21,6 +23,7 @@ class ValidateProductResponseDTO implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
+            id: null,
             price_sale: (float) $data['price_sale'],
             price_buy: (float) $data['price_buy'],
             cust_additional: (float) $data['cust_additional'],
@@ -40,6 +43,7 @@ class ValidateProductResponseDTO implements \JsonSerializable
             + (float) $model->fee_fixed;
 
         return new self(
+            id: $model->id,
             price_sale: (float) $model->price_sale,
             price_buy: (float) $model->price_buy,
             cust_additional: (float) $model->cust_additional,
@@ -60,6 +64,7 @@ class ValidateProductResponseDTO implements \JsonSerializable
     public function toArray(): array
     {
         return [
+            'id' => $this->id,
             'price_sale' => $this->price_sale,
             'price_buy' => $this->price_buy,
             'cust_additional' => $this->cust_additional,

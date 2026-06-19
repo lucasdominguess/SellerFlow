@@ -15,9 +15,11 @@ uses(RefreshDatabase::class);
 describe('ProductController', function () {
 
     beforeEach(function () {
+        // SupplierFactory sorteia status_id entre 1 e 3 (rand(1, 3))
         DB::table('status')->insert([
             ['id' => 1, 'name' => 'Ativo'],
             ['id' => 2, 'name' => 'Inativo'],
+            ['id' => 3, 'name' => 'Pendente'],
         ]);
 
         // produtos não têm company_id (catálogo global): basta um usuário autenticado

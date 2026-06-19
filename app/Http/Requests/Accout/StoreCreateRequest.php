@@ -18,7 +18,7 @@ class StoreCreateRequest extends FormRequest
             'email' => ['nullable', 'string', 'email', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
             'status_id' => ['required', 'integer', 'exists:status,id'],
-            'marketplace_id' => ['required', 'integer', 'exists:marketplaces,id'],
+            'marketplace_id' => ['required', 'integer', 'exists:market_places,id'],
             'company_id' => ['nullable', 'integer', 'exists:companies,id'],
         ];
     }
