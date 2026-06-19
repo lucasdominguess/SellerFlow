@@ -6,6 +6,7 @@ use App\Models\Accout\Store;
 use App\Models\Accout\User;
 use App\Enums\TransactionStatus;
 use App\Models\Business\Supplier;
+use App\Models\Concerns\BelongsToCompany;
 use App\Models\Finance\AccountPayable;
 use App\Models\ListSuspended\Company;
 use App\Models\ListSuspended\PaymentMethod;
@@ -17,6 +18,7 @@ class Purchase extends Model
 {
     /** @use HasFactory<\Database\Factories\Purchases\PurchaseFactory> */
     use HasFactory;
+    use BelongsToCompany;
 
     public $table = 'purchases';
 

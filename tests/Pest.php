@@ -1,6 +1,10 @@
 <?php
 
+use App\Models\Accout\CompanyUser;
+use App\Models\Accout\User;
+use App\Models\ListSuspended\Company;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 /*
@@ -46,4 +50,44 @@ expect()->extend('toBeOne', function () {
 function something()
 {
     // ..
+}
+
+// Autentica via JWT real: gera o token e injeta no header Authorization das próximas
+// requisições, para passar pelo JwtMiddleware (que faz parseToken do header).
+function actingAsJwt(?User $user = null): User
+{
+    $user ??= User::factory()->create();
+
+    $token = auth('api')->login($user);
+    test()->withHeader('Authorization', "Bearer {$token}");
+
+    return $user;
+}
+
+// Autentica via JWT um usuário VINCULADO a uma empresa (CompanyUser), necessário para os
+// módulos com tenant scope (vendas, compras, estoque, finanças): sem o vínculo, a claim
+// 'company' do token fica vazia e o CompanyScope filtra tudo. Retorna ['user' => , 'company' => ].
+function actingAsCompanyJwt(?Company $company = null): array
+{
+    // FKs de lookup exigidas por User/Company/CompanyUser
+    DB::table('status')->insertOrIgnore([
+        ['id' => 1, 'name' => 'Ativo'],
+        ['id' => 2, 'name' => 'Inativo'],
+    ]);
+    DB::table('roles')->insertOrIgnore([['id' => 1, 'name' => 'admin']]);
+
+    $company ??= Company::factory()->create();
+    $user = User::factory()->create();
+
+    CompanyUser::factory()->create([
+        'company_id' => $company->id,
+        'user_id'    => $user->id,
+        'role_id'    => 1,
+        'status_id'  => 1,
+    ]);
+
+    $token = auth('api')->login($user);
+    test()->withHeader('Authorization', "Bearer {$token}");
+
+    return ['user' => $user, 'company' => $company];
 }

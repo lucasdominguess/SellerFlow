@@ -150,4 +150,20 @@ class StockBalanceRepository implements StockBalanceRepositoryInterface
             ]
         );
     }
+
+    // Lê os saldos TRAVANDO as linhas (FOR UPDATE) até o fim da transação, para
+    // serializar vendas concorrentes do mesmo produto. Precisa rodar dentro de
+    // uma DB::transaction. Retorna [product_id => saldo_atual]; produtos sem linha
+    // de saldo simplesmente não aparecem no mapa (o chamador trata como 0).
+    public function lockAvailableQuantities(int $companyId, array $productIds): array
+    {
+        return StockBalance::query()
+            ->where('company_id', $companyId)
+            ->whereIn('product_id', $productIds)
+            ->orderBy('product_id') // ordem fixa evita deadlock entre transações concorrentes
+            ->lockForUpdate()
+            ->pluck('saldo_atual', 'product_id')
+            ->map(fn ($saldo) => (int) $saldo)
+            ->all();
+    }
 }

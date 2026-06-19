@@ -3,6 +3,7 @@
 namespace App\Models\Finance;
 
 use App\Enums\TransactionStatus;
+use App\Models\Concerns\BelongsToCompany;
 use App\Models\ListSuspended\FinancialCategory;
 use App\Models\ListSuspended\Company;
 use App\Models\ListSuspended\PaymentMethod;
@@ -15,6 +16,7 @@ class AccountPayable extends Model
 {
     /** @use HasFactory<\Database\Factories\Finance\AccountPayableFactory> */
     use HasFactory;
+    use BelongsToCompany;
 
     public $table = 'account_payables';
 

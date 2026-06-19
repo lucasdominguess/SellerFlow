@@ -37,6 +37,12 @@ function makeStockMovement(int $companyId, int $productId, int $userId, string $
 describe('StockInvestment (valor investido FIFO)', function () {
 
     beforeEach(function () {
+        // stock_investment_view usa SQL exclusivo do Postgres (jsonb_agg, FILTER, window
+        // functions) e não é criada em outros drivers. Sem Postgres, não há o que testar.
+        if (DB::connection()->getDriverName() !== 'pgsql') {
+            $this->markTestSkipped('stock_investment_view só existe no Postgres.');
+        }
+
         DB::table('status')->insert([
             ['id' => 1, 'name' => 'Empresa Ativa'],
             ['id' => 2, 'name' => 'Usuario Ativo'],

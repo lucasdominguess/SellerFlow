@@ -17,7 +17,7 @@ class SaleRepository implements SaleRepositoryInterface
 
     public function index(int $perPage = 15, int $page = 1, ?array $filters = []): LengthAwarePaginator
     {
-        // tenant scoping: lista apenas vendas da empresa do usuário logado (barra IDOR)
+        // O isolamento por empresa é aplicado pelo CompanyScope (global scope do model).
         $query = $this->saleModel->query();
 
         if (empty($filters)) return $query->orderByDesc('id')->paginate($perPage);

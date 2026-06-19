@@ -62,6 +62,13 @@ Este projeto consulta o Brain global para padrões arquiteturais reutilizáveis.
 
 ---
 
+## Convenções de trabalho do agente
+
+- **Leitura livre:** permissão de leitura total em qualquer arquivo do projeto — não precisa solicitar.
+- **Testes:** não criar nem executar arquivos de teste (`*test*.php`, Pest/PHPUnit). Os testes serão escritos em outro momento. Implemente apenas o código de produção solicitado.
+
+---
+
 ## Comandos úteis
 
 ```bash

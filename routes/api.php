@@ -12,6 +12,7 @@ use App\Http\Controllers\Business\ValidateProductController;
 use App\Http\Controllers\Finance\AccountPayableController;
 use App\Http\Controllers\Finance\AccountReceivableController;
 use App\Http\Controllers\Finance\CashFlowController;
+use App\Http\Controllers\Finance\DashboardController;
 use App\Http\Controllers\ListSuspended\ListSuspendedController;
 use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\Sales\SaleController;
@@ -64,6 +65,7 @@ Route::prefix('v1')->group(function () {
     Route::apiResource('stock', StockController::class);
 
     //Finance
+    Route::get('finance/dashboard', [DashboardController::class, 'index']);
     Route::get('finance/cash-flow', [CashFlowController::class, 'index']);
     Route::apiResource('account-payable', AccountPayableController::class);
     Route::apiResource('account-receivable', AccountReceivableController::class);

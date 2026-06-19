@@ -36,4 +36,8 @@ interface StockBalanceRepositoryInterface
     // Recalcula (upsert) o saldo de um produto a partir de stock_movements.
     // Se o produto não tiver mais movimentações, remove a linha de saldo.
     public function recomputeFor(int $companyId, int $productId): void;
+
+    // Lê saldos travando as linhas (FOR UPDATE) até o commit, serializando vendas
+    // concorrentes. Deve rodar dentro de uma transação. Retorna [product_id => saldo].
+    public function lockAvailableQuantities(int $companyId, array $productIds): array;
 }

@@ -4,6 +4,7 @@ use App\Exceptions\Auth\EmailAlreadyInUseException;
 use App\Exceptions\Auth\InvalidCredentialsException;
 use App\Exceptions\Auth\UserInactiveException;
 use App\Exceptions\CustomException;
+use App\Exceptions\Stock\InsufficientStockException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\LazyLoadingViolationException;
 use Illuminate\Foundation\Application;
@@ -52,6 +53,14 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->render(function (EmailAlreadyInUseException $exception): JsonResponse {
+            return response()->json([
+                'message' => $exception->getMessage(),
+            ], 422);
+        });
+
+        $exceptions->render(function (InsufficientStockException $exception): JsonResponse {
+            Log::warning('Venda bloqueada por estoque insuficiente: ' . $exception->getMessage());
+
             return response()->json([
                 'message' => $exception->getMessage(),
             ], 422);

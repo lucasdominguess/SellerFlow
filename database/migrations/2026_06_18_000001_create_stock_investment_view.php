@@ -6,6 +6,13 @@ use Illuminate\Support\Facades\DB;
 return new class extends Migration {
     public function up(): void
     {
+        // A view usa SQL exclusivo do Postgres (jsonb_agg, FILTER, window functions).
+        // Em outros drivers (ex.: SQLite dos testes) é ignorada — o cálculo de
+        // investimento só é suportado em Postgres, ambiente real da aplicação.
+        if (DB::connection()->getDriverName() !== 'pgsql') {
+            return;
+        }
+
         // Valor "parado" no estoque por produto/empresa, calculado via FIFO.
         // Premissa FIFO: o que sai primeiro é o mais antigo; logo o que SOBRA é o mais recente.
         // Para valorizar o saldo_atual, percorremos as camadas de compra da mais nova para a

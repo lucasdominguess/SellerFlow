@@ -4736,6 +4736,90 @@
                 ]
             }
         },
+        "/api/v1/finance/dashboard": {
+            "get": {
+                "tags": [
+                    "Finance"
+                ],
+                "summary": "Retorna o resumo agregado do seller no período",
+                "description": "Agrega vendas, compras, contas a pagar/receber, estoque e top produtos. Sem datas, assume o mês corrente.",
+                "operationId": "getDashboard",
+                "parameters": [
+                    {
+                        "name": "start_date",
+                        "in": "query",
+                        "description": "Data inicial (default: início do mês corrente)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2026-06-01"
+                        }
+                    },
+                    {
+                        "name": "end_date",
+                        "in": "query",
+                        "description": "Data final (>= start_date; default: fim do mês corrente)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2026-06-30"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dashboard recuperado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Dashboard recuperado com sucesso"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/DashboardResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnauthorizedResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/list": {
             "get": {
                 "tags": [
@@ -7340,6 +7424,164 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/CashFlowEntryResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "DashboardTopProductResource": {
+                "title": "Produto no top de vendas",
+                "properties": {
+                    "product_id": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "sku": {
+                        "type": "string",
+                        "example": "SKU-001"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Capa de Celular"
+                    },
+                    "quantidade": {
+                        "description": "Total vendido no período",
+                        "type": "integer",
+                        "example": 42
+                    }
+                },
+                "type": "object"
+            },
+            "DashboardFinanceBlockResource": {
+                "title": "Bloco financeiro (a pagar ou a receber)",
+                "description": "Para a_receber o campo liquidado é \"recebido_periodo\"; para a_pagar é \"pago_periodo\".",
+                "properties": {
+                    "pendente": {
+                        "description": "Total em aberto (status pendente)",
+                        "type": "number",
+                        "format": "float",
+                        "example": 320
+                    },
+                    "recebido_periodo": {
+                        "description": "Liquidado no período (apenas a_receber)",
+                        "type": "number",
+                        "format": "float",
+                        "example": 1500
+                    },
+                    "pago_periodo": {
+                        "description": "Liquidado no período (apenas a_pagar)",
+                        "type": "number",
+                        "format": "float",
+                        "example": 900
+                    },
+                    "atrasado": {
+                        "description": "Em aberto e já vencido (calculado pela data de vencimento)",
+                        "type": "number",
+                        "format": "float",
+                        "example": 50
+                    },
+                    "a_vencer_7d": {
+                        "description": "Em aberto a vencer nos próximos 7 dias",
+                        "type": "number",
+                        "format": "float",
+                        "example": 120
+                    },
+                    "a_vencer_30d": {
+                        "description": "Em aberto a vencer nos próximos 30 dias (cumulativo, inclui os 7d)",
+                        "type": "number",
+                        "format": "float",
+                        "example": 300
+                    }
+                },
+                "type": "object"
+            },
+            "DashboardResource": {
+                "title": "Resumo do dashboard",
+                "properties": {
+                    "periodo": {
+                        "properties": {
+                            "inicio": {
+                                "type": "string",
+                                "format": "date",
+                                "example": "2026-06-01"
+                            },
+                            "fim": {
+                                "type": "string",
+                                "format": "date",
+                                "example": "2026-06-30"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "vendas": {
+                        "description": "Vendas do período, excluindo canceladas",
+                        "properties": {
+                            "pedidos": {
+                                "type": "integer",
+                                "example": 12
+                            },
+                            "total_bruto": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 4500
+                            },
+                            "total_liquido": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 3800
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "compras": {
+                        "description": "Compras do período, excluindo canceladas",
+                        "properties": {
+                            "compras": {
+                                "type": "integer",
+                                "example": 4
+                            },
+                            "total": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 2100
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "financeiro": {
+                        "properties": {
+                            "a_receber": {
+                                "$ref": "#/components/schemas/DashboardFinanceBlockResource"
+                            },
+                            "a_pagar": {
+                                "$ref": "#/components/schemas/DashboardFinanceBlockResource"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "estoque": {
+                        "properties": {
+                            "skus_com_saldo": {
+                                "type": "integer",
+                                "example": 35
+                            },
+                            "skus_zerados": {
+                                "type": "integer",
+                                "example": 8
+                            },
+                            "total_investido": {
+                                "description": "Valor parado em estoque, calculado por FIFO",
+                                "type": "number",
+                                "format": "float",
+                                "example": 7340.5
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "top_produtos": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/DashboardTopProductResource"
                         }
                     }
                 },

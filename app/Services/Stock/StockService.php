@@ -155,6 +155,11 @@ class StockService implements StockServiceInterface
         );
         $this->repository->store($dto->toArray());
     }
+    public function lockAvailableQuantities(int $companyId, array $productIds): array
+    {
+        return $this->balanceRepository->lockAvailableQuantities($companyId, $productIds);
+    }
+
     public function checkQuantityProductsInStock(CheckStockQuantityDTO $dto): LengthAwarePaginator
     {
         $paginator = $this->balanceRepository->paginate(

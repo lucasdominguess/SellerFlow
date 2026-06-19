@@ -4,6 +4,7 @@ namespace App\Models\Business;
 
 use App\Models\Accout\User;
 use App\Models\Business\Supplier;
+use App\Models\Concerns\BelongsToCompany;
 use App\Models\ListSuspended\Company;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ValidateProduct extends Model
 {
     use HasFactory;
+    use BelongsToCompany;
 
     /**
      * Apenas inputs editáveis pelo usuário.

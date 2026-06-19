@@ -35,6 +35,10 @@ interface StockServiceInterface
 
     public function checkQuantityProductsInStock(CheckStockQuantityDTO $dto): LengthAwarePaginator;
 
+    // Lê saldos travando as linhas (FOR UPDATE) até o commit, serializando vendas
+    // concorrentes. Deve rodar dentro de uma transação. Retorna [product_id => saldo].
+    public function lockAvailableQuantities(int $companyId, array $productIds): array;
+
     // Retorna ['total_investido' => float, 'paginator' => LengthAwarePaginator].
     public function stockInvestment(StockInvestmentQueryDTO $dto): array;
 }

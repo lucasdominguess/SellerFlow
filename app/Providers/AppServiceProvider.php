@@ -14,6 +14,7 @@ use App\Contracts\Repositories\Business\ValidateProductRepositoryInterface;
 use App\Contracts\Repositories\Finance\AccountPayableRepositoryInterface;
 use App\Contracts\Repositories\Finance\AccountReceivableRepositoryInterface;
 use App\Contracts\Repositories\Finance\CashFlowRepositoryInterface;
+use App\Contracts\Repositories\Finance\DashboardRepositoryInterface;
 use App\Contracts\Repositories\ListSuspended\ListSuspendedRepositoryInterface;
 use App\Contracts\Repositories\Purchases\PurchaseRepositoryInterface;
 use App\Contracts\Repositories\Sales\SaleRepositoryInterface;
@@ -31,6 +32,7 @@ use App\Contracts\Services\Business\ValidateProductServiceInterface;
 use App\Contracts\Services\Finance\AccountPayableServiceInterface;
 use App\Contracts\Services\Finance\AccountReceivableServiceInterface;
 use App\Contracts\Services\Finance\CashFlowServiceInterface;
+use App\Contracts\Services\Finance\DashboardServiceInterface;
 use App\Contracts\Services\ListSuspended\ListSuspendedServiceInterface;
 use App\Contracts\Services\Purchases\PurchaseServiceInterface;
 use App\Contracts\Services\Sales\SaleServiceInterface;
@@ -50,6 +52,7 @@ use App\Repositories\Business\ValidateProductRepository;
 use App\Repositories\Finance\AccountPayableRepository;
 use App\Repositories\Finance\AccountReceivableRepository;
 use App\Repositories\Finance\CashFlowRepository;
+use App\Repositories\Finance\DashboardRepository;
 use App\Repositories\ListSuspended\ListSuspendedRepository;
 use App\Repositories\Purchases\PurchaseRepository;
 use App\Repositories\Sales\SaleRepository;
@@ -68,6 +71,7 @@ use App\Services\DomPdfService;
 use App\Services\Finance\AccountPayableService;
 use App\Services\Finance\AccountReceivableService;
 use App\Services\Finance\CashFlowService;
+use App\Services\Finance\DashboardService;
 use App\Services\ListSuspended\ListSuspendedService;
 use App\Services\Purchases\PurchaseService;
 use App\Services\Sales\SaleService;
@@ -208,6 +212,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             CashFlowRepositoryInterface::class,
             CashFlowRepository::class
+        );
+        $this->app->bind(
+            DashboardServiceInterface::class,
+            DashboardService::class
+        );
+        $this->app->bind(
+            DashboardRepositoryInterface::class,
+            DashboardRepository::class
         );
         $this->app->bind(
             ValidateProductServiceInterface::class,

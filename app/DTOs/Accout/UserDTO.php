@@ -2,8 +2,6 @@
 
 namespace App\DTOs\Accout;
 
-use App\Enums\Status;
-
 class UserDTO
 {
     public function __construct(
@@ -19,7 +17,9 @@ class UserDTO
             name: $data['name'] ?? null,
             email: $data['email'] ?? null,
             password: $data['password'] ?? null,
-            status_id: $data['status_id'] ?? Status::PENDING->value,
+            // sem default: campo ausente fica null e some no toArray (array_filter),
+            // preservando o status atual em updates parciais e deixando o default do banco agir no create.
+            status_id: $data['status_id'] ?? null,
         );
     }
 

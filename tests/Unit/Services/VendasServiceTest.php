@@ -7,6 +7,7 @@ use App\Contracts\Services\Finance\AccountReceivableServiceInterface;
 use App\Contracts\Services\Stock\StockServiceInterface;
 use App\DTOs\Sales\SaleDTO;
 use App\DTOs\Sales\SaleResponseDTO;
+use App\Exceptions\Stock\InsufficientStockException;
 use App\Models\Sales\Sale;
 use App\Services\Sales\SaleService;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -55,6 +56,13 @@ describe('SaleService', function () {
             'valor_liquido'    => 160.00,
         ]);
 
+        // saldo suficiente: produto 10 tem 10 em estoque, pedido de 2
+        $this->stockServiceMock
+            ->expects($this->once())
+            ->method('lockAvailableQuantities')
+            ->with(1, [10])
+            ->willReturn([10 => 10]);
+
         $this->repositoryMock
             ->expects($this->once())
             ->method('store')
@@ -77,6 +85,64 @@ describe('SaleService', function () {
         expect($result)->toBeInstanceOf(SaleResponseDTO::class)
             ->and($result->id)->toBe(1)
             ->and($result->valor_liquido)->toBe(160.00);
+    });
+
+    // bloqueia a venda quando a quantidade pedida excede o saldo disponível
+    it('blocks sale when stock is insufficient', function () {
+        $dto = SaleDTO::fromCreateRequest([
+            'company_id'      => 1,
+            'store_id'        => 1,
+            'user_id'         => 1,
+            'market_place_id' => 1,
+            'numero_pedido'   => '1234567890',
+            'data_venda'      => '2026-06-01',
+            'valor_bruto'     => 200.00,
+            'venda_itens'     => [
+                ['product_id' => 10, 'quantidade' => 5, 'valor_unitario' => 40.00],
+            ],
+        ]);
+
+        // saldo 3 < 5 pedido → deve bloquear
+        $this->stockServiceMock
+            ->expects($this->once())
+            ->method('lockAvailableQuantities')
+            ->with(1, [10])
+            ->willReturn([10 => 3]);
+
+        // venda nem chega a ser persistida
+        $this->repositoryMock->expects($this->never())->method('store');
+
+        expect(fn () => $this->service->store($dto))
+            ->toThrow(InsufficientStockException::class);
+    });
+
+    // soma a quantidade do mesmo produto repetido em itens diferentes antes de checar o saldo
+    it('sums quantities of the same product across items before checking stock', function () {
+        $dto = SaleDTO::fromCreateRequest([
+            'company_id'      => 1,
+            'store_id'        => 1,
+            'user_id'         => 1,
+            'market_place_id' => 1,
+            'numero_pedido'   => '1234567890',
+            'data_venda'      => '2026-06-01',
+            'valor_bruto'     => 200.00,
+            'venda_itens'     => [
+                ['product_id' => 10, 'quantidade' => 4, 'valor_unitario' => 40.00],
+                ['product_id' => 10, 'quantidade' => 3, 'valor_unitario' => 40.00],
+            ],
+        ]);
+
+        // total pedido = 7; saldo 5 < 7 → bloqueia (mesmo cada item isolado cabendo)
+        $this->stockServiceMock
+            ->expects($this->once())
+            ->method('lockAvailableQuantities')
+            ->with(1, [10])
+            ->willReturn([10 => 5]);
+
+        $this->repositoryMock->expects($this->never())->method('store');
+
+        expect(fn () => $this->service->store($dto))
+            ->toThrow(InsufficientStockException::class);
     });
 
     // verifica que show delega ao repository e retorna SaleResponseDTO

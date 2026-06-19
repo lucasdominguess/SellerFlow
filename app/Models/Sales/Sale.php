@@ -4,6 +4,7 @@ namespace App\Models\Sales;
 
 use App\Classes\AuthContext;
 use App\Enums\TransactionStatus;
+use App\Models\Concerns\BelongsToCompany;
 use App\Models\Accout\Store;
 use App\Models\Accout\User;
 use App\Models\Finance\AccountReceivable;
@@ -17,6 +18,7 @@ class Sale extends Model
 {
     /** @use HasFactory<\Database\Factories\Sales\SaleFactory> */
     use HasFactory;
+    use BelongsToCompany;
 
     public $table = 'sales';
 

@@ -4,6 +4,7 @@ namespace App\Models\Finance;
 
 use App\Enums\TransactionStatus;
 use App\Models\Accout\Store;
+use App\Models\Concerns\BelongsToCompany;
 use App\Models\ListSuspended\Company;
 use App\Models\Purchases\Purchase;
 use App\Models\Sales\Sale;
@@ -14,6 +15,7 @@ class AccountReceivable extends Model
 {
     /** @use HasFactory<\Database\Factories\Finance\AccountReceivableFactory> */
     use HasFactory;
+    use BelongsToCompany;
 
     public $table = 'account_receivables';
 

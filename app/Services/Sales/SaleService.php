@@ -9,6 +9,7 @@ use App\Contracts\Services\Stock\StockServiceInterface;
 use App\DTOs\Sales\SaleDTO;
 use App\DTOs\Sales\SaleResponseDTO;
 use App\Enums\TransactionStatus;
+use App\Exceptions\Stock\InsufficientStockException;
 use App\Models\Sales\Sale;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
@@ -44,6 +45,9 @@ class SaleService implements SaleServiceInterface
     public function store(SaleDTO $dto): SaleResponseDTO
     {
         $sale = DB::transaction(function () use ($dto) {
+            // impede vender mais do que há em estoque (saldo negativo silencioso)
+            $this->assertStockAvailable($dto->venda_itens, $dto->company_id);
+
             $data = $dto->toArray();
             // valor_liquido é derivado, não vem do cliente: bruto - taxa marketplace - frete
             $data['valor_liquido'] = $this->calcularValorLiquido(
@@ -109,6 +113,28 @@ class SaleService implements SaleServiceInterface
     private function calcularValorLiquido(float $bruto, float $taxa, float $frete): float
     {
         return round($bruto - $taxa - $frete, 2);
+    }
+
+    // Garante saldo suficiente antes de gerar as saídas de estoque.
+    // Soma por produto, pois o mesmo produto pode aparecer em itens diferentes.
+    // Roda dentro da transação do store(): a leitura trava as linhas de saldo
+    // (FOR UPDATE), serializando vendas concorrentes do mesmo produto.
+    private function assertStockAvailable(array $itens, int $companyId): void
+    {
+        $needed = [];
+        foreach ($itens as $item) {
+            $needed[$item->product_id] = ($needed[$item->product_id] ?? 0) + $item->quantidade;
+        }
+
+        $available = $this->stockService->lockAvailableQuantities($companyId, array_keys($needed));
+
+        foreach ($needed as $productId => $quantidade) {
+            $saldo = $available[$productId] ?? 0; // sem linha de saldo = 0 disponível
+
+            if ($quantidade > $saldo) {
+                throw new InsufficientStockException($productId, $saldo, $quantidade);
+            }
+        }
     }
 
     public function delete(Sale $sale)

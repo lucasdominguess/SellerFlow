@@ -2,6 +2,7 @@
 
 namespace App\Models\Accout;
 
+use App\Enums\Status as StatusEnum;
 use App\Models\Accout\CompanyUser;
 use App\Models\ListSuspended\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,6 +20,12 @@ class User extends Authenticatable implements JWTSubject
 
     public $casts = [
         'password' => 'hashed',
+    ];
+
+    // Default no create (a coluna não tem default efetivo na migration): novo usuário nasce
+    // pendente. Não afeta updates — $attributes só semeia novas instâncias.
+    protected $attributes = [
+        'status_id' => StatusEnum::PENDING->value,
     ];
 
     // --- JWTSubject ---

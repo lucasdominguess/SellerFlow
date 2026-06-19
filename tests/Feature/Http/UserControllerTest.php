@@ -13,6 +13,9 @@ describe('UserController', function () {
     beforeEach(function () {
         // status_id=2 e exigido pela UserFactory como FK para a tabela status
         DB::table('status')->insert(['id' => 2, 'name' => 'Ativo']);
+
+        // rotas de user exigem JWT; autentica e cria o usuário autenticado no banco
+        $this->authUser = actingAsJwt();
     });
 
     // --- GET /api/v1/user ---
@@ -36,9 +39,10 @@ describe('UserController', function () {
 
         $response = $this->getJson('/api/v1/user?perPage=2&page=1');
 
+        // 5 criados + o usuário autenticado do beforeEach
         $response->assertStatus(200)
             ->assertJsonPath('meta.per_page', 2)
-            ->assertJsonPath('meta.total', 5);
+            ->assertJsonPath('meta.total', 6);
     });
 
     // --- GET /api/v1/user/{user} ---

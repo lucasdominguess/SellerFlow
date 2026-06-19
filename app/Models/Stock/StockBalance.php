@@ -4,6 +4,7 @@ namespace App\Models\Stock;
 
 use App\Models\Accout\User;
 use App\Models\Business\Product;
+use App\Models\Concerns\BelongsToCompany;
 use App\Models\ListSuspended\Company;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
 // movimentação e reconstruível via `php artisan stock:rebuild-balances`.
 class StockBalance extends Model
 {
+    use BelongsToCompany;
+
     public $table = 'stock_balances';
 
     protected $fillable = [
