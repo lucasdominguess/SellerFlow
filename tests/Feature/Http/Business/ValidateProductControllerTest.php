@@ -40,7 +40,7 @@ describe('ValidateProductController', function () {
 
     // --- POST /api/v1/check-validate-product (preview, não persiste) ---
 
-    it('calculates the pricing preview without persisting', function () {
+    it('calcula o preview de precificação sem persistir', function () {
         $response = $this->postJson('/api/v1/check-validate-product', ($this->payload)());
 
         $response->assertStatus(200)
@@ -53,14 +53,14 @@ describe('ValidateProductController', function () {
         $this->assertDatabaseCount('validate_products', 0);
     });
 
-    it('validates required fields on preview with 422', function () {
+    it('valida os campos obrigatórios no preview com 422', function () {
         $this->postJson('/api/v1/check-validate-product', ($this->payload)(['price_sale' => null]))
             ->assertStatus(422);
     });
 
     // --- POST /api/v1/validate-product (persiste o snapshot) ---
 
-    it('stores a validate product with the calculated snapshot', function () {
+    it('cria um validate product com o snapshot calculado', function () {
         $response = $this->postJson('/api/v1/validate-product', ($this->payload)());
 
         $response->assertStatus(201)
@@ -74,7 +74,7 @@ describe('ValidateProductController', function () {
         ]);
     });
 
-    it('shows a validate product scoped to the user company', function () {
+    it('exibe um validate product escopado à empresa do usuário', function () {
         $response = $this->postJson('/api/v1/validate-product', ($this->payload)());
         $id = $response->json('data.id');
 
@@ -83,7 +83,7 @@ describe('ValidateProductController', function () {
         expect((float) $response->json('data.profit_amount'))->toBe(11.0);
     });
 
-    it('does not find a validate product from another company', function () {
+    it('não encontra validate product de outra empresa', function () {
         $otherCompanyId = DB::table('companies')->insertGetId([
             'name' => 'Outra Empresa', 'status_id' => 1,
         ]);
@@ -104,7 +104,7 @@ describe('ValidateProductController', function () {
         $this->getJson("/api/v1/validate-product/{$other->id}")->assertStatus(404);
     });
 
-    it('lists validate products paginated', function () {
+    it('lista validate products paginados', function () {
         $this->postJson('/api/v1/validate-product', ($this->payload)());
 
         $this->getJson('/api/v1/validate-product')
@@ -112,7 +112,7 @@ describe('ValidateProductController', function () {
             ->assertJsonStructure(['data', 'meta' => ['total', 'per_page', 'current_page', 'last_page']]);
     });
 
-    it('deletes a validate product', function () {
+    it('exclui um validate product', function () {
         $id = $this->postJson('/api/v1/validate-product', ($this->payload)())->json('data.id');
 
         $this->deleteJson("/api/v1/validate-product/{$id}")->assertStatus(200);

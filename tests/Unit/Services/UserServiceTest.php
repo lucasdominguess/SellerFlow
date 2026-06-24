@@ -18,7 +18,7 @@ describe('UserService', function () {
     });
 
     // verifica que store delega ao repository com os dados corretos e retorna UserResponseDTO
-    it('stores user and returns UserResponseDTO', function () {
+    it('cria usuário e retorna UserResponseDTO', function () {
         $dto   = UserDTO::fromRequest([
             'name'      => 'Lucas',
             'email'     => 'lucas@exemplo.com',
@@ -46,7 +46,7 @@ describe('UserService', function () {
     });
 
     // verifica que show delega ao repository e retorna UserResponseDTO do usuario correto
-    it('returns UserResponseDTO for existing user on show', function () {
+    it('retorna UserResponseDTO ao exibir um usuário existente', function () {
         $model = User::factory()->make(['id' => 5, 'name' => 'Existente', 'status_id' => 2]);
 
         $this->repositoryMock
@@ -62,7 +62,7 @@ describe('UserService', function () {
     });
 
     // verifica que update repassa os dados ao repository e retorna UserResponseDTO com os novos valores
-    it('updates user and returns updated UserResponseDTO', function () {
+    it('atualiza o usuário e retorna o UserResponseDTO atualizado', function () {
         $dto      = UserDTO::fromRequest(['name' => 'Nome Atualizado']);
         $original = User::factory()->make(['id' => 3, 'name' => 'Antigo', 'status_id' => 2]);
         $updated  = User::factory()->make(['id' => 3, 'name' => 'Nome Atualizado', 'status_id' => 2]);
@@ -80,7 +80,7 @@ describe('UserService', function () {
     });
 
     // verifica que delete delega a exclusao ao repository uma unica vez
-    it('delegates deletion to repository', function () {
+    it('delega a exclusão ao repository', function () {
         $model = User::factory()->make();
 
         $this->repositoryMock
@@ -92,7 +92,7 @@ describe('UserService', function () {
     });
 
     // verifica que index transforma os itens do paginator em arrays de UserResponseDTO
-    it('transforms paginator items into UserResponseDTO arrays on index', function () {
+    it('transforma os itens do paginator em arrays de UserResponseDTO no index', function () {
         $model      = User::factory()->make([
             'id'        => 1,
             'name'      => 'Paginado',

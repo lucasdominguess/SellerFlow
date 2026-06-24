@@ -1,0 +1,31 @@
+# Postgres local exclusivo para a suíte de testes.
+# O banco de dev/prod é remoto (Supabase, ver .env). Este serviço existe para que os
+# testes rodem no MESMO engine da produção (view FIFO, date_trunc, ilike, FOR UPDATE),
+# que o SQLite não suporta.
+#
+# Uso:
+#   docker compose up -d        # sobe o Postgres de teste
+#   php artisan test            # phpunit.xml já aponta para este banco
+#   docker compose down         # encerra (use -v para apagar o volume)
+
+services:
+  pgsql-test:
+    image: postgres:16-alpine
+    container_name: sellerflow_pgsql_test
+    environment:
+      POSTGRES_DB: sellerflow_test
+      POSTGRES_USER: sail
+      POSTGRES_PASSWORD: password
+    ports:
+      # host 5433 para não conflitar com um Postgres local na 5432
+      - "5433:5432"
+    volumes:
+      - sellerflow_pgsql_test:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sail -d sellerflow_test"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  sellerflow_pgsql_test:

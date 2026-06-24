@@ -72,7 +72,7 @@ describe('PurchaseController', function () {
         ], $override);
     });
 
-    it('creates a purchase deriving valor_total, items, stock entry and a payable', function () {
+    it('cria uma compra derivando valor_total, itens, entrada de estoque e conta a pagar', function () {
         $response = $this->postJson('/api/v1/purchases', ($this->payload)());
 
         $response->assertStatus(201)
@@ -91,12 +91,12 @@ describe('PurchaseController', function () {
         $this->assertDatabaseHas('stock_balances', ['company_id' => $this->company->id, 'product_id' => $this->product->id, 'saldo_atual' => 5]);
     });
 
-    it('validates that at least one item is required with 422', function () {
+    it('valida que ao menos um item é obrigatório com 422', function () {
         $this->postJson('/api/v1/purchases', ($this->payload)(['itens' => []]))
             ->assertStatus(422);
     });
 
-    it('reverses stock and cancels the payable when the purchase is canceled', function () {
+    it('estorna o estoque e cancela a conta a pagar quando a compra é cancelada', function () {
         $purchaseId = $this->postJson('/api/v1/purchases', ($this->payload)())
             ->assertStatus(201)
             ->json('data.id');
@@ -112,7 +112,7 @@ describe('PurchaseController', function () {
         $this->assertDatabaseHas('account_payables', ['origem_id' => $purchaseId, 'origem_tipo' => 'compra', 'status' => 'cancelado']);
     });
 
-    it('shows a purchase', function () {
+    it('exibe uma compra', function () {
         $purchaseId = $this->postJson('/api/v1/purchases', ($this->payload)())->json('data.id');
 
         $this->getJson("/api/v1/purchases/{$purchaseId}")
@@ -121,12 +121,39 @@ describe('PurchaseController', function () {
             ->assertJsonPath('data.fornecedor_id', $this->supplier->id);
     });
 
-    it('lists purchases paginated', function () {
+    it('lista compras paginadas', function () {
         $this->postJson('/api/v1/purchases', ($this->payload)());
 
         $this->getJson('/api/v1/purchases')
             ->assertStatus(200)
             ->assertJsonPath('success', true)
             ->assertJsonStructure(['data', 'meta' => ['total', 'per_page', 'current_page', 'last_page']]);
+    });
+
+    it('marca pago_em na conta a pagar quando a compra é concluída', function () {
+        $purchaseId = $this->postJson('/api/v1/purchases', ($this->payload)())->json('data.id');
+
+        $this->putJson("/api/v1/purchases/{$purchaseId}", ['status' => 'concluido'])
+            ->assertStatus(200)
+            ->assertJsonPath('data.status', 'concluido');
+
+        $conta = DB::table('account_payables')
+            ->where('origem_id', $purchaseId)->where('origem_tipo', 'compra')->first();
+
+        expect($conta->status)->toBe('concluido')
+            ->and($conta->pago_em)->not->toBeNull();
+    });
+
+    it('limpa pago_em ao voltar a compra concluída para pendente', function () {
+        $purchaseId = $this->postJson('/api/v1/purchases', ($this->payload)())->json('data.id');
+
+        $this->putJson("/api/v1/purchases/{$purchaseId}", ['status' => 'concluido']);
+        $this->putJson("/api/v1/purchases/{$purchaseId}", ['status' => 'pendente'])->assertStatus(200);
+
+        $conta = DB::table('account_payables')
+            ->where('origem_id', $purchaseId)->where('origem_tipo', 'compra')->first();
+
+        expect($conta->status)->toBe('pendente')
+            ->and($conta->pago_em)->toBeNull();
     });
 });

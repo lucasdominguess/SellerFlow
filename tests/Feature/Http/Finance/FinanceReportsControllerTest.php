@@ -21,12 +21,12 @@ describe('Finance reports (cash-flow & dashboard)', function () {
 
     // --- GET /api/v1/finance/cash-flow ---
 
-    it('validates required date range on cash-flow with 422', function () {
+    it('valida o intervalo de datas obrigatório no cash-flow com 422', function () {
         // start_date e end_date são obrigatórios; validação roda antes da query
         $this->getJson('/api/v1/finance/cash-flow')->assertStatus(422);
     });
 
-    it('returns the realized cash flow report', function () {
+    it('retorna o relatório de fluxo de caixa realizado', function () {
         // a agregação usa date_trunc (exclusivo do Postgres)
         if (DB::connection()->getDriverName() !== 'pgsql') {
             $this->markTestSkipped('date_trunc só existe no Postgres.');
@@ -40,13 +40,13 @@ describe('Finance reports (cash-flow & dashboard)', function () {
 
     // --- GET /api/v1/finance/dashboard ---
 
-    it('validates the date range on dashboard with 422', function () {
+    it('valida o intervalo de datas no dashboard com 422', function () {
         // end_date deve ser >= start_date; validação roda antes do service
         $this->getJson('/api/v1/finance/dashboard?start_date=2026-06-30&end_date=2026-06-01')
             ->assertStatus(422);
     });
 
-    it('returns the dashboard summary', function () {
+    it('retorna o resumo do dashboard', function () {
         // total_investido lê a stock_investment_view (exclusiva do Postgres)
         if (DB::connection()->getDriverName() !== 'pgsql') {
             $this->markTestSkipped('stock_investment_view só existe no Postgres.');

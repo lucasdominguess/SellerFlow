@@ -27,7 +27,7 @@ describe('PurchaseService', function () {
 
     // verifica que store calcula valor_total a partir dos itens, persiste a compra,
     // os itens e processa a entrada no estoque
-    it('stores compra with calculated valor_total, items and stock entry', function () {
+    it('cria compra com valor_total calculado, itens e entrada de estoque', function () {
         $dto = PurchaseDTO::fromCreateRequest([
             'company_id'         => 1,
             'store_id'           => 1,
@@ -77,7 +77,7 @@ describe('PurchaseService', function () {
     });
 
     // verifica que show delega ao repository e retorna PurchaseResponseDTO
-    it('returns PurchaseResponseDTO for existing compra on show', function () {
+    it('retorna PurchaseResponseDTO ao exibir uma compra existente', function () {
         $model = Purchase::factory()->make(['id' => 5, 'valor_total' => 100.00]);
 
         $this->repositoryMock
@@ -93,7 +93,7 @@ describe('PurchaseService', function () {
     });
 
     // verifica que update repassa os dados ao repository e retorna PurchaseResponseDTO atualizado
-    it('updates compra and returns updated PurchaseResponseDTO', function () {
+    it('atualiza a compra e retorna o PurchaseResponseDTO atualizado', function () {
         $dto      = PurchaseDTO::fromUpdateRequest(['observacao' => 'Nota fiscal corrigida']);
         $original = Purchase::factory()->make(['id' => 3, 'observacao' => null]);
         $updated  = Purchase::factory()->make(['id' => 3, 'observacao' => 'Nota fiscal corrigida']);
@@ -111,7 +111,7 @@ describe('PurchaseService', function () {
     });
 
     // verifica que delete delega a exclusao ao repository uma unica vez
-    it('delegates deletion to repository', function () {
+    it('delega a exclusão ao repository', function () {
         $model = Purchase::factory()->make(['id' => 7]);
 
         $this->repositoryMock
@@ -123,7 +123,7 @@ describe('PurchaseService', function () {
     });
 
     // verifica que index transforma os itens do paginator em arrays de PurchaseResponseDTO
-    it('transforms paginator items into PurchaseResponseDTO arrays on index', function () {
+    it('transforma os itens do paginator em arrays de PurchaseResponseDTO no index', function () {
         $model      = Purchase::factory()->make(['id' => 1, 'numero_nota' => 'NF-100', 'valor_total' => 250.50]);
         $collection = new Collection([$model]);
         $paginator  = new LengthAwarePaginator($collection, 1, 15, 1);

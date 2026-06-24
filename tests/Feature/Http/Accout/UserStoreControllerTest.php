@@ -38,7 +38,7 @@ describe('UserStoreController', function () {
         ], $override);
     });
 
-    it('creates a user-store link', function () {
+    it('cria um vínculo usuário-loja', function () {
         $response = $this->postJson('/api/v1/user-store', ($this->payload)());
 
         $response->assertStatus(201)->assertJsonPath('success', true);
@@ -48,18 +48,18 @@ describe('UserStoreController', function () {
         ]);
     });
 
-    it('rejects a duplicate user-store link with 422', function () {
+    it('rejeita um vínculo usuário-loja duplicado com 422', function () {
         UserStore::create(($this->payload)());
 
         $this->postJson('/api/v1/user-store', ($this->payload)())->assertStatus(422);
     });
 
-    it('validates required fields with 422', function () {
+    it('valida os campos obrigatórios com 422', function () {
         $this->postJson('/api/v1/user-store', ($this->payload)(['user_id' => null]))
             ->assertStatus(422);
     });
 
-    it('shows a user-store link', function () {
+    it('exibe um vínculo usuário-loja', function () {
         $link = UserStore::create(($this->payload)());
 
         $this->getJson("/api/v1/user-store/{$link->id}")
@@ -67,7 +67,7 @@ describe('UserStoreController', function () {
             ->assertJsonPath('data.id', $link->id);
     });
 
-    it('updates only role_id, preserving the other fields on partial update', function () {
+    it('atualiza apenas o role_id, preservando os demais campos no update parcial', function () {
         $link = UserStore::create(($this->payload)());
 
         $this->putJson("/api/v1/user-store/{$link->id}", ['role_id' => 1])
@@ -79,7 +79,7 @@ describe('UserStoreController', function () {
         ]);
     });
 
-    it('deletes a user-store link', function () {
+    it('exclui um vínculo usuário-loja', function () {
         $link = UserStore::create(($this->payload)());
 
         $this->deleteJson("/api/v1/user-store/{$link->id}")->assertStatus(200);
@@ -87,7 +87,7 @@ describe('UserStoreController', function () {
         $this->assertDatabaseMissing('user_stores', ['id' => $link->id]);
     });
 
-    it('lists user-store links paginated', function () {
+    it('lista vínculos usuário-loja paginados', function () {
         UserStore::create(($this->payload)());
 
         $this->getJson('/api/v1/user-store')

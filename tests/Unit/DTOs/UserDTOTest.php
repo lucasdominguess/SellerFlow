@@ -9,7 +9,7 @@ use App\Models\Accout\User;
 describe('UserDTO', function () {
 
     // verifica que todos os campos sao mapeados corretamente a partir do payload validado
-    it('maps all fields from validated array', function () {
+    it('mapeia todos os campos a partir do array validado', function () {
         $dto = UserDTO::fromRequest([
             'name'      => 'Lucas Silva',
             'email'     => 'lucas@exemplo.com',
@@ -24,7 +24,7 @@ describe('UserDTO', function () {
     });
 
     // verifica que campos ausentes no payload resultam em null no DTO
-    it('sets missing fields as null', function () {
+    it('define campos ausentes como null', function () {
         $dto = UserDTO::fromRequest(['name' => 'Apenas Nome']);
 
         expect($dto->email)->toBeNull()
@@ -33,7 +33,7 @@ describe('UserDTO', function () {
     });
 
     // verifica que toArray remove campos nulos permitindo update parcial
-    it('filters null fields in toArray', function () {
+    it('remove campos nulos no toArray', function () {
         $dto   = UserDTO::fromRequest(['name' => 'Lucas']);
         $array = $dto->toArray();
 
@@ -44,7 +44,7 @@ describe('UserDTO', function () {
     });
 
     // verifica que toArray retorna todos os campos quando nenhum deles e nulo
-    it('returns all fields in toArray when none are null', function () {
+    it('retorna todos os campos no toArray quando nenhum é nulo', function () {
         $dto = UserDTO::fromRequest([
             'name'      => 'Lucas',
             'email'     => 'lucas@exemplo.com',
@@ -64,7 +64,7 @@ describe('UserDTO', function () {
 describe('UserResponseDTO', function () {
 
     // verifica que fromModel projeta corretamente os campos publicos do modelo User
-    it('projects correct fields from User model', function () {
+    it('projeta corretamente os campos do model User', function () {
         $user = User::factory()->make([
             'id'        => 1,
             'name'      => 'Lucas Silva',
@@ -81,7 +81,7 @@ describe('UserResponseDTO', function () {
     });
 
     // verifica que toArray retorna todas as chaves publicas do contrato da API
-    it('returns all public keys in toArray', function () {
+    it('retorna todas as chaves públicas no toArray', function () {
         $user = User::factory()->make(['id' => 1, 'status_id' => 2]);
         $dto  = UserResponseDTO::fromModel($user);
 
@@ -93,7 +93,7 @@ describe('UserResponseDTO', function () {
     });
 
     // verifica que o campo password nao aparece no DTO de resposta
-    it('does not expose password field', function () {
+    it('não expõe o campo password', function () {
         $user = User::factory()->make(['id' => 1, 'status_id' => 2]);
         $dto  = UserResponseDTO::fromModel($user);
 

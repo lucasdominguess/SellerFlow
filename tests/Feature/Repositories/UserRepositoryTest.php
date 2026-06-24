@@ -19,7 +19,7 @@ describe('UserRepository', function () {
     });
 
     // verifica que store persiste o usuario no banco e retorna o model criado
-    it('stores user in database and returns model', function () {
+    it('grava o usuário no banco e retorna o model', function () {
         $data   = [
             'name'      => 'Usuario Repo',
             'email'     => 'repo@exemplo.com',
@@ -35,7 +35,7 @@ describe('UserRepository', function () {
     });
 
     // verifica que show carrega a relacao status no modelo retornado
-    it('loads status relation when showing user', function () {
+    it('carrega a relação status ao exibir o usuário', function () {
         $user   = User::factory()->create();
         $result = $this->repository->show($user);
 
@@ -43,7 +43,7 @@ describe('UserRepository', function () {
     });
 
     // verifica que findByEmail retorna o usuario correto para um email existente
-    it('returns correct user for existing email', function () {
+    it('retorna o usuário correto para um e-mail existente', function () {
         $user   = User::factory()->create(['email' => 'busca@exemplo.com']);
         $result = $this->repository->findByEmail('busca@exemplo.com');
 
@@ -52,14 +52,14 @@ describe('UserRepository', function () {
     });
 
     // verifica que findByEmail retorna null quando o email nao esta cadastrado
-    it('returns null for nonexistent email', function () {
+    it('retorna null para e-mail inexistente', function () {
         $result = $this->repository->findByEmail('naoexiste@exemplo.com');
 
         expect($result)->toBeNull();
     });
 
     // verifica que update aplica as alteracoes e o banco reflete os novos valores
-    it('updates user fields and persists changes in database', function () {
+    it('atualiza os campos do usuário e persiste as mudanças no banco', function () {
         $user   = User::factory()->create(['name' => 'Nome Antigo']);
         $result = $this->repository->update($user, ['name' => 'Nome Novo']);
 
@@ -68,7 +68,7 @@ describe('UserRepository', function () {
     });
 
     // verifica que delete remove o usuario do banco de dados
-    it('removes user from database', function () {
+    it('remove o usuário do banco', function () {
         $user = User::factory()->create();
         $this->repository->delete($user);
 
@@ -76,7 +76,7 @@ describe('UserRepository', function () {
     });
 
     // verifica que index retorna paginacao com a relacao status carregada em cada item
-    it('returns paginated users with status relation loaded', function () {
+    it('retorna usuários paginados com a relação status carregada', function () {
         User::factory()->count(3)->create();
         $result = $this->repository->index(15, 1, []);
 
@@ -85,7 +85,7 @@ describe('UserRepository', function () {
     });
 
     // verifica que index filtra usuarios pelo nome usando busca parcial (like)
-    it('filters users by name with partial match', function () {
+    it('filtra usuários por nome com correspondência parcial', function () {
         User::factory()->create(['name' => 'Lucas Alves']);
         User::factory()->create(['name' => 'Pedro Santos']);
 
@@ -96,7 +96,7 @@ describe('UserRepository', function () {
     });
 
     // verifica que index filtra usuarios pelo email usando busca parcial (like)
-    it('filters users by email with partial match', function () {
+    it('filtra usuários por e-mail com correspondência parcial', function () {
         User::factory()->create(['email' => 'lucas@dominio.com']);
         User::factory()->create(['email' => 'pedro@outro.com']);
 
@@ -107,7 +107,7 @@ describe('UserRepository', function () {
     });
 
     // verifica que index retorna todos os usuarios quando nenhum filtro e informado
-    it('returns all users when no filters are applied', function () {
+    it('retorna todos os usuários quando nenhum filtro é aplicado', function () {
         User::factory()->count(5)->create();
 
         $result = $this->repository->index(15, 1, []);

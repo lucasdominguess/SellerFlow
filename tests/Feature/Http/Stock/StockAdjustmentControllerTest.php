@@ -29,7 +29,7 @@ describe('StockAdjustmentController', function () {
         $this->product = Product::factory()->create(['status_id' => 1, 'fornecedor_id' => $supplier->id]);
     });
 
-    it('creates adjustments, stock movements and recomputes the balance', function () {
+    it('cria ajustes, movimentos de estoque e recalcula o saldo', function () {
         $response = $this->postJson('/api/v1/stock-adjustment', [
             'itens' => [
                 ['product_id' => $this->product->id, 'quantidade' => 5, 'motivo' => 'devolucao'],
@@ -55,23 +55,23 @@ describe('StockAdjustmentController', function () {
         ]);
     });
 
-    it('rejects an item with quantidade zero with 422', function () {
+    it('rejeita um item com quantidade zero com 422', function () {
         $this->postJson('/api/v1/stock-adjustment', [
             'itens' => [['product_id' => $this->product->id, 'quantidade' => 0, 'motivo' => 'perda']],
         ])->assertStatus(422);
     });
 
-    it('rejects an invalid motivo with 422', function () {
+    it('rejeita um motivo inválido com 422', function () {
         $this->postJson('/api/v1/stock-adjustment', [
             'itens' => [['product_id' => $this->product->id, 'quantidade' => 3, 'motivo' => 'invalido']],
         ])->assertStatus(422);
     });
 
-    it('requires at least one item with 422', function () {
+    it('exige ao menos um item com 422', function () {
         $this->postJson('/api/v1/stock-adjustment', ['itens' => []])->assertStatus(422);
     });
 
-    it('shows an adjustment', function () {
+    it('exibe um ajuste', function () {
         $adj = StockAdjustment::create([
             'company_id' => $this->company->id, 'product_id' => $this->product->id,
             'user_id' => $this->user->id, 'quantidade' => 7, 'motivo' => 'devolucao', 'observacao' => null,
@@ -83,7 +83,7 @@ describe('StockAdjustmentController', function () {
             ->assertJsonPath('data.quantidade', 7);
     });
 
-    it('lists adjustments paginated', function () {
+    it('lista ajustes paginados', function () {
         StockAdjustment::create([
             'company_id' => $this->company->id, 'product_id' => $this->product->id,
             'user_id' => $this->user->id, 'quantidade' => 7, 'motivo' => 'devolucao', 'observacao' => null,

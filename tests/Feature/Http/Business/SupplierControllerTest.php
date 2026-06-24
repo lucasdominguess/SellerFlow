@@ -29,7 +29,7 @@ describe('SupplierController', function () {
         ], $override);
     });
 
-    it('creates a supplier', function () {
+    it('cria um fornecedor', function () {
         $response = $this->postJson('/api/v1/supplier', ($this->payload)());
 
         $response->assertStatus(201)
@@ -39,26 +39,26 @@ describe('SupplierController', function () {
         $this->assertDatabaseHas('suppliers', ['email' => 'fornecedor@example.com']);
     });
 
-    it('rejects duplicate cnpj with 422', function () {
+    it('rejeita cnpj duplicado com 422', function () {
         Supplier::factory()->create(['cnpj' => '12345678000199']);
 
         $this->postJson('/api/v1/supplier', ($this->payload)(['email' => 'outro@example.com']))
             ->assertStatus(422);
     });
 
-    it('rejects duplicate email with 422', function () {
+    it('rejeita e-mail duplicado com 422', function () {
         Supplier::factory()->create(['email' => 'fornecedor@example.com']);
 
         $this->postJson('/api/v1/supplier', ($this->payload)(['cnpj' => '99999999000199']))
             ->assertStatus(422);
     });
 
-    it('validates required fields with 422', function () {
+    it('valida os campos obrigatórios com 422', function () {
         $this->postJson('/api/v1/supplier', ($this->payload)(['name' => null]))
             ->assertStatus(422);
     });
 
-    it('shows a supplier', function () {
+    it('exibe um fornecedor', function () {
         $supplier = Supplier::factory()->create();
 
         $this->getJson("/api/v1/supplier/{$supplier->id}")
@@ -66,7 +66,7 @@ describe('SupplierController', function () {
             ->assertJsonPath('data.id', $supplier->id);
     });
 
-    it('updates a supplier', function () {
+    it('atualiza um fornecedor', function () {
         $supplier = Supplier::factory()->create(['name' => 'Nome Antigo']);
 
         $this->putJson("/api/v1/supplier/{$supplier->id}", ['name' => 'Nome Novo'])
@@ -74,7 +74,7 @@ describe('SupplierController', function () {
             ->assertJsonPath('data.name', 'Nome Novo');
     });
 
-    it('deletes a supplier', function () {
+    it('exclui um fornecedor', function () {
         $supplier = Supplier::factory()->create();
 
         $this->deleteJson("/api/v1/supplier/{$supplier->id}")->assertStatus(200);
@@ -82,7 +82,7 @@ describe('SupplierController', function () {
         $this->assertDatabaseMissing('suppliers', ['id' => $supplier->id]);
     });
 
-    it('lists suppliers paginated', function () {
+    it('lista fornecedores paginados', function () {
         Supplier::factory()->count(2)->create();
 
         $this->getJson('/api/v1/supplier')

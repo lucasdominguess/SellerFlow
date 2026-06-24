@@ -30,7 +30,7 @@ describe('AccountPayableController', function () {
         ], $override));
     });
 
-    it('creates a payable with company_id from the token', function () {
+    it('cria uma conta a pagar com company_id vindo do token', function () {
         $response = $this->postJson('/api/v1/account-payable', [
             'valor'      => 350.00,
             'vencimento' => '2026-07-10',
@@ -44,12 +44,12 @@ describe('AccountPayableController', function () {
         $this->assertDatabaseHas('account_payables', ['company_id' => $this->company->id, 'valor' => 350.00]);
     });
 
-    it('validates that valor is required with 422', function () {
+    it('valida que valor é obrigatório com 422', function () {
         $this->postJson('/api/v1/account-payable', ['vencimento' => '2026-07-10'])
             ->assertStatus(422);
     });
 
-    it('shows a payable', function () {
+    it('exibe uma conta a pagar', function () {
         $payable = ($this->makePayable)();
 
         $this->getJson("/api/v1/account-payable/{$payable->id}")
@@ -57,7 +57,7 @@ describe('AccountPayableController', function () {
             ->assertJsonPath('data.id', $payable->id);
     });
 
-    it('updates the status without touching other fields', function () {
+    it('atualiza o status sem alterar os demais campos', function () {
         $payable = ($this->makePayable)(['observacao' => 'Pagamento fornecedor']);
 
         $this->putJson("/api/v1/account-payable/{$payable->id}", ['status' => 'concluido'])
@@ -68,7 +68,7 @@ describe('AccountPayableController', function () {
         $this->assertDatabaseHas('account_payables', ['id' => $payable->id, 'status' => 'concluido']);
     });
 
-    it('deletes a payable', function () {
+    it('exclui uma conta a pagar', function () {
         $payable = ($this->makePayable)();
 
         $this->deleteJson("/api/v1/account-payable/{$payable->id}")->assertStatus(200);
@@ -76,7 +76,7 @@ describe('AccountPayableController', function () {
         $this->assertDatabaseMissing('account_payables', ['id' => $payable->id]);
     });
 
-    it('does not show a payable from another company', function () {
+    it('não exibe conta a pagar de outra empresa', function () {
         $otherCompanyId = DB::table('companies')->insertGetId(['name' => 'Outra', 'status_id' => 1]);
         $other = AccountPayable::create([
             'company_id' => $otherCompanyId, 'valor' => 99, 'status' => 'pendente', 'origem_tipo' => 'ajuste_manual',
@@ -85,7 +85,7 @@ describe('AccountPayableController', function () {
         $this->getJson("/api/v1/account-payable/{$other->id}")->assertStatus(404);
     });
 
-    it('lists payables paginated', function () {
+    it('lista contas a pagar paginadas', function () {
         ($this->makePayable)();
 
         $this->getJson('/api/v1/account-payable')

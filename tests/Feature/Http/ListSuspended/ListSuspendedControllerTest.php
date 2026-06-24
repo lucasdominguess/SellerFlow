@@ -31,7 +31,7 @@ describe('ListSuspendedController', function () {
     });
 
     // rota pública: cada params válido devolve a lista correspondente
-    it('returns the list for a valid params value', function (string $params) {
+    it('retorna a lista para um valor de params válido', function (string $params) {
         $this->getJson("/api/v1/list?params={$params}")
             ->assertStatus(200)
             ->assertJsonPath('success', true)
@@ -45,15 +45,15 @@ describe('ListSuspendedController', function () {
         'company',
     ]);
 
-    it('requires the params field with 422', function () {
+    it('exige o campo params com 422', function () {
         $this->getJson('/api/v1/list')->assertStatus(422);
     });
 
-    it('rejects an invalid params value with 422', function () {
+    it('rejeita um valor de params inválido com 422', function () {
         $this->getJson('/api/v1/list?params=inexistente')->assertStatus(422);
     });
 
-    it('filters by status_id', function () {
+    it('filtra por status_id', function () {
         // outra marketplace inativa não deve aparecer ao filtrar por status 1
         MarketPlace::factory()->create(['status_id' => 2]);
 
@@ -64,7 +64,7 @@ describe('ListSuspendedController', function () {
             ->assertJsonPath('data.0.status_id', 1);
     });
 
-    it('filters by name', function () {
+    it('filtra por name', function () {
         // o filtro por nome usa ilike (exclusivo do Postgres)
         if (DB::connection()->getDriverName() !== 'pgsql') {
             $this->markTestSkipped('ilike só existe no Postgres.');

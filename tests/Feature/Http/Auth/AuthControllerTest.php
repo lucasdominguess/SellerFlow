@@ -26,7 +26,7 @@ describe('AuthController', function () {
 
     // --- POST /api/v1/auth/login ---
 
-    it('logs in an active user and returns a token', function () {
+    it('autentica um usuário ativo e retorna um token', function () {
         User::factory()->create([
             'email'     => 'active@example.com',
             'password'  => 'password',
@@ -46,7 +46,7 @@ describe('AuthController', function () {
         expect($response->headers->get('Authorization'))->toStartWith('Bearer ');
     });
 
-    it('rejects invalid credentials with 401', function () {
+    it('rejeita credenciais inválidas com 401', function () {
         User::factory()->create([
             'email'     => 'active@example.com',
             'password'  => 'password',
@@ -59,7 +59,7 @@ describe('AuthController', function () {
         ])->assertStatus(401);
     });
 
-    it('blocks login for an inactive user with 403', function () {
+    it('bloqueia o login de um usuário inativo com 403', function () {
         User::factory()->create([
             'email'     => 'inactive@example.com',
             'password'  => 'password',
@@ -72,13 +72,13 @@ describe('AuthController', function () {
         ])->assertStatus(403);
     });
 
-    it('validates required fields on login with 422', function () {
+    it('valida os campos obrigatórios no login com 422', function () {
         $this->postJson('/api/v1/auth/login', [])->assertStatus(422);
     });
 
     // --- POST /api/v1/auth/register ---
 
-    it('registers a user with company and returns 200', function () {
+    it('registra um usuário com empresa e retorna 200', function () {
         $response = $this->postJson('/api/v1/auth/register', [
             'name'             => 'Novo Seller',
             'email'            => 'novo@example.com',
@@ -94,10 +94,11 @@ describe('AuthController', function () {
 
         $this->assertDatabaseHas('users', ['email' => 'novo@example.com']);
         $this->assertDatabaseHas('companies', ['name' => 'Minha Loja LTDA']);
-        $this->assertDatabaseHas('company_users', ['company_id' => 1]);
+        // vínculo user↔empresa criado (sem assumir o id da sequence)
+        $this->assertDatabaseCount('company_users', 1);
     });
 
-    it('rejects duplicate email on register with 422', function () {
+    it('rejeita e-mail duplicado no registro com 422', function () {
         User::factory()->create(['email' => 'existente@example.com']);
 
         $this->postJson('/api/v1/auth/register', [
@@ -109,7 +110,7 @@ describe('AuthController', function () {
         ])->assertStatus(422);
     });
 
-    it('rejects mismatched password confirmation on register with 422', function () {
+    it('rejeita confirmação de senha divergente no registro com 422', function () {
         $this->postJson('/api/v1/auth/register', [
             'name'             => 'Seller',
             'email'            => 'seller@example.com',
@@ -119,7 +120,7 @@ describe('AuthController', function () {
         ])->assertStatus(422);
     });
 
-    it('requires company_name on register with 422', function () {
+    it('exige company_name no registro com 422', function () {
         $this->postJson('/api/v1/auth/register', [
             'name'             => 'Seller',
             'email'            => 'seller@example.com',
@@ -130,7 +131,7 @@ describe('AuthController', function () {
 
     // --- POST /api/v1/auth/logout ---
 
-    it('logs out an authenticated user', function () {
+    it('desloga um usuário autenticado', function () {
         actingAsJwt(User::factory()->create(['status_id' => 1]));
 
         $this->postJson('/api/v1/auth/logout')
@@ -140,7 +141,7 @@ describe('AuthController', function () {
 
     // --- POST /api/v1/auth/refresh ---
 
-    it('refreshes the token for an active user', function () {
+    it('renova o token de um usuário ativo', function () {
         actingAsJwt(User::factory()->create(['status_id' => 1]));
 
         $response = $this->postJson('/api/v1/auth/refresh');
@@ -150,5 +151,15 @@ describe('AuthController', function () {
             ->assertJsonStructure(['data' => ['token']]);
 
         expect($response->json('data.token'))->not->toBeEmpty();
+    });
+
+    it('bloqueia o refresh de um usuário que ficou inativo com 403', function () {
+        $user = User::factory()->create(['status_id' => 1]);
+        actingAsJwt($user);
+
+        // usuário é desativado após autenticar; o refresh revalida o status
+        $user->update(['status_id' => 2]);
+
+        $this->postJson('/api/v1/auth/refresh')->assertStatus(403);
     });
 });

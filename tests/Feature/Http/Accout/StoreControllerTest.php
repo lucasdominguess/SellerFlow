@@ -33,7 +33,7 @@ describe('StoreController', function () {
         ], $override);
     });
 
-    it('creates a store', function () {
+    it('cria uma loja', function () {
         $response = $this->postJson('/api/v1/store', ($this->payload)());
 
         $response->assertStatus(201)
@@ -43,12 +43,23 @@ describe('StoreController', function () {
         $this->assertDatabaseHas('stores', ['name' => 'Minha Loja', 'company_id' => $this->company->id]);
     });
 
-    it('validates required fields with 422', function () {
+    it('cria uma loja sem company_id (company_id é opcional)', function () {
+        $payload = ($this->payload)();
+        unset($payload['company_id']);
+
+        $this->postJson('/api/v1/store', $payload)
+            ->assertStatus(201)
+            ->assertJsonPath('data.name', 'Minha Loja');
+
+        $this->assertDatabaseHas('stores', ['name' => 'Minha Loja', 'company_id' => null]);
+    });
+
+    it('valida os campos obrigatórios com 422', function () {
         $this->postJson('/api/v1/store', ($this->payload)(['name' => null]))
             ->assertStatus(422);
     });
 
-    it('shows a store', function () {
+    it('exibe uma loja', function () {
         $store = Store::factory()->create([
             'company_id' => $this->company->id, 'marketplace_id' => $this->marketplace->id,
         ]);
@@ -58,7 +69,7 @@ describe('StoreController', function () {
             ->assertJsonPath('data.id', $store->id);
     });
 
-    it('updates only the name, preserving the other fields on partial update', function () {
+    it('atualiza apenas o nome, preservando os demais campos no update parcial', function () {
         $store = Store::factory()->create([
             'name' => 'Nome Antigo', 'status_id' => 1,
             'company_id' => $this->company->id, 'marketplace_id' => $this->marketplace->id,
@@ -74,7 +85,7 @@ describe('StoreController', function () {
         ]);
     });
 
-    it('deletes a store', function () {
+    it('exclui uma loja', function () {
         $store = Store::factory()->create([
             'company_id' => $this->company->id, 'marketplace_id' => $this->marketplace->id,
         ]);
@@ -84,7 +95,7 @@ describe('StoreController', function () {
         $this->assertDatabaseMissing('stores', ['id' => $store->id]);
     });
 
-    it('lists stores paginated', function () {
+    it('lista lojas paginadas', function () {
         Store::factory()->count(2)->create([
             'company_id' => $this->company->id, 'marketplace_id' => $this->marketplace->id,
         ]);

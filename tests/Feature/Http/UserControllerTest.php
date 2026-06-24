@@ -21,7 +21,7 @@ describe('UserController', function () {
     // --- GET /api/v1/user ---
 
     // verifica que a listagem retorna status 200 com envelope de paginacao correto
-    it('lists users with pagination meta', function () {
+    it('lista usuários com meta de paginação', function () {
         User::factory()->count(2)->create();
 
         $this->getJson('/api/v1/user')
@@ -34,7 +34,7 @@ describe('UserController', function () {
     });
 
     // verifica que perPage e page da query string sao respeitados na paginacao
-    it('respects perPage and page query params', function () {
+    it('respeita os parâmetros perPage e page', function () {
         User::factory()->count(5)->create();
 
         $response = $this->getJson('/api/v1/user?perPage=2&page=1');
@@ -48,7 +48,7 @@ describe('UserController', function () {
     // --- GET /api/v1/user/{user} ---
 
     // verifica que show retorna os dados corretos do usuario solicitado
-    it('returns correct user data on show', function () {
+    it('retorna os dados corretos do usuário no show', function () {
         $user = User::factory()->create(['name' => 'Lucas Detalhado']);
 
         $this->getJson("/api/v1/user/{$user->id}")
@@ -59,13 +59,13 @@ describe('UserController', function () {
     });
 
     // verifica que show retorna 404 para um ID que nao existe no banco
-    it('returns 404 for nonexistent user on show', function () {
+    it('retorna 404 para usuário inexistente no show', function () {
         $this->getJson('/api/v1/user/99999')
             ->assertStatus(404);
     });
 
     // verifica que o campo password nao aparece na resposta do show
-    it('does not expose password in show response', function () {
+    it('não expõe o password na resposta do show', function () {
         $user = User::factory()->create();
 
         $this->getJson("/api/v1/user/{$user->id}")
@@ -76,7 +76,7 @@ describe('UserController', function () {
     // --- POST /api/v1/user ---
 
     // verifica que store cria o usuario e retorna 201 com os dados no envelope
-    it('creates user and returns 201 with data', function () {
+    it('cria usuário e retorna 201 com os dados', function () {
         $response = $this->postJson('/api/v1/user', [
             'name'               => 'Novo Usuario',
             'email'              => 'novo@exemplo.com',
@@ -94,7 +94,7 @@ describe('UserController', function () {
     });
 
     // verifica que store retorna 422 quando o campo name esta ausente
-    it('returns 422 when name is missing on store', function () {
+    it('retorna 422 quando falta o name no store', function () {
         $this->postJson('/api/v1/user', [
             'email'              => 'teste@exemplo.com',
             'password'           => 'Senha@123',
@@ -104,7 +104,7 @@ describe('UserController', function () {
     });
 
     // verifica que store retorna 422 quando o email ja esta cadastrado
-    it('returns 422 when email is already taken on store', function () {
+    it('retorna 422 quando o e-mail já está em uso no store', function () {
         User::factory()->create(['email' => 'existente@exemplo.com']);
 
         $this->postJson('/api/v1/user', [
@@ -117,7 +117,7 @@ describe('UserController', function () {
     });
 
     // verifica que store retorna 422 quando as senhas nao coincidem
-    it('returns 422 when passwords do not match on store', function () {
+    it('retorna 422 quando as senhas não conferem no store', function () {
         $this->postJson('/api/v1/user', [
             'name'               => 'Usuario Teste',
             'email'              => 'teste@exemplo.com',
@@ -128,7 +128,7 @@ describe('UserController', function () {
     });
 
     // verifica que store retorna 422 quando a senha tem menos de 8 caracteres
-    it('returns 422 when password is shorter than 8 characters', function () {
+    it('retorna 422 quando a senha tem menos de 8 caracteres', function () {
         $this->postJson('/api/v1/user', [
             'name'               => 'Usuario Teste',
             'email'              => 'teste@exemplo.com',
@@ -141,7 +141,7 @@ describe('UserController', function () {
     // --- PUT /api/v1/user/{user} ---
 
     // verifica que update altera o nome do usuario e retorna os novos dados
-    it('updates user name and returns updated data', function () {
+    it('atualiza o nome do usuário e retorna os dados atualizados', function () {
         $user = User::factory()->create(['name' => 'Nome Antigo']);
 
         $this->putJson("/api/v1/user/{$user->id}", ['name' => 'Nome Atualizado'])
@@ -153,7 +153,7 @@ describe('UserController', function () {
     });
 
     // verifica que update retorna 422 quando o email ja pertence a outro usuario
-    it('returns 422 when email belongs to another user on update', function () {
+    it('retorna 422 quando o e-mail pertence a outro usuário no update', function () {
         $userA = User::factory()->create(['email' => 'a@exemplo.com']);
         $userB = User::factory()->create(['email' => 'b@exemplo.com']);
 
@@ -162,7 +162,7 @@ describe('UserController', function () {
     });
 
     // verifica que update permite reutilizar o proprio email do usuario sem conflito
-    it('allows user to keep own email on update', function () {
+    it('permite manter o próprio e-mail no update', function () {
         $user = User::factory()->create(['email' => 'proprio@exemplo.com']);
 
         $this->putJson("/api/v1/user/{$user->id}", [
@@ -172,7 +172,7 @@ describe('UserController', function () {
     });
 
     // verifica que update retorna 404 para um ID que nao existe
-    it('returns 404 when updating nonexistent user', function () {
+    it('retorna 404 ao atualizar usuário inexistente', function () {
         $this->putJson('/api/v1/user/99999', ['name' => 'Qualquer'])
             ->assertStatus(404);
     });
@@ -180,7 +180,7 @@ describe('UserController', function () {
     // --- DELETE /api/v1/user/{user} ---
 
     // verifica que delete remove o usuario do banco e retorna sucesso
-    it('deletes user and returns success response', function () {
+    it('exclui usuário e retorna resposta de sucesso', function () {
         $user = User::factory()->create();
 
         $this->deleteJson("/api/v1/user/{$user->id}")
@@ -191,7 +191,7 @@ describe('UserController', function () {
     });
 
     // verifica que delete retorna 404 para um ID que nao existe
-    it('returns 404 when deleting nonexistent user', function () {
+    it('retorna 404 ao excluir usuário inexistente', function () {
         $this->deleteJson('/api/v1/user/99999')
             ->assertStatus(404);
     });

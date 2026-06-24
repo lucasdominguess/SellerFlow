@@ -25,7 +25,7 @@ describe('CompanyController', function () {
         ], $override);
     });
 
-    it('creates a company', function () {
+    it('cria uma empresa', function () {
         $response = $this->postJson('/api/v1/company', ($this->payload)());
 
         $response->assertStatus(201)
@@ -35,24 +35,24 @@ describe('CompanyController', function () {
         $this->assertDatabaseHas('companies', ['cnpj' => '11444777000161']);
     });
 
-    it('rejects an invalid cnpj with 422', function () {
+    it('rejeita um cnpj inválido com 422', function () {
         $this->postJson('/api/v1/company', ($this->payload)(['cnpj' => '11111111111111']))
             ->assertStatus(422);
     });
 
-    it('rejects duplicate cnpj with 422', function () {
+    it('rejeita cnpj duplicado com 422', function () {
         Company::factory()->create(['cnpj' => '11444777000161']);
 
         $this->postJson('/api/v1/company', ($this->payload)())
             ->assertStatus(422);
     });
 
-    it('validates required fields with 422', function () {
+    it('valida os campos obrigatórios com 422', function () {
         $this->postJson('/api/v1/company', ($this->payload)(['name' => null]))
             ->assertStatus(422);
     });
 
-    it('shows a company', function () {
+    it('exibe uma empresa', function () {
         $company = Company::factory()->create();
 
         $this->getJson("/api/v1/company/{$company->id}")
@@ -60,7 +60,7 @@ describe('CompanyController', function () {
             ->assertJsonPath('data.id', $company->id);
     });
 
-    it('updates only the provided field, preserving status_id on partial update', function () {
+    it('atualiza apenas o campo informado, preservando o status_id no update parcial', function () {
         $company = Company::factory()->create(['name' => 'Nome Antigo', 'status_id' => 1]);
 
         $this->putJson("/api/v1/company/{$company->id}", ['name' => 'Nome Novo'])
@@ -71,7 +71,7 @@ describe('CompanyController', function () {
         $this->assertDatabaseHas('companies', ['id' => $company->id, 'name' => 'Nome Novo', 'status_id' => 1]);
     });
 
-    it('deletes a company', function () {
+    it('exclui uma empresa', function () {
         $company = Company::factory()->create();
 
         $this->deleteJson("/api/v1/company/{$company->id}")->assertStatus(200);
@@ -79,7 +79,7 @@ describe('CompanyController', function () {
         $this->assertDatabaseMissing('companies', ['id' => $company->id]);
     });
 
-    it('lists companies paginated', function () {
+    it('lista empresas paginadas', function () {
         Company::factory()->count(2)->create();
 
         $this->getJson('/api/v1/company')

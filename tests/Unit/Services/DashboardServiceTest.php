@@ -24,7 +24,7 @@ describe('DashboardService', function () {
     });
 
     // monta o relatório agregando os blocos do repository + o total investido do estoque
-    it('builds the dashboard report from the metric blocks', function () {
+    it('monta o relatório do dashboard a partir dos blocos de métricas', function () {
         $this->repositoryMock->method('salesSummary')
             ->willReturn(['pedidos' => 3, 'total_bruto' => 500.00, 'total_liquido' => 420.00]);
         $this->repositoryMock->method('purchasesSummary')
@@ -63,7 +63,7 @@ describe('DashboardService', function () {
     });
 
     // o total investido reaproveita o cálculo FIFO do StockBalanceRepository (sem filtros)
-    it('reuses StockBalanceRepository::totalInvested for the invested amount', function () {
+    it('reaproveita StockBalanceRepository::totalInvested para o valor investido', function () {
         $this->repositoryMock->method('salesSummary')->willReturn(['pedidos' => 0, 'total_bruto' => 0.0, 'total_liquido' => 0.0]);
         $this->repositoryMock->method('purchasesSummary')->willReturn(['compras' => 0, 'total' => 0.0]);
         $this->repositoryMock->method('receivablesSummary')->willReturn(['pendente' => 0.0, 'recebido_periodo' => 0.0, 'atrasado' => 0.0, 'a_vencer_7d' => 0.0, 'a_vencer_30d' => 0.0]);

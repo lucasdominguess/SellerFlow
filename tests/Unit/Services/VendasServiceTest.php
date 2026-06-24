@@ -28,7 +28,7 @@ describe('SaleService', function () {
 
     // verifica que store calcula valor_liquido (bruto - taxa - frete), persiste a venda,
     // os itens e processa a saida do estoque
-    it('stores venda with calculated valor_liquido, items and stock exit', function () {
+    it('cria venda com valor_liquido calculado, itens e saída de estoque', function () {
         $dto = SaleDTO::fromCreateRequest([
             'company_id'       => 1,
             'store_id'         => 1,
@@ -88,7 +88,7 @@ describe('SaleService', function () {
     });
 
     // bloqueia a venda quando a quantidade pedida excede o saldo disponível
-    it('blocks sale when stock is insufficient', function () {
+    it('bloqueia a venda quando o estoque é insuficiente', function () {
         $dto = SaleDTO::fromCreateRequest([
             'company_id'      => 1,
             'store_id'        => 1,
@@ -117,7 +117,7 @@ describe('SaleService', function () {
     });
 
     // soma a quantidade do mesmo produto repetido em itens diferentes antes de checar o saldo
-    it('sums quantities of the same product across items before checking stock', function () {
+    it('soma as quantidades do mesmo produto em itens diferentes antes de checar o estoque', function () {
         $dto = SaleDTO::fromCreateRequest([
             'company_id'      => 1,
             'store_id'        => 1,
@@ -146,7 +146,7 @@ describe('SaleService', function () {
     });
 
     // verifica que show delega ao repository e retorna SaleResponseDTO
-    it('returns SaleResponseDTO for existing venda on show', function () {
+    it('retorna SaleResponseDTO ao exibir uma venda existente', function () {
         $model = Sale::factory()->make(['id' => 5]);
 
         $this->repositoryMock
@@ -163,7 +163,7 @@ describe('SaleService', function () {
 
     // verifica que update recalcula valor_liquido usando os valores atuais da venda
     // como fallback quando apenas valor_bruto e alterado
-    it('recalculates valor_liquido using current venda values as fallback', function () {
+    it('recalcula valor_liquido usando os valores atuais da venda como fallback', function () {
         $dto      = SaleDTO::fromUpdateRequest(['valor_bruto' => 250.00]);
         $original = Sale::factory()->make([
             'id'               => 3,
@@ -197,7 +197,7 @@ describe('SaleService', function () {
     });
 
     // verifica que update nao recalcula valor_liquido quando nenhum componente do valor muda
-    it('does not recalculate valor_liquido when no value component changes', function () {
+    it('não recalcula valor_liquido quando nenhum componente de valor muda', function () {
         $dto      = SaleDTO::fromUpdateRequest(['observacao' => 'Pedido com atraso']);
         $original = Sale::factory()->make(['id' => 4, 'observacao' => null]);
 
@@ -218,7 +218,7 @@ describe('SaleService', function () {
     });
 
     // verifica que delete delega a exclusao ao repository uma unica vez
-    it('delegates deletion to repository', function () {
+    it('delega a exclusão ao repository', function () {
         $model = Sale::factory()->make(['id' => 7]);
 
         $this->repositoryMock
@@ -230,7 +230,7 @@ describe('SaleService', function () {
     });
 
     // verifica que index transforma os itens do paginator em arrays de SaleResponseDTO
-    it('transforms paginator items into SaleResponseDTO arrays on index', function () {
+    it('transforma os itens do paginator em arrays de SaleResponseDTO no index', function () {
         $model      = Sale::factory()->make(['id' => 1, 'numero_pedido' => '999', 'valor_liquido' => 99.90]);
         $collection = new Collection([$model]);
         $paginator  = new LengthAwarePaginator($collection, 1, 15, 1);

@@ -35,7 +35,7 @@ describe('ProductController', function () {
         ], $override);
     });
 
-    it('creates a product (without images)', function () {
+    it('cria um produto (sem imagens)', function () {
         $response = $this->postJson('/api/v1/product', ($this->payload)());
 
         $response->assertStatus(201)
@@ -45,7 +45,7 @@ describe('ProductController', function () {
         $this->assertDatabaseHas('products', ['name' => 'Capa de Celular']);
     });
 
-    it('creates a product with uploaded images', function () {
+    it('cria um produto com imagens enviadas', function () {
         Storage::fake('public');
 
         $response = $this->post('/api/v1/product', ($this->payload)([
@@ -66,12 +66,12 @@ describe('ProductController', function () {
         }
     });
 
-    it('validates required fields with 422', function () {
+    it('valida os campos obrigatórios com 422', function () {
         $this->postJson('/api/v1/product', ($this->payload)(['name' => null]))
             ->assertStatus(422);
     });
 
-    it('shows a product', function () {
+    it('exibe um produto', function () {
         $supplier = Supplier::factory()->create();
         $product  = Product::factory()->create(['status_id' => 1, 'fornecedor_id' => $supplier->id]);
 
@@ -80,7 +80,7 @@ describe('ProductController', function () {
             ->assertJsonPath('data.id', $product->id);
     });
 
-    it('updates a product name', function () {
+    it('atualiza o nome de um produto', function () {
         $supplier = Supplier::factory()->create();
         $product  = Product::factory()->create(['name' => 'Nome Antigo', 'status_id' => 1, 'fornecedor_id' => $supplier->id]);
 
@@ -91,7 +91,7 @@ describe('ProductController', function () {
         $this->assertDatabaseHas('products', ['id' => $product->id, 'name' => 'Nome Novo']);
     });
 
-    it('deletes a product and removes its image files', function () {
+    it('exclui um produto e remove seus arquivos de imagem', function () {
         Storage::fake('public');
 
         $productId = $this->post('/api/v1/product', ($this->payload)([
@@ -108,7 +108,7 @@ describe('ProductController', function () {
         Storage::disk('public')->assertMissing($path);
     });
 
-    it('lists products paginated', function () {
+    it('lista produtos paginados', function () {
         $supplier = Supplier::factory()->create();
         Product::factory()->count(2)->create(['status_id' => 1, 'fornecedor_id' => $supplier->id]);
 

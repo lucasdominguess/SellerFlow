@@ -77,7 +77,7 @@ describe('SaleController', function () {
         ], $override);
     });
 
-    it('creates a sale deriving valor_liquido, items, stock exit and a receivable', function () {
+    it('cria uma venda derivando valor_liquido, itens, saída de estoque e conta a receber', function () {
         seedStockForSale($this->company->id, $this->product->id, $this->user->id, 10);
 
         $response = $this->postJson('/api/v1/sales', ($this->payload)());
@@ -98,7 +98,7 @@ describe('SaleController', function () {
         $this->assertDatabaseHas('stock_balances', ['company_id' => $this->company->id, 'product_id' => $this->product->id, 'saldo_atual' => 8]);
     });
 
-    it('blocks overselling with 422 and persists nothing', function () {
+    it('bloqueia a venda acima do estoque com 422 e não persiste nada', function () {
         seedStockForSale($this->company->id, $this->product->id, $this->user->id, 1); // só 1 em estoque
 
         $this->postJson('/api/v1/sales', ($this->payload)([
@@ -109,12 +109,12 @@ describe('SaleController', function () {
         $this->assertDatabaseCount('account_receivables', 0);
     });
 
-    it('validates that at least one item is required with 422', function () {
+    it('valida que ao menos um item é obrigatório com 422', function () {
         $this->postJson('/api/v1/sales', ($this->payload)(['venda_itens' => []]))
             ->assertStatus(422);
     });
 
-    it('reverses stock and cancels the receivable when the sale is canceled', function () {
+    it('estorna o estoque e cancela a conta a receber quando a venda é cancelada', function () {
         seedStockForSale($this->company->id, $this->product->id, $this->user->id, 10);
 
         $saleId = $this->postJson('/api/v1/sales', ($this->payload)())
@@ -133,7 +133,7 @@ describe('SaleController', function () {
         $this->assertDatabaseHas('account_receivables', ['origem_id' => $saleId, 'origem_tipo' => 'venda', 'status' => 'cancelado']);
     });
 
-    it('shows a sale', function () {
+    it('exibe uma venda', function () {
         seedStockForSale($this->company->id, $this->product->id, $this->user->id, 10);
         $saleId = $this->postJson('/api/v1/sales', ($this->payload)())->json('data.id');
 
@@ -143,7 +143,7 @@ describe('SaleController', function () {
             ->assertJsonPath('data.numero_pedido', 'PED-1001');
     });
 
-    it('lists sales paginated', function () {
+    it('lista vendas paginadas', function () {
         seedStockForSale($this->company->id, $this->product->id, $this->user->id, 10);
         $this->postJson('/api/v1/sales', ($this->payload)());
 
@@ -151,5 +151,34 @@ describe('SaleController', function () {
             ->assertStatus(200)
             ->assertJsonPath('success', true)
             ->assertJsonStructure(['data', 'meta' => ['total', 'per_page', 'current_page', 'last_page']]);
+    });
+
+    it('marca recebido_em na conta a receber quando a venda é concluída', function () {
+        seedStockForSale($this->company->id, $this->product->id, $this->user->id, 10);
+        $saleId = $this->postJson('/api/v1/sales', ($this->payload)())->json('data.id');
+
+        $this->putJson("/api/v1/sales/{$saleId}", ['status' => 'concluido'])
+            ->assertStatus(200)
+            ->assertJsonPath('data.status', 'concluido');
+
+        $conta = DB::table('account_receivables')
+            ->where('origem_id', $saleId)->where('origem_tipo', 'venda')->first();
+
+        expect($conta->status)->toBe('concluido')
+            ->and($conta->recebido_em)->not->toBeNull();
+    });
+
+    it('limpa recebido_em ao voltar a venda concluída para pendente', function () {
+        seedStockForSale($this->company->id, $this->product->id, $this->user->id, 10);
+        $saleId = $this->postJson('/api/v1/sales', ($this->payload)())->json('data.id');
+
+        $this->putJson("/api/v1/sales/{$saleId}", ['status' => 'concluido']);
+        $this->putJson("/api/v1/sales/{$saleId}", ['status' => 'pendente'])->assertStatus(200);
+
+        $conta = DB::table('account_receivables')
+            ->where('origem_id', $saleId)->where('origem_tipo', 'venda')->first();
+
+        expect($conta->status)->toBe('pendente')
+            ->and($conta->recebido_em)->toBeNull();
     });
 });

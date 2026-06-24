@@ -65,7 +65,7 @@ Este projeto consulta o Brain global para padrões arquiteturais reutilizáveis.
 ## Convenções de trabalho do agente
 
 - **Leitura livre:** permissão de leitura total em qualquer arquivo do projeto — não precisa solicitar.
-- **Testes:** não criar nem executar arquivos de teste (`*test*.php`, Pest/PHPUnit). Os testes serão escritos em outro momento. Implemente apenas o código de produção solicitado.
+- **Testes (Pest):** as **descrições dos testes (`it('...')`) devem ser sempre em PT-BR**. A suíte roda contra Postgres — suba o banco com `docker compose up -d` antes de `php artisan test` (ver Comandos úteis).
 
 ---
 
@@ -75,7 +75,11 @@ Este projeto consulta o Brain global para padrões arquiteturais reutilizáveis.
 # Backend
 php artisan serve
 php artisan migrate:fresh --seed
-./vendor/bin/pest
+
+# Testes — rodam em Postgres (mesmo engine da produção), via docker-compose.yml
+docker compose up -d                # sobe o Postgres de teste (porta 5433) — necessário antes de testar
+php artisan test                    # phpunit.xml já aponta para esse banco
+docker compose down                 # encerra o Postgres de teste (-v apaga o volume)
 
 # Geradores custom do projeto (preferir a criar arquivos manualmente)
 php artisan make:crud {Name}        # stack CRUD completo + binds + rotas (aceita subpastas, ex: Business/Product)
